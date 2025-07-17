@@ -10,295 +10,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', 'Open Sans', 'Roboto', sans-serif;
-            background-color: #F4F1E1;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', 'Raleway', 'Montserrat', 'Mukta', sans-serif;
-        }
-        .slogan {
-            font-family: 'Teko', 'Baloo Bhaina 2', 'Mukta', sans-serif;
-            font-size: 2.2rem;
-            color: #FBC02D;
-        }
-        .section {
-            padding: 60px 0;
-        }
-        .team-img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #388E3C;
-        }
-        .farm-bg {
-            background-image: url('farm-bg.jpg');
-            opacity: 0.7;
-        }
-        .btn-success {
-            background-color: #388E3C !important;
-            border-radius: 30px !important;
-            transition: box-shadow 0.2s, background 0.2s;
-        }
-        .btn-success:hover {
-            box-shadow: 0 4px 16px #388E3C44;
-            background: linear-gradient(90deg,#388E3C,#03A9F4);
-        }
-        /* Redesigned Sticky Navbar - Compact & Modern */
-        .sticky-navbar {
-            position: sticky;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            background: #fff;
-            box-shadow: 0 2px 12px #388E3C22;
-            border-bottom: 3px solid #388E3C;
-            border-radius: 0 0 12px 12px;
-            padding: 0.25rem 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 48px;
-            height: 48px;
-            transition: box-shadow 0.2s, height 0.2s, padding 0.2s;
-        }
-        .sticky-navbar:hover {
-            box-shadow: 0 4px 24px #388E3C33;
-        }
-        .navbar-brand-custom {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-right: 1rem;
-        }
-        .navbar-logo-custom {
-            width: 32px;
-            height: 32px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid #03A9F4;
-            box-shadow: 0 2px 8px #388E3C33;
-            background: #fff;
-            transition: box-shadow 0.2s;
-        }
-        .navbar-title-custom {
-            font-weight: 900;
-            font-size: 1.2rem;
-            color: #388E3C;
-            letter-spacing: 1px;
-            font-family: 'Poppins', 'Mukta', sans-serif;
-            text-shadow: 0 2px 8px #03A9F422;
-        }
-        .navbar-toggle {
-            display: none;
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 0.3rem;
-            margin-left: auto;
-        }
-        .navbar-toggle-icon {
-            display: block;
-            width: 24px;
-            height: 3px;
-            background: #388E3C;
-            position: relative;
-            border-radius: 2px;
-        }
-        .navbar-toggle-icon::before,
-        .navbar-toggle-icon::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 24px;
-            height: 3px;
-            background: #388E3C;
-            border-radius: 2px;
-            transition: 0.2s;
-        }
-        .navbar-toggle-icon::before {
-            top: -7px;
-        }
-        .navbar-toggle-icon::after {
-            top: 7px;
-        }
-        .navbar-menu {
-            display: flex;
-            align-items: center;
-        }
-        .navbar-close {
-            display: none;
-        }
-        .navbar-links-custom {
-            display: flex;
-            gap: 0.7rem;
-            font-weight: 600;
-            font-size: 1rem;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            flex: 1;
-            justify-content: flex-end;
-        }
-        .navbar-links-custom li a {
-            color: #388E3C;
-            background: none;
-            border-radius: 0;
-            padding: 0.3rem 0.1rem;
-            border: none;
-            box-shadow: none;
-            transition: color 0.2s;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            font-size: 1rem;
-        }
-        .navbar-links-custom li a:hover, .navbar-links-custom li a.active {
-            color: #03A9F4 !important;
-        }
-        .navbar-links-custom li a::after {
-            content: '';
-            display: block;
-            margin: 0 auto;
-            width: 0%;
-            height: 2px;
-            background: #03A9F4;
-            transition: width 0.3s;
-        }
-        .navbar-links-custom li a:hover::after, .navbar-links-custom li a.active::after {
-            width: 80%;
-        }
-        .navbar-cta-custom {
-            background: linear-gradient(90deg, #388E3C 60%, #03A9F4 100%);
-            color: #fff !important;
-            border-radius: 16px;
-            font-weight: 900;
-            margin-left: 1rem;
-            box-shadow: 0 2px 8px #388E3C33;
-            padding: 0.3rem 1.1rem;
-            transition: background 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            border: none;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-        .navbar-cta-custom:hover {
-            background: linear-gradient(90deg, #03A9F4 0%, #388E3C 100%);
-            box-shadow: 0 4px 16px #03A9F444;
-        }
-        @media (max-width: 991px) {
-            .sticky-navbar {
-                flex-direction: row;
-                align-items: center;
-                padding: 0.25rem 0.5rem;
-                border-radius: 0 0 8px 8px;
-                min-height: 44px;
-                height: 44px;
-            }
-            .navbar-toggle {
-                display: block;
-            }
-            .navbar-menu {
-                position: fixed;
-                top: 0;
-                right: 0;
-                width: 80vw;
-                max-width: 300px;
-                height: 100vh;
-                background: #fff;
-                box-shadow: -2px 0 24px #388E3C22;
-                border-left: 3px solid #388E3C;
-                border-radius: 0 0 0 12px;
-                padding: 1.2rem 0.7rem 0.7rem 0.7rem;
-                display: none;
-                flex-direction: column;
-                align-items: flex-end;
-                z-index: 9999;
-                animation: slideInMenu 0.3s;
-            }
-            .navbar-menu.open {
-                display: flex;
-            }
-            .navbar-close {
-                display: block;
-                background: none;
-                border: none;
-                font-size: 2rem;
-                color: #388E3C;
-                position: absolute;
-                top: 0.7rem;
-                right: 0.7rem;
-                cursor: pointer;
-                z-index: 10001;
-            }
-            .navbar-links-custom {
-                flex-direction: column;
-                gap: 1rem;
-                width: 100%;
-                align-items: flex-end;
-                margin-top: 1.2rem;
-            }
-            .navbar-cta-custom {
-                margin-left: 0;
-                margin-top: 1rem;
-                width: 100%;
-                text-align: right;
-            }
-        }
-        @media (max-width: 600px) {
-            .sticky-navbar {
-                padding: 0.15rem 0.1rem;
-                min-height: 40px;
-                height: 40px;
-            }
-            .navbar-title-custom {
-                font-size: 1rem;
-            }
-            .navbar-logo-custom {
-                width: 24px;
-                height: 24px;
-            }
-            .navbar-menu {
-                width: 100vw;
-                max-width: none;
-                border-radius: 0;
-                padding: 0.7rem 0.2rem 0.2rem 0.2rem;
-            }
-            .navbar-links-custom {
-                font-size: 0.95rem;
-                gap: 0.6rem;
-                align-items: flex-end;
-            }
-            .navbar-cta-custom {
-                font-size: 0.95rem;
-                padding: 0.3rem 0.7rem;
-                margin-top: 0.7rem;
-            }
-        }
-        @keyframes slideInMenu {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .animate-bounce { animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        .animate-fade-in { animation: fadeIn 2s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .hero-logo-bg {
-            background: transparent;
-        }
-        .hero-svg-bg {
-            z-index: -1;
-        }
-        .animate-fade-in { animation: fadeIn 1.2s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    <link rel="stylesheet" href="web_jaltantra/style.css">
+    <script src="web_jaltantra/scripts.js"></script>
 </head>
 <body class="antialiased">
    <nav class="sticky-navbar">
@@ -322,41 +35,35 @@
         <a href="#contact" class="navbar-cta-custom" onclick="toggleNavbar(false)">Request Demo</a>
     </div>
 </nav>
-    <section class="section bg-gradient-to-r from-green-700 via-green-500 to-blue-400 text-white text-center relative flex flex-col justify-center items-center" id="hero">
-        <div class="container mx-auto flex flex-col items-center justify-center min-h-[70vh]">
-            <div class="flex flex-col items-center justify-center animate-fade-in">
-                <div class="relative mb-8">
-                    <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="w-48 h-48 drop-shadow-2xl rounded-full border-4 border-green-700 hero-logo-bg">
-                    <svg class="absolute top-0 left-0 w-48 h-48 pointer-events-none hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15">
-                            <animate attributeName="rx" values="90;100;90" dur="6s" repeatCount="indefinite" />
-                        </ellipse>
-                        <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12">
-                            <animate attributeName="rx" values="70;80;70" dur="6s" repeatCount="indefinite" />
-                        </ellipse>
-                    </svg>
-                </div>
-                <div class="mb-4 text-3xl font-bold text-white drop-shadow animate-fade-in tracking-wide">Smart Irrigation. Sustainable Future.</div>
-                <div class="mb-2 text-lg text-white/80 animate-fade-in">Empowering Farmers with Technology for Tomorrow</div>
-                <a href="#contact" class="btn btn-success btn-lg shadow-lg mb-4 animate-fade-in">Request Demo</a>
-            </div>
-        </div>
-        <!-- SVG Decorative Waves with Animation -->
-        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none animate-wave">
-            <svg viewBox="0 0 1440 320" class="w-full h-32" xmlns="http://www.w3.org/2000/svg">
-                <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
-                    <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,180L80,175.3C160,181,320,191,480,175.3C640,159,800,117,960,127.3C1120,138,1280,202,1360,234L1440,266L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
-                </path>
-                <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
-                    <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,244L80,233.3C160,223,320,201,480,206.7C640,212,800,244,960,249.3C1120,255,1280,233,1360,222.7L1440,212L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
-                </path>
-            </svg>
-        </div>
-        <style>
-            .animate-fade-in { animation: fadeIn 1.2s; }
-            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        </style>
-    </section>
+    <section id="hero" class="hero-section">
+     <div class="hero-bg"></div>
+     <div class="hero-content">
+       <div class="hero-logo-wrapper animate-hero-logo">
+         <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="hero-logo" />
+         <svg class="hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15">
+             <animate attributeName="rx" values="90;100;90" dur="6s" repeatCount="indefinite" />
+           </ellipse>
+           <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12">
+             <animate attributeName="rx" values="70;80;70" dur="6s" repeatCount="indefinite" />
+           </ellipse>
+         </svg>
+       </div>
+       <h1 class="hero-title animate-hero-title">Smart Irrigation. Sustainable Future.</h1>
+       <p class="hero-subtitle animate-hero-subtitle">Empowering Farmers with Technology for Tomorrow</p>
+       <a href="#contact" class="hero-cta animate-hero-cta">Request Demo</a>
+     </div>
+     <div class="hero-waves">
+       <svg viewBox="0 0 1440 320" class="hero-wave-svg" xmlns="http://www.w3.org/2000/svg">
+         <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+           <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,180L80,175.3C160,181,320,191,480,175.3C640,159,800,117,960,127.3C1120,138,1280,202,1360,234L1440,266L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
+         </path>
+         <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z">
+           <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,244L80,233.3C160,223,320,201,480,206.7C640,212,800,244,960,249.3C1120,255,1280,233,1360,222.7L1440,212L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
+         </path>
+       </svg>
+     </div>
+   </section>
 
     <!-- About JalTantra (Animated, Restructured & Professional) -->
     <section class="section bg-white text-center" id="about">
