@@ -46,27 +46,172 @@
             box-shadow: 0 4px 16px #388E3C44;
             background: linear-gradient(90deg,#388E3C,#03A9F4);
         }
-        .sticky-navbar {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: #F4F1E1;
-            box-shadow: 0 2px 8px #21212122;
-        }
-        .counter {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #388E3C;
-        }
-        .testimonial {
-            font-style: italic;
-            color: #212121;
-            background: #F4F1E1;
-            border-left: 4px solid #388E3C;
-            padding: 1rem 2rem;
-            margin: 1rem auto;
-            max-width: 600px;
-        }
+        /* Modern Responsive Navbar for JalTantra - Tabs Right Aligned & Mobile Friendly */
+.sticky-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 2px 12px #388E3C22;
+    border-bottom: 4px solid #388E3C;
+    border-radius: 0 0 18px 18px;
+    padding: 0.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 64px;
+    transition: box-shadow 0.2s;
+}
+.sticky-navbar:hover {
+    box-shadow: 0 4px 24px #388E3C33;
+}
+.navbar-brand-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-right: 2rem;
+}
+.navbar-logo-custom {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #03A9F4;
+    box-shadow: 0 2px 8px #388E3C33;
+    background: #fff;
+    transition: box-shadow 0.2s;
+}
+.navbar-logo-custom:hover {
+    box-shadow: 0 4px 16px #03A9F444;
+}
+.navbar-title-custom {
+    font-weight: 900;
+    font-size: 2.1rem;
+    color: #388E3C;
+    letter-spacing: 1.5px;
+    font-family: 'Poppins', 'Mukta', sans-serif;
+    text-shadow: 0 2px 8px #03A9F422;
+}
+.navbar-links-custom {
+    display: flex;
+    gap: 1.2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+    justify-content: flex-end;
+}
+.navbar-links-custom li {
+    display: flex;
+    align-items: center;
+}
+.navbar-links-custom li a {
+    color: #388E3C;
+    background: none;
+    border-radius: 0;
+    padding: 0.5rem 0.2rem;
+    border: none;
+    box-shadow: none;
+    transition: color 0.2s;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    font-size: 1.08rem;
+}
+.navbar-links-custom li a:hover, .navbar-links-custom li a.active {
+    color: #03A9F4 !important;
+}
+.navbar-links-custom li a::after {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 0%;
+    height: 2px;
+    background: #03A9F4;
+    transition: width 0.3s;
+}
+.navbar-links-custom li a:hover::after, .navbar-links-custom li a.active::after {
+    width: 80%;
+}
+.navbar-cta-custom {
+    background: linear-gradient(90deg, #388E3C 60%, #03A9F4 100%);
+    color: #fff !important;
+    border-radius: 20px;
+    font-weight: 900;
+    margin-left: 2rem;
+    box-shadow: 0 2px 8px #388E3C33;
+    padding: 0.5rem 1.7rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    border: none;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+.navbar-cta-custom:hover {
+    background: linear-gradient(90deg, #03A9F4 0%, #388E3C 100%);
+    box-shadow: 0 4px 16px #03A9F444;
+}
+/* Mobile Navbar Styles */
+@media (max-width: 991px) {
+    .sticky-navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.5rem 1rem;
+        border-radius: 0 0 12px 12px;
+    }
+    .navbar-brand-custom {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        justify-content: flex-start;
+    }
+    .navbar-links-custom {
+        gap: 0.5rem;
+        font-size: 1rem;
+        width: 100%;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+        justify-content: flex-end;
+    }
+    .navbar-cta-custom {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+@media (max-width: 600px) {
+    .sticky-navbar {
+        padding: 0.5rem 0.3rem;
+    }
+    .navbar-title-custom {
+        font-size: 1.3rem;
+    }
+    .navbar-logo-custom {
+        width: 36px;
+        height: 36px;
+    }
+    .navbar-links-custom {
+        font-size: 0.95rem;
+        gap: 0.3rem;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .navbar-links-custom li {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .navbar-cta-custom {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+    }
+}
         .animate-bounce { animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         .animate-fade-in { animation: fadeIn 2s; }
@@ -83,66 +228,115 @@
 </head>
 <body class="antialiased">
     <!-- Sticky Navbar -->
-    <nav class="sticky-navbar py-2 px-4 flex justify-between items-center shadow-lg bg-white">
-        <div class="flex items-center gap-2">
-            <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="w-12 h-12 rounded-full border-2 border-green-700 shadow-md">
-            <span class="font-bold text-2xl text-green-700 tracking-wide">JalTantra</span>
-        </div>
-        <ul class="flex gap-8 font-semibold text-lg">
-            <li><a href="#hero" onclick="scrollToSection('hero')" class="hover:text-green-700 transition">Home</a></li>
-            <li><a href="#about" class="hover:text-green-700 transition">About</a></li>
-            <li><a href="#solution" class="hover:text-green-700 transition">Solution</a></li>
-            <li><a href="#stats" class="hover:text-green-700 transition">Stats</a></li>
-          <li><a href="#contact" class="hover:text-green-700 transition">Contact</a></li>
+    <nav class="sticky-navbar">
+    <div class="navbar-brand-custom">
+        <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="navbar-logo-custom">
+        <span class="navbar-title-custom">JalTantra</span>
+    </div>
+    <button class="navbar-toggle-custom" aria-label="Toggle navigation" onclick="toggleNavbarMenu()">
+        <span class="navbar-toggle-bar"></span>
+        <span class="navbar-toggle-bar"></span>
+        <span class="navbar-toggle-bar"></span>
+    </button>
+    <div class="navbar-menu-custom">
+        <ul class="navbar-links-custom">
+            <li><a href="#hero" onclick="scrollToSection('hero')">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#stats">Stats</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
-    </nav>
+        <a href="#contact" class="navbar-cta-custom">Request Demo</a>
+    </div>
+</nav>
 
-    <!-- Hero Section (Logo Outer Circle & Title Removed, Multidevice Optimized) -->
-    <section class="section bg-gradient-to-br from-green-700 via-blue-400 to-green-300 text-white text-center relative flex flex-col justify-center items-center overflow-hidden min-h-screen" id="hero">
-        <div class="absolute inset-0 w-full h-full z-0">
-            <!-- Custom SVG Background: abstract waves, leaves only -->
-            <svg class="w-full h-full" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <defs>
-                    <linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#03A9F4" stop-opacity="0.18" />
-                        <stop offset="1" stop-color="#388E3C" stop-opacity="0.12" />
-                    </linearGradient>
-                </defs>
-                <path d="M0,700 Q360,850 720,700 T1440,700 V900 H0 Z" fill="url(#waveGradient)" opacity="0.7">
-                    <animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,700 Q360,850 720,700 T1440,700 V900 H0 Z;M0,720 Q360,880 720,720 T1440,720 V900 H0 Z;M0,700 Q360,850 720,700 T1440,700 V900 H0 Z" />
-                </path>
-                <!-- Decorative leaf shapes -->
-                <path d="M1300,300 Q1320,260 1340,300 Q1320,340 1300,300 Z" fill="#388E3C" fill-opacity="0.18" />
-                <path d="M180,600 Q200,570 220,600 Q200,630 180,600 Z" fill="#03A9F4" fill-opacity="0.15" />
-            </svg>
-        </div>
-        <div class="container mx-auto flex flex-col items-center justify-center min-h-screen relative z-10 px-4">
+    <!-- Hero Section (Redesigned & Unique) -->
+    <section class="section bg-gradient-to-r from-green-700 via-green-500 to-blue-400 text-white text-center relative flex flex-col justify-center items-center" id="hero">
+        <div class="container mx-auto flex flex-col items-center justify-center min-h-[70vh]">
             <div class="flex flex-col items-center justify-center animate-fade-in">
-                <div class="relative mb-8 w-full flex justify-center">
-                    <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="relative z-10 w-72 h-72 sm:w-64 sm:h-64 md:w-96 md:h-96 drop-shadow-2xl rounded-full hero-logo-bg animate-zoom-in">
+                <div class="relative mb-8">
+                    <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="w-48 h-48 drop-shadow-2xl rounded-full border-4 border-green-700 hero-logo-bg">
+                    <svg class="absolute top-0 left-0 w-48 h-48 pointer-events-none hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15">
+                            <animate attributeName="rx" values="90;100;90" dur="6s" repeatCount="indefinite" />
+                        </ellipse>
+                        <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12">
+                            <animate attributeName="rx" values="70;80;70" dur="6s" repeatCount="indefinite" />
+                        </ellipse>
+                    </svg>
                 </div>
-                <div class="mb-2 text-xl md:text-3xl text-white/90 animate-fade-in font-semibold">Smart Irrigation. Sustainable Future.</div>
-                <div class="mb-4 text-base md:text-xl text-white/80 animate-fade-in">Empowering Farmers with Technology for Tomorrow</div>
+                <div class="mb-4 text-3xl font-bold text-white drop-shadow animate-fade-in tracking-wide">Smart Irrigation. Sustainable Future.</div>
+                <div class="mb-2 text-lg text-white/80 animate-fade-in">Empowering Farmers with Technology for Tomorrow</div>
                 <a href="#contact" class="btn btn-success btn-lg shadow-lg mb-4 animate-fade-in">Request Demo</a>
             </div>
+        </div>
+        <!-- SVG Decorative Waves with Animation -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none animate-wave">
+            <svg viewBox="0 0 1440 320" class="w-full h-32" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+                    <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,180L80,175.3C160,181,320,191,480,175.3C640,159,800,117,960,127.3C1120,138,1280,202,1360,234L1440,266L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
+                </path>
+                <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+                    <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,244L80,233.3C160,223,320,201,480,206.7C640,212,800,244,960,249.3C1120,255,1280,233,1360,222.7L1440,212L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
+                </path>
+            </svg>
         </div>
         <style>
             .animate-fade-in { animation: fadeIn 1.2s; }
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-            .animate-zoom-in { animation: zoomIn 1.2s; }
-            @keyframes zoomIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-            @media (max-width: 768px) {
-                .w-72, .h-72 { width: 18rem !important; height: 18rem !important; }
-                .sm\:w-64, .sm\:h-64 { width: 16rem !important; height: 16rem !important; }
-                .md\:w-96, .md\:h-96 { width: 12rem !important; height: 12rem !important; }
-                .md\:text-3xl { font-size: 1.5rem !important; }
-                .md\:text-xl { font-size: 1rem !important; }
-            }
         </style>
-    </section>
-
-    <!-- About JalTantra (Animated, Restructured & Professional) -->
-    <section class="section bg-white text-center" id="about">
+        body {
+            font-family: 'Inter', 'Open Sans', 'Roboto', sans-serif;
+            background-color: #F4F1E1;
+        }
+        /* Hamburger Toggle Button */
+        .navbar-toggle-custom {
+            display: none;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 0.7rem;
+            margin-left: auto;
+        }
+        .navbar-toggle-bar {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: #388E3C;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+        /* Navbar menu wrapper */
+        .navbar-menu-custom {
+            display: flex;
+            align-items: center;
+        }
+        @media (max-width: 991px) {
+            .navbar-toggle-custom {
+                display: flex;
+            }
+            .navbar-menu-custom {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #fff;
+                box-shadow: 0 2px 12px #388E3C22;
+                border-radius: 0 0 12px 12px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 99;
+                padding: 0.5rem 1rem;
+            }
+            .navbar-menu-custom.active {
+                display: flex;
+            }
+        }
         <div class="container mx-auto max-w-5xl">
             <div class="mb-10 animate-fade-in">
                 <h2 class="text-4xl font-bold text-green-700 flex items-center justify-center gap-2">
@@ -488,6 +682,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- JS for advanced UI -->
     <script>
+    // Navbar toggle for mobile
+    function toggleNavbarMenu() {
+        var menu = document.querySelector('.navbar-menu-custom');
+        if (menu) menu.classList.toggle('active');
+    }
     // Smooth scroll
     function scrollToSection(id) {
         const el = document.getElementById(id);
