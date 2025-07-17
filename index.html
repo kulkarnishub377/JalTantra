@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JalTantra - Smart, Green, and Grounded</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Open Sans', 'Roboto', sans-serif;
+            background-color: #F4F1E1;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', 'Raleway', 'Montserrat', 'Mukta', sans-serif;
+        }
+        .slogan {
+            font-family: 'Teko', 'Baloo Bhaina 2', 'Mukta', sans-serif;
+            font-size: 2.2rem;
+            color: #FBC02D;
+        }
+        .section {
+            padding: 60px 0;
+        }
+        .team-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #388E3C;
+        }
+        .farm-bg {
+            background-image: url('farm-bg.jpg');
+            opacity: 0.7;
+        }
+        .btn-success {
+            background-color: #388E3C !important;
+            border-radius: 30px !important;
+            transition: box-shadow 0.2s, background 0.2s;
+        }
+        .btn-success:hover {
+            box-shadow: 0 4px 16px #388E3C44;
+            background: linear-gradient(90deg,#388E3C,#03A9F4);
+        }
+        .sticky-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #F4F1E1;
+            box-shadow: 0 2px 8px #21212122;
+        }
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #388E3C;
+        }
+        .testimonial {
+            font-style: italic;
+            color: #212121;
+            background: #F4F1E1;
+            border-left: 4px solid #388E3C;
+            padding: 1rem 2rem;
+            margin: 1rem auto;
+            max-width: 600px;
+        }
+        .animate-bounce { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .animate-fade-in { animation: fadeIn 2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hero-logo-bg {
+            background: transparent;
+        }
+        .hero-svg-bg {
+            z-index: -1;
+        }
+        .animate-fade-in { animation: fadeIn 1.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Sticky Navbar -->
+    <nav class="sticky-navbar py-2 px-4 flex justify-between items-center shadow-lg bg-white">
+        <div class="flex items-center gap-2">
+            <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="w-12 h-12 rounded-full border-2 border-green-700 shadow-md">
+            <span class="font-bold text-2xl text-green-700 tracking-wide">JalTantra</span>
+        </div>
+        <ul class="flex gap-8 font-semibold text-lg">
+            <li><a href="#hero" onclick="scrollToSection('hero')" class="hover:text-green-700 transition">Home</a></li>
+            <li><a href="#about" class="hover:text-green-700 transition">About</a></li>
+            <li><a href="#solution" class="hover:text-green-700 transition">Solution</a></li>
+            <li><a href="#stats" class="hover:text-green-700 transition">Stats</a></li>
+          <li><a href="#contact" class="hover:text-green-700 transition">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section (Logo Outer Circle & Title Removed, Multidevice Optimized) -->
+    <section class="section bg-gradient-to-br from-green-700 via-blue-400 to-green-300 text-white text-center relative flex flex-col justify-center items-center overflow-hidden min-h-screen" id="hero">
+        <div class="absolute inset-0 w-full h-full z-0">
+            <!-- Custom SVG Background: abstract waves, leaves only -->
+            <svg class="w-full h-full" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#03A9F4" stop-opacity="0.18" />
+                        <stop offset="1" stop-color="#388E3C" stop-opacity="0.12" />
+                    </linearGradient>
+                </defs>
+                <path d="M0,700 Q360,850 720,700 T1440,700 V900 H0 Z" fill="url(#waveGradient)" opacity="0.7">
+                    <animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,700 Q360,850 720,700 T1440,700 V900 H0 Z;M0,720 Q360,880 720,720 T1440,720 V900 H0 Z;M0,700 Q360,850 720,700 T1440,700 V900 H0 Z" />
+                </path>
+                <!-- Decorative leaf shapes -->
+                <path d="M1300,300 Q1320,260 1340,300 Q1320,340 1300,300 Z" fill="#388E3C" fill-opacity="0.18" />
+                <path d="M180,600 Q200,570 220,600 Q200,630 180,600 Z" fill="#03A9F4" fill-opacity="0.15" />
+            </svg>
+        </div>
+        <div class="container mx-auto flex flex-col items-center justify-center min-h-screen relative z-10 px-4">
+            <div class="flex flex-col items-center justify-center animate-fade-in">
+                <div class="relative mb-8 w-full flex justify-center">
+                    <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="relative z-10 w-72 h-72 sm:w-64 sm:h-64 md:w-96 md:h-96 drop-shadow-2xl rounded-full hero-logo-bg animate-zoom-in">
+                </div>
+                <div class="mb-2 text-xl md:text-3xl text-white/90 animate-fade-in font-semibold">Smart Irrigation. Sustainable Future.</div>
+                <div class="mb-4 text-base md:text-xl text-white/80 animate-fade-in">Empowering Farmers with Technology for Tomorrow</div>
+                <a href="#contact" class="btn btn-success btn-lg shadow-lg mb-4 animate-fade-in">Request Demo</a>
+            </div>
+        </div>
+        <style>
+            .animate-fade-in { animation: fadeIn 1.2s; }
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            .animate-zoom-in { animation: zoomIn 1.2s; }
+            @keyframes zoomIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+            @media (max-width: 768px) {
+                .w-72, .h-72 { width: 18rem !important; height: 18rem !important; }
+                .sm\:w-64, .sm\:h-64 { width: 16rem !important; height: 16rem !important; }
+                .md\:w-96, .md\:h-96 { width: 12rem !important; height: 12rem !important; }
+                .md\:text-3xl { font-size: 1.5rem !important; }
+                .md\:text-xl { font-size: 1rem !important; }
+            }
+        </style>
+    </section>
+
+    <!-- About JalTantra (Animated, Restructured & Professional) -->
+    <section class="section bg-white text-center" id="about">
+        <div class="container mx-auto max-w-5xl">
+            <div class="mb-10 animate-fade-in">
+                <h2 class="text-4xl font-bold text-green-700 flex items-center justify-center gap-2">
+                    <span class="text-3xl animate-bounce">🌿</span> About Us | <span class="font-bold">जलतंत्र</span>
+                </h2>
+                <p class="text-xl text-gray-800 mt-2 font-semibold">Empowering Farmers with Smart Irrigation Solutions</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div class="bg-[#F4F1E1] rounded-xl p-6 shadow flex flex-col items-center animate-slide-in-left">
+                    <span class="text-2xl mb-2">🚀</span>
+                    <h3 class="font-bold text-green-700 mb-2">Our Mission</h3>
+                    <p class="text-gray-700 text-base">To revolutionize Indian agriculture by delivering smart, affordable, and easy-to-use irrigation technology that helps farmers save water, increase crop yield, and connect to markets — all from a single platform, in their own language.</p>
+                </div>
+                <div class="bg-[#F4F1E1] rounded-xl p-6 shadow flex flex-col items-center animate-slide-in-right">
+                    <span class="text-2xl mb-2">🌱</span>
+                    <h3 class="font-bold text-green-700 mb-2">Our Vision</h3>
+                    <p class="text-gray-700 text-base">To build a future where technology meets tradition, where farmers are empowered with real-time data, AI insights, and smart tools, and where agriculture becomes sustainable, climate-resilient, and profitable for every grower.</p>
+                </div>
+            </div>
+            <blockquote class="italic text-green-800 bg-[#E0E0E0] rounded-lg p-4 mb-10 animate-fade-in">"At JalTantra, we’re not just building a product — we’re creating a movement towards a greener, more sustainable, and prosperous agricultural future."</blockquote>
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold mb-6 text-green-700 animate-fade-in">💡 What We Do</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">📡</span>
+                        <span class="font-semibold">Smart Irrigation Control</span>
+                        <span class="text-sm text-gray-600">(automated + manual)</span>
+                    </div>
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">🤖</span>
+                        <span class="font-semibold">AI-Powered Crop Disease Detection</span>
+                    </div>
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">🧠</span>
+                        <span class="font-semibold">Live Crop Health Insights</span>
+                    </div>
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">🛍️</span>
+                        <span class="font-semibold">Market Connection</span>
+                        <span class="text-sm text-gray-600">Sell to retailers directly</span>
+                    </div>
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">📲</span>
+                        <span class="font-semibold">Mobile App with Multilingual Support</span>
+                    </div>
+                    <div class="flex flex-col items-center bg-[#F4F1E1] rounded-xl p-6 shadow animate-zoom-in">
+                        <span class="text-3xl mb-2">🌾</span>
+                        <span class="font-semibold">Future-Ready Planting Suggestions & Growth Analytics</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-bold mb-4 text-green-700">👨‍🌾 Who We Serve</h3>
+                    <ul class="list-disc text-left text-lg text-gray-700 pl-8">
+                        <li>Small & medium-scale Indian farmers</li>
+                        <li>Agricultural cooperatives & rural communities</li>
+                        <li>Agri-entrepreneurs & local agri-stores</li>
+                        <li>Government programs (PM-Kisan, Fasal Bima Yojana)</li>
+                        <li>NGOs & CSR initiatives in agriculture and sustainability</li>
+                    </ul>
+                </div>
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-bold mb-4 text-green-700">🔧 Why Choose JalTantra?</h3>
+                    <ul class="list-disc text-left text-lg text-gray-700 pl-8">
+                        <li>✅ Simple setup</li>
+                        <li>✅ Saves up to 30% water</li>
+                        <li>✅ Works with Indian crops</li>
+                        <li>✅ Supports regional languages</li>
+                        <li>✅ Affordable, scalable, and farmer-friendly</li>
+                        <li>✅ Built by students for the people who grow our food</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <style>
+            .animate-fade-in { animation: fadeIn 1.2s; }
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            .animate-bounce { animation: bounce 2s infinite; }
+            @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+            .animate-slide-in-left { animation: slideInLeft 1.2s; }
+            @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+            .animate-slide-in-right { animation: slideInRight 1.2s; }
+            @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+            .animate-zoom-in { animation: zoomIn 1.2s; }
+            @keyframes zoomIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+        </style>
+    </section>
+
+    <!-- The Problem We Solve -->
+    <section class="section bg-[#E0E0E0] text-center">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-blue-600">The Problem We Solve</h2>
+            <div class="max-w-2xl mx-auto mb-4">
+                <ul class="list-disc text-left text-lg text-gray-800 pl-8">
+                    <li>54% of India faces water stress</li>
+                    <li>50% of irrigation water is wasted due to manual methods</li>
+                    <li>Farmers lack access to crop disease tools and market analytics</li>
+                </ul>
+            </div>
+            <p class="font-semibold text-xl text-gray-900">Farming in India is critical—but farmers lack tools for precision, prediction, and profit.</p>
+        </div>
+    </section>
+
+    <!-- The Problem Section (Detailed) -->
+    <section class="section bg-[#E0E0E0] text-center" id="problem">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-blue-600">Key Challenges Faced by Indian Farmers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">💧</span>
+                    <h4 class="font-bold mb-2">Water Wastage & Inefficient Irrigation</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>30-50% irrigation water wasted</li>
+                        <li>Depleting groundwater levels</li>
+                        <li>Yield loss from over/underwatering</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">🌱</span>
+                    <h4 class="font-bold mb-2">Crop Diseases Reduce Income</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>30-40% crops lost yearly</li>
+                        <li>Lack of expert guidance</li>
+                        <li>High financial losses</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">🔬</span>
+                    <h4 class="font-bold mb-2">Lack of Real-Time Crop Health Insights</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>Pest infestations ruin crops</li>
+                        <li>Soil quality degrades</li>
+                        <li>Uninformed decisions</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">🌦️</span>
+                    <h4 class="font-bold mb-2">Unpredictable Climate & Poor Planning</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>Traditional farming fails in changing weather</li>
+                        <li>No prediction tools for soil/weather</li>
+                        <li>Lack of data-driven crop selection</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">🛠️</span>
+                    <h4 class="font-bold mb-2">Expensive & Non-Durable Hardware</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>High cost of imported devices</li>
+                        <li>Devices fail in Indian conditions</li>
+                        <li>Limited servicing/spares</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">💸</span>
+                    <h4 class="font-bold mb-2">Low Profits Due to Middlemen</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>Middlemen take up to 50% earnings</li>
+                        <li>No direct buyer connection</li>
+                        <li>Unfair low prices</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">📊</span>
+                    <h4 class="font-bold mb-2">Lack of Market Insights</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>No real-time crop demand/pricing</li>
+                        <li>Overproduction, financial loss</li>
+                        <li>No access to competitive rates</li>
+                    </ul>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-white flex flex-col items-center">
+                    <span class="text-4xl mb-2">🌐</span>
+                    <h4 class="font-bold mb-2">Language Barriers in Tech Use</h4>
+                    <ul class="text-left text-gray-700 list-disc pl-4">
+                        <li>90% struggle with English platforms</li>
+                        <li>Most tools lack multi-language</li>
+                        <li>Miss market trends & schemes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Solution (Updated) -->
+    <section class="section bg-white text-center" id="solution">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-green-700">Empowering Farmers with Smart & Sustainable Technology</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">💧</span>
+                    <h4 class="font-bold mb-2">Manual & Automated Smart Irrigation System</h4>
+                    <p class="text-gray-700">Precision irrigation using real-time weather & soil monitoring to prevent water wastage and optimize crop yields.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🦠</span>
+                    <h4 class="font-bold mb-2">AI-Powered Crop Disease Detection</h4>
+                    <p class="text-gray-700">Early disease detection using AI ensures healthier crops & reduced financial loss.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🔬</span>
+                    <h4 class="font-bold mb-2">AI-Enabled Crop Health Monitoring</h4>
+                    <p class="text-gray-700">AI-powered sensors provide real-time insights on crop conditions, preventing pest attacks & soil degradation.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🌦️</span>
+                    <h4 class="font-bold mb-2">AI-Powered Future Crop Planning</h4>
+                    <p class="text-gray-700">Smart AI recommends the best crops based on climate patterns & soil conditions.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🛠️</span>
+                    <h4 class="font-bold mb-2">Sustainable & Cost-Effective Hardware</h4>
+                    <p class="text-gray-700">Durable, affordable IoT solutions built specifically for Indian farming conditions.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🛒</span>
+                    <h4 class="font-bold mb-2">Marketplace for Farmers – Direct Selling & Buying</h4>
+                    <p class="text-gray-700">Farmers can sell directly to buyers, ensuring fair pricing & higher profits.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">📊</span>
+                    <h4 class="font-bold mb-2">Real-Time Market Analysis & Insights</h4>
+                    <p class="text-gray-700">AI-driven market intelligence helps farmers predict demand & optimize sales.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow bg-[#F4F1E1] flex flex-col items-center">
+                    <span class="text-4xl mb-2">🌐</span>
+                    <h4 class="font-bold mb-2">Multi-Regional Language Support</h4>
+                    <p class="text-gray-700">Breaking language barriers by providing technology in local languages.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us? -->
+    <section class="section bg-gradient-to-r from-green-600 via-green-400 to-green-200 text-center">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-white">Why Us?</h2>
+            <div class="max-w-2xl mx-auto">
+                <ul class="list-none text-lg text-white">
+                    <li class="mb-2"><span class="text-2xl">🧠</span> AI + IoT = Smarter Farming</li>
+                    <li class="mb-2"><span class="text-2xl">📱</span> Easy-to-use for local farmers</li>
+                    <li class="mb-2"><span class="text-2xl">💼</span> Connects directly to buyers</li>
+                    <li class="mb-2"><span class="text-2xl">🌍</span> Aligned with India’s Vision 2030 for Sustainable Agriculture</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet Our Team -->
+    <section class="section bg-white text-center" id="team">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-green-700">Meet Our Team</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-2 mb-4">
+                    <img src="shubham.jpg" alt="Shubham Kulkarni" class="team-img mb-2">
+                    <h5 class="font-bold">Shubham Kulkarni</h5>
+                    <p>Founder & CEO</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <img src="sachin.jpg" alt="Sachin Soundore" class="team-img mb-2">
+                    <h5 class="font-bold">Sachin Soundore</h5>
+                    <p>Co-Founder</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <img src="aniket.jpg" alt="Aniket Gudgal" class="team-img mb-2">
+                    <h5 class="font-bold">Aniket Gudgal</h5>
+                    <p>Co-Founder</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <img src="yadnyesh.jpg" alt="Yadnyesh Dhangar" class="team-img mb-2">
+                    <h5 class="font-bold">Yadnyesh Dhangar</h5>
+                    <p>Co-Founder</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <img src="sarim.jpg" alt="Mr. Sarim Moin" class="team-img mb-2">
+                    <h5 class="font-bold">Mr. Sarim Moin</h5>
+                    <p>Advisor (Innovation Officer, MoE’s Innovation Cell)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section bg-[#E0E0E0] text-center" id="stats">
+        <div class="container mx-auto flex flex-wrap justify-center gap-12">
+            <div>
+                <div class="counter" id="waterSaved">0</div>
+                <div class="font-semibold">Liters Water Saved</div>
+            </div>
+            <div>
+                <div class="counter" id="farmersHelped">0</div>
+                <div class="font-semibold">Farmers Helped</div>
+            </div>
+            <div>
+                <div class="counter" id="coverageArea">0</div>
+                <div class="font-semibold">Coverage Area (sq km)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="section bg-white text-center" id="testimonial">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-green-700">What Farmers Say</h2>
+            <div class="testimonial" id="testimonialText">
+                "JalTantra ने मेरी खेती को स्मार्ट बना दिया, पानी की बचत और फसल की सुरक्षा अब आसान है!"<br>
+                <span class="font-semibold">- रामलाल यादव, किसान</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get In Touch -->
+    <section class="section bg-[#212121] text-white text-center" id="contact">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-green-400">Get In Touch</h2>
+            <p class="mb-4 max-w-xl mx-auto">Want to pilot JalTantra in your region, partner with us, or support innovation in agriculture?</p>
+            <p class="mb-2">Email: <a href="mailto:contact@jaltantra.in" class="text-blue-400">contact@jaltantra.in</a></p>
+            <div class="mb-4">
+                <a href="#" class="mx-2 text-blue-400" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="mx-2 text-pink-400" title="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="mx-2 text-green-400" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            </div>
+            <form class="max-w-lg mx-auto">
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email" required>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success w-full">Request Demo</button>
+            </form>
+        </div>
+        <footer class="mt-8 text-sm text-gray-400">&copy; 2025 JalTantra. All rights reserved.</footer>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- JS for advanced UI -->
+    <script>
+    // Smooth scroll
+    function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({behavior: 'smooth'});
+    }
+    // Animated counters
+    function animateCounter(id, end, duration=2000) {
+        const el = document.getElementById(id);
+        let start = 0;
+        const step = Math.ceil(end / (duration/20));
+        const interval = setInterval(() => {
+            start += step;
+            if (start >= end) {
+                el.textContent = end.toLocaleString();
+                clearInterval(interval);
+            } else {
+                el.textContent = start.toLocaleString();
+            }
+        }, 20);
+    }
+    window.onload = function() {
+        animateCounter('waterSaved', 1200000);
+        animateCounter('farmersHelped', 3500);
+        animateCounter('coverageArea', 180);
+    };
+    // Testimonial slider (demo)
+    const testimonials = [
+        {text: '"JalTantra ने मेरी खेती को स्मार्ट बना दिया, पानी की बचत और फसल की सुरक्षा अब आसान है!"', author: '- रामलाल यादव, किसान'},
+        {text: '"Smart irrigation and disease alerts have doubled my yield!"', author: '- Suresh Patil, Farmer'},
+        {text: '"Easy to use, great support, and real-time market prices!"', author: '- Anita Deshmukh, Farmer'}
+    ];
+    let tIndex = 0;
+    setInterval(() => {
+        tIndex = (tIndex + 1) % testimonials.length;
+        document.getElementById('testimonialText').innerHTML = testimonials[tIndex].text + '<br><span class="font-semibold">' + testimonials[tIndex].author + '</span>';
+    }, 5000);
+    </script>
+</body>
+</html>
