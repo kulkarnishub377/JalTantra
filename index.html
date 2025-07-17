@@ -36,34 +36,34 @@
     </div>
 </nav>
     <section id="hero" class="hero-section">
-     <div class="hero-bg"></div>
-     <div class="hero-content">
-       <div class="hero-logo-wrapper animate-hero-logo">
-         <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="hero-logo" />
-         <svg class="hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-           <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15">
-             <animate attributeName="rx" values="90;100;90" dur="6s" repeatCount="indefinite" />
-           </ellipse>
-           <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12">
-             <animate attributeName="rx" values="70;80;70" dur="6s" repeatCount="indefinite" />
-           </ellipse>
-         </svg>
-       </div>
-       <h1 class="hero-title animate-hero-title">Smart Irrigation. Sustainable Future.</h1>
-       <p class="hero-subtitle animate-hero-subtitle">Empowering Farmers with Technology for Tomorrow</p>
-       <a href="#contact" class="hero-cta animate-hero-cta">Request Demo</a>
-     </div>
-     <div class="hero-waves">
-       <svg viewBox="0 0 1440 320" class="hero-wave-svg" xmlns="http://www.w3.org/2000/svg">
-         <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
-           <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z;M0,180L80,175.3C160,181,320,191,480,175.3C640,159,800,117,960,127.3C1120,138,1280,202,1360,234L1440,266L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
-         </path>
-         <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z">
-           <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,244L80,233.3C160,223,320,201,480,206.7C640,212,800,244,960,249.3C1120,255,1280,233,1360,222.7L1440,212L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z;M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
-         </path>
-       </svg>
-     </div>
-   </section>
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-logo-wrapper" id="heroLogoWrapper">
+          <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="hero-logo" id="heroLogo" />
+          <svg class="hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15" />
+            <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12" />
+          </svg>
+        </div>
+        <h1 class="hero-title" id="heroTitle">Smart Irrigation. <span class="hero-highlight">Sustainable Future.</span></h1>
+        <p class="hero-subtitle" id="heroSubtitle">Empowering Farmers with <span class="hero-highlight">Technology</span> for Tomorrow</p>
+        <div class="hero-actions">
+          <a href="#contact" class="hero-cta" id="heroCta">Request Demo</a>
+          <button class="hero-learn-btn" id="heroLearnBtn">Learn More</button>
+        </div>
+        <div class="hero-socials">
+          <a href="#" title="LinkedIn" class="hero-social-link"><i class="bi bi-linkedin"></i></a>
+          <a href="#" title="Instagram" class="hero-social-link"><i class="bi bi-instagram"></i></a>
+          <a href="#" title="WhatsApp" class="hero-social-link"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="hero-waves">
+        <svg viewBox="0 0 1440 320" class="hero-wave-svg" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
+          <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
+        </svg>
+      </div>
+    </section>
 
     <!-- About JalTantra (Animated, Restructured & Professional) -->
     <section class="section bg-white text-center" id="about">
@@ -398,43 +398,83 @@
     </section>
 
     <style>
-        /* Google Form Responsive Styling */
+        /* Advanced Google Form Responsive Styling */
         .google-form-wrapper {
             max-width: 700px;
-            margin: 0 auto;
-            background: #232323;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px #03A9F422;
-            padding: 2rem 1rem;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #232323 70%, #388E3C 100%);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 #03A9F455, 0 1.5px 8px #388E3C22;
+            padding: 2.5rem 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: box-shadow 0.3s, background 0.3s;
+            border: 1.5px solid #03A9F4;
+            position: relative;
+            overflow: hidden;
+        }
+        .google-form-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: -40px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #03A9F4 0%, transparent 70%);
+            opacity: 0.18;
+            z-index: 0;
+        }
+        .google-form-wrapper::after {
+            content: "";
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #388E3C 0%, transparent 70%);
+            opacity: 0.13;
+            z-index: 0;
         }
         .google-form-iframe {
             width: 100%;
             min-height: 820px;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             background: #fff;
-            box-shadow: 0 2px 12px #388E3C22;
+            box-shadow: 0 2px 16px #388E3C33;
+            transition: box-shadow 0.3s, border-radius 0.3s;
+            z-index: 1;
+            position: relative;
         }
-        @media (max-width: 800px) {
+        .google-form-iframe:focus {
+            box-shadow: 0 0 0 3px #03A9F4;
+            outline: none;
+        }
+        @media (max-width: 900px) {
             .google-form-wrapper {
-                padding: 1rem 0.2rem;
+                padding: 1.5rem 0.5rem;
+                border-radius: 18px;
             }
             .google-form-iframe {
                 min-height: 900px;
-                width: 100%;
+                border-radius: 12px;
             }
         }
         @media (max-width: 600px) {
             .google-form-wrapper {
                 padding: 0.5rem 0;
+                border-radius: 12px;
             }
             .google-form-iframe {
-                min-height: 1100px;
-                width: 100%;
+                min-height: 1200px;
+                border-radius: 8px;
             }
+        }
+        /* Subtle hover effect */
+        .google-form-wrapper:hover {
+            box-shadow: 0 12px 48px 0 #03A9F488, 0 2px 12px #388E3C33;
+            background: linear-gradient(135deg, #232323 60%, #03A9F4 100%);
         }
     </style>
 
