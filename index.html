@@ -176,21 +176,6 @@
         </style>
     </section>
 
-    <!-- The Problem We Solve -->
-    <section class="section bg-[#E0E0E0] text-center">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold mb-4 text-blue-600">The Problem We Solve</h2>
-            <div class="max-w-2xl mx-auto mb-4">
-                <ul class="list-disc text-left text-lg text-gray-800 pl-8">
-                    <li>54% of India faces water stress</li>
-                    <li>50% of irrigation water is wasted due to manual methods</li>
-                    <li>Farmers lack access to crop disease tools and market analytics</li>
-                </ul>
-            </div>
-            <p class="font-semibold text-xl text-gray-900">Farming in India is critical—but farmers lack tools for precision, prediction, and profit.</p>
-        </div>
-    </section>
-
     <!-- The Problem Section (Detailed) -->
     <section class="section bg-[#E0E0E0] text-center" id="problem">
         <div class="container mx-auto">
@@ -323,14 +308,15 @@
 
 
     <!-- Meet Our Team -->
-    <section class="section bg-white text-center" id="team">
+
+    <section class="section bg-white/0 text-center" id="team">
         <div class="container mx-auto">
             <h2 class="text-4xl font-extrabold mb-8 text-green-700 animate-fade-in flex items-center justify-center gap-2">
                 <span class="text-3xl animate-bounce">👥</span> Meet Our Team
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 justify-center">
                 <!-- Team Member 1 -->
-                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                <div class="team-card team-card-transparent rounded-xl shadow-lg p-0 flex flex-col items-center animate-fade-in">
                     <div class="team-img-wrapper mb-4">
                         <!-- SVG Avatar -->
                         <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -344,7 +330,7 @@
                     <span class="text-xs text-gray-500">Vision, Product & Strategy</span>
                 </div>
                 <!-- Team Member 2 -->
-                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                <div class="team-card team-card-transparent rounded-xl shadow-lg p-0 flex flex-col items-center animate-fade-in">
                     <div class="team-img-wrapper mb-4">
                         <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="48" cy="48" r="48" fill="#2196f3"/>
@@ -357,7 +343,7 @@
                     <span class="text-xs text-gray-500">Technology & Innovation</span>
                 </div>
                 <!-- Team Member 3 -->
-                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                <div class="team-card team-card-transparent rounded-xl shadow-lg p-0 flex flex-col items-center animate-fade-in">
                     <div class="team-img-wrapper mb-4">
                         <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="48" cy="48" r="48" fill="#ff9800"/>
@@ -370,7 +356,7 @@
                     <span class="text-xs text-gray-500">Operations & Growth</span>
                 </div>
                 <!-- Team Member 4 -->
-                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                <div class="team-card team-card-transparent rounded-xl shadow-lg p-0 flex flex-col items-center animate-fade-in">
                     <div class="team-img-wrapper mb-4">
                         <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="48" cy="48" r="48" fill="#8e24aa"/>
@@ -386,14 +372,17 @@
         </div>
         <style>
             .team-card {
-                transition: box-shadow 0.2s, transform 0.2s;
-                min-height: 320px;
+                min-height: 220px;
+                background: transparent !important;
+                box-shadow: none !important;
+                padding: 0 !important;
             }
-            .team-card:hover {
-                box-shadow: 0 8px 32px #43a04744;
-                transform: scale(1.04) translateY(-4px);
-                z-index: 2;
+            .team-card-transparent {
+                background: transparent !important;
+                box-shadow: none !important;
+                padding: 0 !important;
             }
+            /* Remove hover effect entirely */
             .team-img-wrapper {
                 width: 96px;
                 height: 96px;
@@ -403,8 +392,14 @@
                 border-radius: 50%;
                 background: #fff;
                 box-shadow: 0 2px 12px #2196f344;
-                border: 3px solid #43a047;
+                border: none;
                 margin-bottom: 1rem;
+            }
+            /* Remove any ::before and ::after pseudo-elements for team-img-wrapper */
+            .team-img-wrapper::before,
+            .team-img-wrapper::after {
+                display: none !important;
+                content: none !important;
             }
             .team-img {
                 width: 96px;
@@ -413,7 +408,6 @@
                 display: block;
             }
         </style>
-        </div>
     </section>
 
     <!-- Stats Section -->
@@ -524,17 +518,6 @@
                         <li>Frost, drought, heatwave alerts</li>
                     </ul>
                     <span class="block text-blue-700 font-semibold mt-2">Reduce water waste, prevent climate-driven crop loss.</span>
-                </div>
-                <!-- Feature Card 5 -->
-                <div class="tech-feature-card redesigned-tech-card p-8 rounded-3xl shadow-xl bg-white flex flex-col items-center hover:scale-105 transition duration-300">
-                    <div class="tech-icon mb-4 text-5xl text-gray-700"><i class="fas fa-lock"></i></div>
-                    <h4 class="font-bold text-xl text-gray-700 mb-2">Data Security & Offline Access</h4>
-                    <ul class="list-disc pl-5 text-gray-800 mb-2 text-left w-full">
-                        <li>AES-level encryption</li>
-                        <li>Offline mode & auto-sync</li>
-                        <li>Compliant with India’s privacy norms</li>
-                    </ul>
-                    <span class="block text-gray-700 font-semibold mt-2">Peace of mind for farmers and institutions.</span>
                 </div>
                 <!-- Feature Card 6 -->
                 <div class="tech-feature-card redesigned-tech-card p-8 rounded-3xl shadow-xl bg-white flex flex-col items-center hover:scale-105 transition duration-300">

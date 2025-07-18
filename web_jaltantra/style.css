@@ -13,123 +13,64 @@
         .section {
             padding: 60px 0;
         }
-        /* --- Team Section Modern Card Design --- */
+        /* --- Team Section Minimal Card Design --- */
         .team-card {
-            background: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 2px 16px #2196f344, 0 1.5px 8px #43a04722;
-            padding: 2.2rem 1.4rem 1.4rem 1.4rem;
+            background: transparent;
+            border-radius: 0.75rem;
+            box-shadow: none;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: box-shadow 0.25s, transform 0.25s, background 0.25s;
-            min-height: 340px;
-            position: relative;
-            overflow: hidden;
-        }
-        .team-card:hover {
-            box-shadow: 0 12px 48px #43a04755, 0 4px 24px #2196f344;
-            transform: scale(1.07) translateY(-8px);
-            background: linear-gradient(120deg, #e0f7fa 0%, #43a04722 100%);
-        }
-        .team-card::after {
-            content: "";
-            position: absolute;
-            bottom: -32px;
-            right: -32px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #43a047 0%, transparent 70%);
-            opacity: 0.10;
-            z-index: 0;
-        }
-        .team-card::before {
-            content: "";
-            position: absolute;
-            top: -32px;
-            left: -32px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #2196f3 0%, transparent 70%);
-            opacity: 0.10;
-            z-index: 0;
+            min-height: 180px;
+            position: static;
+            overflow: visible;
         }
         .team-img-wrapper {
-            width: 104px;
-            height: 104px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: linear-gradient(135deg, #e0f7fa 60%, #c8e6c9 100%);
-            box-shadow: 0 2px 12px #2196f344;
-            border: 3px solid #43a047;
-            margin-bottom: 1.2rem;
-            position: relative;
-            transition: box-shadow 0.25s, border-color 0.25s;
-        }
-        .team-card:hover .team-img-wrapper {
-            box-shadow: 0 6px 24px #43a04744;
-            border-color: #2196f3;
+            background: #fff;
+            box-shadow: none;
+            border: none;
+            margin-bottom: 0.8rem;
+            position: static;
         }
         .team-img {
-            width: 96px;
-            height: 96px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             display: block;
-            box-shadow: 0 2px 8px #2196f344;
-            transition: box-shadow 0.25s, filter 0.25s;
-        }
-        .team-card:hover .team-img {
-            box-shadow: 0 8px 32px #43a04744;
-            filter: brightness(1.1) drop-shadow(0 0 12px #2196f3);
+            box-shadow: none;
+            filter: none;
         }
         .team-card h5 {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #2196f3;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 8px #43a04722;
-            position: relative;
-            z-index: 1;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.2px;
+            text-shadow: none;
+            position: static;
+            z-index: auto;
         }
         .team-card p {
-            font-size: 1.08rem;
-            font-weight: 700;
-            color: #43a047;
-            margin-bottom: 0.3rem;
-            position: relative;
-            z-index: 1;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 0.2rem;
+            position: static;
+            z-index: auto;
         }
         .team-card span {
-            font-size: 0.98rem;
-            color: #666;
-            margin-bottom: 0.2rem;
-            position: relative;
-            z-index: 1;
-        }
-        .team-card::after {
-            content: "";
-            position: absolute;
-            bottom: -40px;
-            right: -40px;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #43a047 0%, transparent 70%);
-            opacity: 0.13;
-            z-index: 0;
-        }
-        .team-card::before {
-            content: "";
-            position: absolute;
-            top: -40px;
-            left: -40px;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #2196f3 0%, transparent 70%);
-            opacity: 0.13;
-            z-index: 0;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.1rem;
+            position: static;
+            z-index: auto;
         }
         @media (max-width: 991px) {
             .team-card {
