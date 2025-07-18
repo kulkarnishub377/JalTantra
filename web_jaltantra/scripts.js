@@ -75,4 +75,76 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // --- STATS SECTION INTERACTIVITY ---
+  const statsCards = document.querySelectorAll('.stats-card');
+  statsCards.forEach(card => {
+    // Tooltip logic
+    let tooltip;
+    card.addEventListener('mouseenter', function() {
+      card.classList.add('active');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'stats-tooltip';
+        tooltip.innerText = card.getAttribute('data-tooltip') || '';
+        card.appendChild(tooltip);
+      }
+      card.classList.add('show-tooltip');
+    });
+    card.addEventListener('mouseleave', function() {
+      card.classList.remove('active');
+      card.classList.remove('show-tooltip');
+      if (tooltip) tooltip.remove();
+      tooltip = null;
+    });
+    // Keyboard accessibility
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('focus', function() {
+      card.classList.add('active');
+      card.classList.add('show-tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'stats-tooltip';
+        tooltip.innerText = card.getAttribute('data-tooltip') || '';
+        card.appendChild(tooltip);
+      }
+    });
+    card.addEventListener('blur', function() {
+      card.classList.remove('active');
+      card.classList.remove('show-tooltip');
+      if (tooltip) tooltip.remove();
+      tooltip = null;
+    });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        card.classList.add('active');
+        setTimeout(() => card.classList.remove('active'), 500);
+      }
+    });
+  });
+  // Pulse highlight effect for random card every few seconds
+  setInterval(() => {
+    if (statsCards.length > 0) {
+      const idx = Math.floor(Math.random() * statsCards.length);
+      statsCards[idx].classList.add('active');
+      setTimeout(() => statsCards[idx].classList.remove('active'), 700);
+    }
+  }, 3500);
+
+  // Animated counter for devices deployed
+  function animateCounter(id, end, duration=2000) {
+    const el = document.getElementById(id);
+    let start = 0;
+    const step = Math.ceil(end / (duration/20));
+    const interval = setInterval(() => {
+      start += step;
+      if (start >= end) {
+        el.textContent = end.toLocaleString();
+        clearInterval(interval);
+      } else {
+        el.textContent = start.toLocaleString();
+      }
+    }, 20);
+  }
+  animateCounter('devicesDeployed', 1200);
 });
