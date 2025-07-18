@@ -12,6 +12,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="web_jaltantra/style.css">
     <script src="web_jaltantra/scripts.js"></script>
+     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    
 </head>
 <body class="antialiased">
    <nav class="sticky-navbar">
@@ -35,36 +39,52 @@
         <a href="#contact" class="navbar-cta-custom" onclick="toggleNavbar(false)">Request Demo</a>
     </div>
 </nav>
-    <section id="hero" class="hero-section">
-      <div class="hero-bg"></div>
-      <div class="hero-content">
-        <div class="hero-logo-wrapper" id="heroLogoWrapper">
-          <img src="web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="hero-logo" id="heroLogo" />
-          <svg class="hero-svg-bg" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="96" cy="96" rx="90" ry="90" fill="#03A9F4" fill-opacity="0.15" />
-            <ellipse cx="96" cy="96" rx="70" ry="70" fill="#388E3C" fill-opacity="0.12" />
-          </svg>
+   <!-- Hero Section -->
+    <section class="hero-bg flex flex-col md:flex-row items-center justify-center pt-32 pb-20 min-h-[80vh]">
+        <!-- Left: Logo (no float, clean background) -->
+        <div class="flex-1 flex justify-center items-center mb-10 md:mb-0">
+            <img src="C:/Users/Shubham/Desktop/JalTantra/web_jaltantra/Final Logo-1.png" alt="JalTantra Logo" class="h-[400px] w-auto rounded-xl logo-shadow"/>
         </div>
-        <h1 class="hero-title" id="heroTitle">Smart Irrigation. <span class="hero-highlight">Sustainable Future.</span></h1>
-        <p class="hero-subtitle" id="heroSubtitle">Empowering Farmers with <span class="hero-highlight">Technology</span> for Tomorrow</p>
-        <div class="hero-actions">
-          <a href="#contact" class="hero-cta" id="heroCta">Request Demo</a>
-          <button class="hero-learn-btn" id="heroLearnBtn">Learn More</button>
+        <!-- Right: Details -->
+        <div class="flex-1 flex flex-col justify-center items-start px-6 md:px-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-[#2196f3] via-[#43a047] to-[#00bcd4] bg-clip-text text-transparent mb-6 drop-shadow-lg leading-tight">
+                Smart Irrigation<br class="hidden md:inline">for a Smarter Bharat
+            </h1>
+            <p class="text-lg md:text-2xl max-w-xl mb-8 text-gray-700 font-medium drop-shadow-sm">
+                Empowering Indian farmers with <span class="text-[#43a047] font-bold">AI-driven water management</span>, crop health monitoring, and real-time insights for sustainable agriculture.
+            </p>
+            <div class="flex gap-4 mb-8">
+                <div class="icon bg-white/90 rounded-full p-3 shadow text-2xl text-[#2196f3] hover:scale-110 transition duration-200" title="AI">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="icon bg-white/90 rounded-full p-3 shadow text-2xl text-[#00bcd4] hover:scale-110 transition duration-200" title="Water">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="icon bg-white/90 rounded-full p-3 shadow text-2xl text-[#43a047] hover:scale-110 transition duration-200" title="Crop">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="icon bg-white/90 rounded-full p-3 shadow text-2xl text-[#ff9800] hover:scale-110 transition duration-200" title="Sensor">
+                    <i class="fas fa-microchip"></i>
+                </div>
+            </div>
+            <div class="flex gap-4 mb-4">
+                <button onclick="scrollToSection('solution')" class="bg-gradient-to-r from-[#2196f3] to-[#43a047] text-white font-semibold px-7 py-2.5 rounded-lg shadow hover:bg-white hover:text-[#2196f3] transition transform hover:scale-105 duration-200">
+                    Explore Features
+                </button>
+                <button onclick="window.location.href='#contact'" class="bg-gradient-to-r from-[#43a047] to-[#00bcd4] text-white font-semibold px-7 py-2.5 rounded-lg shadow hover:bg-white hover:text-[#43a047] transition transform hover:scale-105 duration-200">
+                    Contact Us
+                </button>
+            </div>
+            <div class="mt-6 text-base font-semibold text-[#2196f3] cursor-pointer animate-bounce" onclick="scrollToSection('about')">
+                ↓ Scroll to Learn More
+            </div>
         </div>
-        <div class="hero-socials">
-          <a href="#" title="LinkedIn" class="hero-social-link"><i class="bi bi-linkedin"></i></a>
-          <a href="#" title="Instagram" class="hero-social-link"><i class="bi bi-instagram"></i></a>
-          <a href="#" title="WhatsApp" class="hero-social-link"><i class="bi bi-whatsapp"></i></a>
-        </div>
-      </div>
-      <div class="hero-waves">
-        <svg viewBox="0 0 1440 320" class="hero-wave-svg" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#388E3C" fill-opacity="0.5" d="M0,160L80,165.3C160,171,320,181,480,165.3C640,149,800,107,960,117.3C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z" />
-          <path fill="#03A9F4" fill-opacity="0.3" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320,320,320,160,320,80,320L0,320Z" />
-        </svg>
-      </div>
     </section>
-
+    <script>
+        function scrollToSection() {
+            document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
     <!-- About JalTantra (Animated, Restructured & Professional) -->
     <section class="section bg-white text-center" id="about">
         <div class="container mx-auto max-w-5xl">
