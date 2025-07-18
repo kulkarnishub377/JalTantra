@@ -325,34 +325,94 @@
     <!-- Meet Our Team -->
     <section class="section bg-white text-center" id="team">
         <div class="container mx-auto">
-            <h2 class="text-3xl font-bold mb-4 text-green-700">Meet Our Team</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-2 mb-4">
-                    <img src="shubham.jpg" alt="Shubham Kulkarni" class="team-img mb-2">
-                    <h5 class="font-bold">Shubham Kulkarni</h5>
-                    <p>Founder & CEO</p>
+            <h2 class="text-4xl font-extrabold mb-8 text-green-700 animate-fade-in flex items-center justify-center gap-2">
+                <span class="text-3xl animate-bounce">👥</span> Meet Our Team
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 justify-center">
+                <!-- Team Member 1 -->
+                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                    <div class="team-img-wrapper mb-4">
+                        <!-- SVG Avatar -->
+                        <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="48" cy="48" r="48" fill="#43a047"/>
+                            <circle cx="48" cy="40" r="20" fill="#fff"/>
+                            <ellipse cx="48" cy="72" rx="24" ry="12" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <h5 class="font-bold text-green-700 text-lg mb-1">Shubham Kulkarni</h5>
+                    <p class="text-gray-700 font-semibold mb-1">Founder & CEO</p>
+                    <span class="text-xs text-gray-500">Vision, Product & Strategy</span>
                 </div>
-                <div class="col-md-2 mb-4">
-                    <img src="sachin.jpg" alt="Sachin Soundore" class="team-img mb-2">
-                    <h5 class="font-bold">Sachin Soundore</h5>
-                    <p>Co-Founder</p>
+                <!-- Team Member 2 -->
+                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                    <div class="team-img-wrapper mb-4">
+                        <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="48" cy="48" r="48" fill="#2196f3"/>
+                            <circle cx="48" cy="40" r="20" fill="#fff"/>
+                            <ellipse cx="48" cy="72" rx="24" ry="12" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <h5 class="font-bold text-green-700 text-lg mb-1">Yadnyesh Dhanger</h5>
+                    <p class="text-gray-700 font-semibold mb-1">Co-Founder & CTO</p>
+                    <span class="text-xs text-gray-500">Technology & Innovation</span>
                 </div>
-                <div class="col-md-2 mb-4">
-                    <img src="aniket.jpg" alt="Aniket Gudgal" class="team-img mb-2">
-                    <h5 class="font-bold">Aniket Gudgal</h5>
-                    <p>Co-Founder</p>
+                <!-- Team Member 3 -->
+                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                    <div class="team-img-wrapper mb-4">
+                        <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="48" cy="48" r="48" fill="#ff9800"/>
+                            <circle cx="48" cy="40" r="20" fill="#fff"/>
+                            <ellipse cx="48" cy="72" rx="24" ry="12" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <h5 class="font-bold text-green-700 text-lg mb-1">Aniket Gudgal</h5>
+                    <p class="text-gray-700 font-semibold mb-1">Co-Founder & COO</p>
+                    <span class="text-xs text-gray-500">Operations & Growth</span>
                 </div>
-                <div class="col-md-2 mb-4">
-                    <img src="yadnyesh.jpg" alt="Yadnyesh Dhangar" class="team-img mb-2">
-                    <h5 class="font-bold">Yadnyesh Dhangar</h5>
-                    <p>Co-Founder</p>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <img src="sarim.jpg" alt="Mr. Sarim Moin" class="team-img mb-2">
-                    <h5 class="font-bold">Mr. Sarim Moin</h5>
-                    <p>Advisor (Innovation Officer, MoE’s Innovation Cell)</p>
+                <!-- Team Member 4 -->
+                <div class="team-card bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                    <div class="team-img-wrapper mb-4">
+                        <svg class="team-img" width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="48" cy="48" r="48" fill="#8e24aa"/>
+                            <circle cx="48" cy="40" r="20" fill="#fff"/>
+                            <ellipse cx="48" cy="72" rx="24" ry="12" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <h5 class="font-bold text-green-700 text-lg mb-1">Dhiraj Kale</h5>
+                    <p class="text-gray-700 font-semibold mb-1">CFO</p>
+                    <span class="text-xs text-gray-500">Finance & Strategy</span>
                 </div>
             </div>
+        </div>
+        <style>
+            .team-card {
+                transition: box-shadow 0.2s, transform 0.2s;
+                min-height: 320px;
+            }
+            .team-card:hover {
+                box-shadow: 0 8px 32px #43a04744;
+                transform: scale(1.04) translateY(-4px);
+                z-index: 2;
+            }
+            .team-img-wrapper {
+                width: 96px;
+                height: 96px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: #fff;
+                box-shadow: 0 2px 12px #2196f344;
+                border: 3px solid #43a047;
+                margin-bottom: 1rem;
+            }
+            .team-img {
+                width: 96px;
+                height: 96px;
+                border-radius: 50%;
+                display: block;
+            }
+        </style>
         </div>
     </section>
 
