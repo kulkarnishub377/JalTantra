@@ -73,7 +73,6 @@ JalTantra/
 
 ## 👥 Team
 - Shubham Kulkarni – Founder & CEO
-- Sachin Soundore – Co-Founder
 - Aniket Gudgal – Co-Founder
 - Yadnyesh Dhangar – Co-Founder
 - Mr. Sarim Moin – Advisor (Innovation Officer, MoE’s Innovation Cell)
