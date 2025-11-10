@@ -9,6 +9,15 @@ JalTantra is a modern, smart irrigation and agri-tech platform designed to revol
 
 ---
 
+## 📝 Problem Statement & Solution
+### Problem Statement
+![Problem Statement](./Problem_Statement_And_Solution/problem_statement.png)
+
+### Solution
+![Solution](./Problem_Statement_And_Solution/solution.png)
+
+---
+
 ## 🌟 Features
 - **Smart Irrigation Control** (Automated + Manual)
 - **AI-Powered Crop Disease Detection**
@@ -64,7 +73,6 @@ JalTantra/
 
 ## 👥 Team
 - Shubham Kulkarni – Founder & CEO
-- Sachin Soundore – Co-Founder
 - Aniket Gudgal – Co-Founder
 - Yadnyesh Dhangar – Co-Founder
 - Mr. Sarim Moin – Advisor (Innovation Officer, MoE’s Innovation Cell)
