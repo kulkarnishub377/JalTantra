@@ -11,10 +11,10 @@ JalTantra is a modern, smart irrigation and agri-tech platform designed to revol
 
 ## 📝 Problem Statement & Solution
 ### Problem Statement
-![Problem Statement](./Problem_Statement_And_Solution/problem_statement.png)
+![Problem Statement](./Problem_statemet_Solution/problem_statement.png)
 
 ### Solution
-![Solution](./Problem_Statement_And_Solution/solution.png)
+![Solution](./Problem_statemet_Solution/solution.png)
 
 ---
 
