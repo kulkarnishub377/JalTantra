@@ -64,15 +64,13 @@ JalTantra/
 
 ## 👥 Team
 - Shubham Kulkarni – Founder & CEO
-- Sachin Soundore – Co-Founder
-- Aniket Gudgal – Co-Founder
-- Yadnyesh Dhangar – Co-Founder
-- Mr. Sarim Moin – Advisor (Innovation Officer, MoE’s Innovation Cell)
+- Aniket Gudgal – Co-Founder & CTO
+- Yadnyesh Dhangar – Co-Founder & CFO
 
 ---
 
 ## 📞 Contact
-- **Email:** [contact@jaltantra.in](mailto:contact@jaltantra.in)
+- **Email:** [contact@jaltantra.in](#)
 - **LinkedIn:** [JalTantra LinkedIn](#)
 - **Instagram:** [JalTantra Instagram](#)
 - **WhatsApp:** [JalTantra WhatsApp](#)
