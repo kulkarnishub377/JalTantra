@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JalTantra - Smart Irrigation for a Smarter Bharat. AI-driven water management, crop health monitoring, and real-time insights for sustainable agriculture.">
+    <meta name="keywords" content="smart irrigation, AI farming, water management, crop health, Indian farmers, sustainable agriculture">
+    <meta name="author" content="JalTantra Team">
     <title>JalTantra - Smart, Green, and Grounded</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -10,14 +13,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Typed.js -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <link rel="stylesheet" href="web_jaltantra/style.css">
-    <script src="web_jaltantra/scripts.js"></script>
-     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     
 </head>
 <body class="antialiased">
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-[#43a047]"></div>
+            <p class="mt-4 text-[#43a047] font-semibold">Loading JalTantra...</p>
+        </div>
+    </div>
    <nav class="sticky-navbar">
     <div class="navbar-brand-custom">
         <img src="web_jaltantra/logo.png" alt="JalTantra Logo" class="navbar-logo-custom">
@@ -31,16 +43,27 @@
         <button class="navbar-close" aria-label="Close menu" onclick="toggleNavbar(false)">&times;</button>
         <ul class="navbar-links-custom">
             <li><a href="#hero" onclick="scrollToSection('hero');toggleNavbar(false)">Home</a></li>
-            <li><a href="#about" onclick="toggleNavbar(false)">About</a></li>
-            <li><a href="#solution" onclick="toggleNavbar(false)">Solution</a></li>
-            <li><a href="#stats" onclick="toggleNavbar(false)">Stats</a></li>
-            <li><a href="#contact" onclick="toggleNavbar(false)">Contact</a></li>
+            <li><a href="#about" onclick="scrollToSection('about');toggleNavbar(false)">About</a></li>
+            <li><a href="#problem" onclick="scrollToSection('problem');toggleNavbar(false)">Problem</a></li>
+            <li><a href="#solution" onclick="scrollToSection('solution');toggleNavbar(false)">Solution</a></li>
+            <li><a href="#technology" onclick="scrollToSection('technology');toggleNavbar(false)">Technology</a></li>
+            <li><a href="#product" onclick="scrollToSection('product');toggleNavbar(false)">Product</a></li>
+            <li><a href="#stats" onclick="scrollToSection('stats');toggleNavbar(false)">Stats</a></li>
+            <li><a href="#testimonial" onclick="scrollToSection('testimonial');toggleNavbar(false)">Testimonials</a></li>
+            <li><a href="#team" onclick="scrollToSection('team');toggleNavbar(false)">Team</a></li>
+            <li><a href="#faq" onclick="scrollToSection('faq');toggleNavbar(false)">FAQ</a></li>
+            <li><a href="#news" onclick="scrollToSection('news');toggleNavbar(false)">News</a></li>
+            <li><a href="#contact" onclick="scrollToSection('contact');toggleNavbar(false)">Contact</a></li>
         </ul>
         <a href="#contact" class="navbar-cta-custom" onclick="toggleNavbar(false)">Request Demo</a>
+        <!-- Dark Mode Toggle -->
+        <button id="darkModeToggle" class="ml-4 text-2xl text-[#388E3C] hover:text-[#03A9F4] transition" title="Toggle Dark Mode">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 </nav>
    <!-- Hero Section -->
-    <section class="hero-bg flex flex-col md:flex-row items-center justify-center pt-32 pb-20 min-h-[80vh]">
+    <section class="hero-bg flex flex-col md:flex-row items-center justify-center pt-32 pb-20 min-h-[80vh]" id="hero" data-aos="fade-in">
         <!-- Left: Logo (no float, clean background) -->
         <div class="flex-1 flex justify-center items-center mb-10 md:mb-0">
             <img src="web_jaltantra/logo.png" alt="JalTantra Logo" class="h-[400px] w-auto rounded-xl logo-shadow"/>
@@ -48,7 +71,7 @@
         <!-- Right: Details -->
         <div class="flex-1 flex flex-col justify-center items-start px-6 md:px-12">
             <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-[#2196f3] via-[#43a047] to-[#00bcd4] bg-clip-text text-transparent mb-6 drop-shadow-lg leading-tight">
-                Smart Irrigation<br class="hidden md:inline">for a Smarter Bharat
+                Smart Irrigation<br class="hidden md:inline"><span id="typed-text"></span>
             </h1>
             <p class="text-lg md:text-2xl max-w-xl mb-8 text-gray-700 font-medium drop-shadow-sm">
                 Empowering Indian farmers with <span class="text-[#43a047] font-bold">AI-driven water management</span>, crop health monitoring, and real-time insights for sustainable agriculture.
@@ -81,12 +104,13 @@
         </div>
     </section>
     <script>
-        function scrollToSection() {
-            document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+        function scrollToSection(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
     <!--  About JalTantra (Animated, Restructured & Professional) -->
-    <section class="section bg-white text-center" id="about">
+    <section class="section bg-white text-center" id="about" data-aos="fade-up">
         <div class="container mx-auto max-w-5xl">
             <div class="mb-10 animate-fade-in">
                 <h2 class="text-4xl font-bold text-green-700 flex items-center justify-center gap-2">
@@ -162,22 +186,10 @@
                 </div>
             </div>
         </div>
-        <style>
-            .animate-fade-in { animation: fadeIn 1.2s; }
-            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-            .animate-bounce { animation: bounce 2s infinite; }
-            @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-            .animate-slide-in-left { animation: slideInLeft 1.2s; }
-            @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-            .animate-slide-in-right { animation: slideInRight 1.2s; }
-            @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-            .animate-zoom-in { animation: zoomIn 1.2s; }
-            @keyframes zoomIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-        </style>
     </section>
 
     <!-- The Problem Section (Detailed) -->
-    <section class="section bg-[#E0E0E0] text-center" id="problem">
+    <section class="section bg-[#E0E0E0] text-center" id="problem" data-aos="fade-up">
         <div class="container mx-auto">
             <h2 class="text-3xl font-bold mb-6 text-blue-600">Key Challenges Faced by Indian Farmers</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -258,7 +270,7 @@
     </section>
 
     <!-- Our Solution (Updated) -->
-    <section class="section bg-white text-center" id="solution">
+    <section class="section bg-white text-center" id="solution" data-aos="fade-up">
         <div class="container mx-auto">
             <h2 class="text-3xl font-bold mb-6 text-green-700">Empowering Farmers with Smart & Sustainable Technology</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -307,7 +319,7 @@
     </section>
     <!-- Technology Behind JalTantra -->
 
-    <section class="section bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] text-center" id="technology">
+    <section class="section bg-gradient-to-br from-[#e0f7fa] to-[#c8e6c9] text-center" id="technology" data-aos="fade-up">
         <div class="container mx-auto max-w-6xl px-4 py-8">
             <div class="mb-10 animate-fade-in">
                 <h2 class="text-5xl font-extrabold mb-4 text-blue-700 flex items-center justify-center gap-3">
@@ -432,45 +444,9 @@
                 <p class="text-lg text-gray-700">With JalTantra, we're not just providing hardware — we're delivering an intelligent, adaptive, and farmer-first ecosystem to power India’s AgriTech revolution.</p>
             </div>
         </div>
-        <style>
-            .redesigned-tech-card {
-                box-shadow: 0 4px 24px #2196f344;
-                border: 1.5px solid #e0e0e0;
-                transition: box-shadow 0.25s, transform 0.25s, background 0.25s;
-                min-height: 340px;
-                position: relative;
-                overflow: hidden;
-            }
-            .redesigned-tech-card:hover {
-                box-shadow: 0 12px 48px #43a04755, 0 4px 24px #2196f344;
-                transform: scale(1.07) translateY(-8px);
-                background: linear-gradient(120deg, #e0f7fa 0%, #43a04722 100%);
-            }
-            .tech-icon {
-                filter: drop-shadow(0 2px 8px #2196f344);
-                transition: filter 0.2s, transform 0.2s;
-            }
-            .redesigned-tech-card:hover .tech-icon {
-                filter: brightness(1.3) drop-shadow(0 0 12px #43a047);
-                transform: scale(1.15);
-            }
-            table {
-                border-collapse: separate;
-                border-spacing: 0;
-            }
-            th, td {
-                border-bottom: 1px solid #e0e0e0;
-            }
-            th {
-                background: #e0f7fa;
-            }
-            tr:last-child td {
-                border-bottom: none;
-            }
-        </style>
     </section>
   <!-- Product Section -->
-    <section class="section dashboard-product-bg py-14" id="product">
+    <section class="section dashboard-product-bg py-14" id="product" data-aos="fade-up">
         <div class="container">
             <div class="row mb-5">
                 <div class="col-12 text-center">
@@ -616,7 +592,7 @@
     </section>
     
     <!-- Stats Section -->
-    <section class="section bg-[#E0E0E0] text-center" id="stats">
+    <section class="section bg-[#E0E0E0] text-center" id="stats" data-aos="fade-up">
         <div class="container mx-auto">
             <h2 class="text-4xl font-extrabold mb-10 text-green-700 animate-fade-in flex items-center justify-center gap-3">
                 <span class="text-3xl animate-bounce">📊</span> JalTantra Impact Stats
@@ -667,7 +643,7 @@
     </section>
 
     <!-- Testimonial Section -->
-    <section class="section bg-white text-center" id="testimonial">
+    <section class="section bg-white text-center" id="testimonial" data-aos="fade-up">
         <div class="container mx-auto max-w-3xl">
             <h2 class="text-4xl font-extrabold mb-8 text-green-700 animate-fade-in flex items-center justify-center gap-2">
                 <span class="text-3xl animate-bounce">💬</span> What Farmers Say
@@ -714,28 +690,13 @@
                 </div>
                 <!-- Carousel navigation -->
                 <button class="testimonial-nav testimonial-prev absolute left-0 top-1/2 -translate-y-1/2 bg-[#43a047] text-white rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-[#2196f3] transition" onclick="prevTestimonial()" title="Previous Testimonial"><i class="fas fa-chevron-left"></i></button>
-                <button class="testimonial-nav testimonial-prev absolute left-0 top-1/2 -translate-y-1/2 bg-[#43a047] text-white rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-[#2196f3] transition" onclick="prevTestimonial()" title="Previous Testimonial"><i class="fas fa-chevron-left"></i></button>
                 <button class="testimonial-nav testimonial-next absolute right-0 top-1/2 -translate-y-1/2 bg-[#43a047] text-white rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-[#2196f3] transition" onclick="nextTestimonial()" title="Next Testimonial"><i class="fas fa-chevron-right"></i></button>
-                <button class="testimonial-nav testimonial-prev absolute left-0 top-1/2 -translate-y-1/2 bg-[#43a047] text-white rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-[#2196f3] transition" onclick="prevTestimonial()" title="Previous Testimonial"><i class="fas fa-chevron-left"></i></button>
             </div>
         </div>
-        <style>
-            .testimonial-carousel { min-height: 320px; position: relative; }
-            .testimonial-card { transition: box-shadow 0.2s, transform 0.2s; }
-            .testimonial-avatar { border: 3px solid #43a047; box-shadow: 0 2px 12px #2196f344; }
-            .testimonial-stars i { margin-right: 2px; }
-            .testimonial-nav { top: 50%; transform: translateY(-50%); z-index: 2; }
-            .testimonial-prev { left: -24px; }
-            .testimonial-next { right: -24px; }
-            @media (max-width: 600px) {
-                .testimonial-carousel { min-height: 380px; }
-                .testimonial-prev, .testimonial-next { left: 0; right: 0; width: 36px; height: 36px; }
-            }
-        </style>
     </section>
    <!-- Meet Our Team -->
 
-    <section class="section dashboard-product-bg text-center" id="team">
+    <section class="section dashboard-product-bg text-center" id="team" data-aos="fade-up">
         <div class="container mx-auto">
             <h2 class="text-4xl font-extrabold mb-8 text-green-700 animate-fade-in flex items-center justify-center gap-2">
                 <span class="text-3xl animate-bounce">👥</span> Meet Our Team
@@ -787,37 +748,86 @@
                 </div>
             </div>
         </div>
-        <style>
-            .dashboard-product-grid {
-                margin-top: 0.5rem;
-            }
-            .dashboard-card {
-                background: rgba(255,255,255,0.7);
-                border: 1.5px solid #e0e0e0;
-                box-shadow: 0 4px 24px #2196f344;
-                transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
-                min-height: 220px;
-                position: relative;
-                overflow: hidden;
-            }
-            .glass-card {
-                -webkit-backdrop-filter: blur(6px);
-                backdrop-filter: blur(6px);
-                background: linear-gradient(120deg, #f4f4f4 60%, #e0e0e0 100%) !important;
-            }
-            .dashboard-card:hover {
-                box-shadow: 0 12px 48px #43a04755, 0 4px 24px #2196f344;
-                transform: scale(1.04) translateY(-4px);
-                background: linear-gradient(120deg, #e0f7fa 0%, #43a04722 100%) !important;
-            }
-            .dashboard-card h4, .dashboard-card ul, .dashboard-card p, .dashboard-card span {
-                color: #333 !important;
-            }
-        </style>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section bg-white text-center" id="faq" data-aos="fade-up">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-4xl font-extrabold mb-8 text-green-700 animate-fade-in flex items-center justify-center gap-2">
+                <span class="text-3xl animate-bounce">❓</span> Frequently Asked Questions
+            </h2>
+            <div class="space-y-4">
+                <div class="faq-item bg-[#F4F1E1] rounded-xl shadow">
+                    <button class="faq-toggle w-full text-left p-4 font-bold text-green-700 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        What is JalTantra?
+                        <i class="fas fa-chevron-down transition"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0 text-gray-700">
+                        JalTantra is an AI-powered smart irrigation system designed to help Indian farmers save water, increase crop yield, and monitor health using real-time data.
+                    </div>
+                </div>
+                <div class="faq-item bg-[#F4F1E1] rounded-xl shadow">
+                    <button class="faq-toggle w-full text-left p-4 font-bold text-green-700 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        How does it save water?
+                        <i class="fas fa-chevron-down transition"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0 text-gray-700">
+                        By using sensors and AI, it optimizes watering schedules based on soil moisture, weather, and crop needs, reducing wastage by up to 30%.
+                    </div>
+                </div>
+                <div class="faq-item bg-[#F4F1E1] rounded-xl shadow">
+                    <button class="faq-toggle w-full text-left p-4 font-bold text-green-700 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        Is it easy to install?
+                        <i class="fas fa-chevron-down transition"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0 text-gray-700">
+                        Yes, it's designed for simplicity. Our team provides installation support, and the mobile app guides you through the process.
+                    </div>
+                </div>
+                <div class="faq-item bg-[#F4F1E1] rounded-xl shadow">
+                    <button class="faq-toggle w-full text-left p-4 font-bold text-green-700 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        What languages does it support?
+                        <i class="fas fa-chevron-down transition"></i>
+                    </button>
+                    <div class="faq-content hidden p-4 pt-0 text-gray-700">
+                        The app supports multiple regional languages to ensure accessibility for all farmers.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="section bg-gradient-to-r from-[#f3e5f5] to-[#e8f5e8] text-center" id="news" data-aos="fade-up">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-extrabold mb-8 text-green-700 flex items-center justify-center gap-2">
+                <span class="text-3xl animate-bounce">📰</span> Latest News & Updates
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="news-card bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=400&h=250" alt="News 1" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-lg text-green-700 mb-2">JalTantra Wins AgriTech Innovation Award</h3>
+                    <p class="text-gray-700 text-sm mb-4">Recognized for our groundbreaking work in sustainable irrigation technology.</p>
+                    <a href="#" class="text-blue-500 hover:underline">Read More</a>
+                </div>
+                <div class="news-card bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=400&h=250" alt="News 2" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-lg text-green-700 mb-2">Pilot Program Expands to 10 Villages</h3>
+                    <p class="text-gray-700 text-sm mb-4">Farmers report 25% increase in yield with our smart systems.</p>
+                    <a href="#" class="text-blue-500 hover:underline">Read More</a>
+                </div>
+                <div class="news-card bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&h=250" alt="News 3" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="font-bold text-lg text-green-700 mb-2">New AI Features Released</h3>
+                    <p class="text-gray-700 text-sm mb-4">Enhanced disease detection and predictive analytics now available.</p>
+                    <a href="#" class="text-blue-500 hover:underline">Read More</a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Get In Touch -->
-    <section class="contact-footer-section bg-[#212121] text-white pt-12 pb-0" id="contact">
+    <section class="contact-footer-section bg-[#212121] text-white pt-12 pb-0" id="contact" data-aos="fade-up">
         <div class="container mx-auto max-w-5xl px-4">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-8">
                 <div class="contact-info flex-1 min-w-[260px] mb-6 md:mb-0">
@@ -994,6 +1004,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="web_jaltantra/scripts.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <!-- Typed.js -->
+    <script>
+        var typed = new Typed('#typed-text', {
+            strings: ['Smart Irrigation for a Smarter Bharat', 'AI-Driven Water Management', 'Sustainable Agriculture Solutions'],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true
+        });
+    </script>
     <!-- JS for advanced UI -->
     <script>
     // Smooth scroll
@@ -1017,6 +1042,7 @@
         }, 20);
     }
     window.onload = function() {
+        document.getElementById('preloader').style.display = 'none';
         animateCounter('waterSaved', 1289756);
         animateCounter('farmersHelped', 7);
         animateCounter('coverageArea', 180);
@@ -1054,6 +1080,45 @@
             document.body.style.overflow = '';
         }
     }
+    // Toggle FAQ
+    function toggleFAQ(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('i');
+        content.classList.toggle('hidden');
+        icon.classList.toggle('fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+    }
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        const icon = darkModeToggle.querySelector('i');
+        if (body.classList.contains('dark')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    });
+    </script>
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-5 right-5 bg-[#43a047] text-white p-3 rounded-full shadow-lg hover:bg-[#2196f3] transition opacity-0 pointer-events-none" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>

@@ -527,3 +527,66 @@
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
 }
+
+/* Dark Mode Styles */
+.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+.dark .sticky-navbar {
+    background: #1e1e1e;
+    box-shadow: 0 2px 12px #00000044;
+    border-bottom: 3px solid #03A9F4;
+}
+.dark .navbar-title-custom {
+    color: #03A9F4;
+}
+.dark .navbar-links-custom li a {
+    color: #e0e0e0;
+}
+.dark .navbar-links-custom li a:hover {
+    color: #03A9F4 !important;
+}
+.dark .hero-bg {
+    background: linear-gradient(120deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+.dark .section {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+.dark .bg-white {
+    background-color: #2d2d2d !important;
+}
+.dark .text-gray-700 {
+    color: #b0b0b0 !important;
+}
+.dark .text-green-700 {
+    color: #4caf50 !important;
+}
+.dark .bg-[#E0E0E0] {
+    background-color: #2d2d2d !important;
+}
+.dark .text-blue-600 {
+    color: #2196f3 !important;
+}
+.dark .bg-gradient-to-br {
+    background: linear-gradient(120deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+}
+.dark .contact-footer-section {
+    background: linear-gradient(120deg, #1a1a1a 85%, #2d2d2d 100%);
+}
+.dark .contact-footer {
+    background: #121212;
+}
+
+/* Additional animations */
+.animate-fade-in { animation: fadeIn 1.2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.animate-bounce { animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+.animate-slide-in-left { animation: slideInLeft 1.2s; }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+.animate-slide-in-right { animation: slideInRight 1.2s; }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+.animate-zoom-in { animation: zoomIn 1.2s; }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
