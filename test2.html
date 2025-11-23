@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="mr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Marathi / Devanagari font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
@@ -57,7 +59,14 @@
 
     <!-- 4. CUSTOM STYLES -->
     <style>
-        body { background-color: #f8fafc; color: #0f172a; overflow-x: hidden; }
+        body { background-color: #f8fafc; color: #0f172a; overflow-x: hidden; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; }
+
+        /* Use a Devanagari font when page language is Marathi */
+        html[lang="mr"] body, html[lang="mr"] * {
+            font-family: 'Noto Sans Devanagari', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
         
         /* Glassmorphism */
         .glass-nav {
@@ -164,7 +173,7 @@
 </head>
 <body class="font-sans antialiased">
     <!-- Keyboard skip link for accessibility -->
-    <a href="#home" class="sr-only focus:not-sr-only inline-block p-2 bg-primary text-white rounded-md m-4 z-50 fixed">Skip to content</a>
+    <a href="#home" class="sr-only focus:not-sr-only inline-block p-2 bg-primary text-white rounded-md m-4 z-50 fixed" data-lang-key="skip_to_content">Skip to content</a>
 
     <!-- TOP BAR: LIVE MARKET TICKER -->
     <div class="bg-slate-900 text-white text-xs font-medium py-3 relative z-50 border-b border-slate-800 overflow-hidden">
@@ -196,7 +205,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center gap-8 font-semibold text-slate-600 text-sm">
                     <a href="#home" class="hover:text-primary transition-colors" data-lang-key="nav_home">Home</a>
-                    <a href="#solutions" class="hover:text-primary transition-colors">Solutions</a>
+                    <a href="#solutions" class="hover:text-primary transition-colors" data-lang-key="nav_features">Solutions</a>
                     <a href="#product" class="hover:text-primary transition-colors" data-lang-key="nav_product">Hardware</a>
                     <a href="#market" class="hover:text-primary transition-colors" data-lang-key="nav_market">Market</a>
                     <a href="#calculator" class="hover:text-primary transition-colors" data-lang-key="nav_calc">Savings</a>
@@ -220,12 +229,12 @@
         <!-- Mobile Menu Overlay -->
         <div id="mobile-menu" class="fixed top-0 right-0 h-screen w-80 bg-white shadow-2xl z-[60] p-6 flex flex-col gap-6 border-l border-slate-100 lg:hidden">
             <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                <h3 class="font-bold text-xl text-primary flex items-center gap-2"><i class="fa-solid fa-bars"></i> Menu</h3>
+                <h3 class="font-bold text-xl text-primary flex items-center gap-2"><i class="fa-solid fa-bars"></i> <span data-lang-key="menu_title">Menu</span></h3>
                 <button id="mobile-close" aria-label="Close menu" class="w-10 h-10 rounded-full bg-slate-50 text-slate-500 hover:text-red-500 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="space-y-2">
                 <a href="#home" class="block p-3 rounded-xl hover:bg-emerald-50 text-slate-700 font-medium hover:text-primary transition-colors flex items-center gap-3"><i class="fa-solid fa-house w-6 text-center"></i> <span data-lang-key="nav_home">Home</span></a>
-                <a href="#solutions" class="block p-3 rounded-xl hover:bg-emerald-50 text-slate-700 font-medium hover:text-primary transition-colors flex items-center gap-3"><i class="fa-solid fa-layer-group w-6 text-center"></i> Solutions</a>
+                <a href="#solutions" class="block p-3 rounded-xl hover:bg-emerald-50 text-slate-700 font-medium hover:text-primary transition-colors flex items-center gap-3" data-lang-key="nav_features"><i class="fa-solid fa-layer-group w-6 text-center"></i> Solutions</a>
                 <a href="#product" class="block p-3 rounded-xl hover:bg-emerald-50 text-slate-700 font-medium hover:text-primary transition-colors flex items-center gap-3"><i class="fa-solid fa-box w-6 text-center"></i> <span data-lang-key="nav_product">Hardware</span></a>
                 <a href="#market" class="block p-3 rounded-xl hover:bg-emerald-50 text-slate-700 font-medium hover:text-primary transition-colors flex items-center gap-3"><i class="fa-solid fa-shop w-6 text-center"></i> <span data-lang-key="nav_market">Market</span></a>
             </div>
@@ -272,14 +281,14 @@
                 <!-- Quick Scan Input (GEMINI FEATURE) -->
                  <div class="mt-10 bg-white border border-slate-200 p-1 rounded-2xl flex shadow-xl max-w-lg relative items-center gap-2 z-20">
                     <label for="hero-img-input" class="flex-shrink-0 w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 cursor-pointer hover:bg-emerald-50 hover:text-emerald-600 transition-all border border-slate-100 relative group" aria-hidden="false" role="button" tabindex="0" aria-label="Attach image for diagnosis">
-                         <input type="file" id="hero-img-input" accept="image/*" class="hidden">
+                            <input type="file" id="hero-img-input" accept="image/*" class="hidden">
                          <i class="fa-solid fa-camera text-xl group-hover:scale-110 transition-transform"></i>
                          <div class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white hidden" id="hero-img-indicator"></div>
                     </label>
                     <div class="h-8 w-px bg-slate-100"></div>
-                    <input type="text" placeholder="Identify disease (e.g. 'Yellow leaves')..." class="flex-1 bg-transparent px-2 py-3 text-sm outline-none text-slate-700 placeholder:text-slate-400 font-medium" id="hero-scan-input" aria-label="Describe symptom" aria-describedby="hero-file-name">
+                    <input type="text" placeholder="Identify disease (e.g. 'Yellow leaves')..." data-placeholder-key="hero_scan_placeholder" class="flex-1 bg-transparent px-2 py-3 text-sm outline-none text-slate-700 placeholder:text-slate-400 font-medium" id="hero-scan-input" aria-label="Describe symptom" aria-describedby="hero-file-name">
                     <button id="hero-scan-btn" class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 flex items-center gap-2 active:scale-95 hero-cta" aria-label="Diagnose disease">
-                        Diagnose <i class="fa-solid fa-arrow-right"></i>
+                        <span data-lang-key="btn_diagnose">Diagnose</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
                 <p class="text-xs text-slate-400 mt-3 ml-2" id="hero-file-name"></p>
@@ -291,7 +300,7 @@
                         <div class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white"></div>
                         <div class="w-8 h-8 rounded-full bg-slate-400 border-2 border-white flex items-center justify-center text-[10px] text-white font-bold">+2k</div>
                     </div>
-                    <p><span class="font-bold text-slate-900">4,500+ Farmers</span> trust JalTantra</p>
+                    <p><span class="font-bold text-slate-900" data-lang-key="farmers_count">4,500+ Farmers</span> <span data-lang-key="farmers_trust">trust JalTantra</span></p>
                 </div>
             </div>
 
@@ -300,13 +309,13 @@
                 <div class="relative z-10 mascot-float">
                     <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" 
                         class="w-full max-w-md rounded-[3rem] shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-transform duration-500 object-cover h-[500px]" 
-                        alt="JalTantra mascot — farmer character smiling and holding crops" loading="lazy">
+                        alt="JalTantra mascot — farmer character smiling and holding crops" data-alt-key="alt_mascot" loading="lazy">
                     
                     <!-- Floating Stats Card 1 -->
                     <div class="absolute top-20 -left-10 bg-white/90 backdrop-blur p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 animate-bounce-slow">
                         <div class="bg-blue-50 p-2 rounded-xl text-blue-500"><i class="fa-solid fa-droplet text-xl"></i></div>
                         <div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Water Saved</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase" data-lang-key="stat_water_saved">Water Saved</p>
                             <p class="text-lg font-bold text-slate-900">12.5M L</p>
                         </div>
                     </div>
@@ -315,7 +324,7 @@
                     <div class="absolute bottom-20 -right-6 bg-white/90 backdrop-blur p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 animate-pulse-slow">
                          <div class="bg-green-50 p-2 rounded-xl text-green-500"><i class="fa-solid fa-chart-line text-xl"></i></div>
                         <div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase">Yield Boost</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase" data-lang-key="stat_yield_boost">Yield Boost</p>
                             <p class="text-lg font-bold text-slate-900">+30%</p>
                         </div>
                     </div>
@@ -333,57 +342,57 @@
             <div class="text-center mb-20">
                 <h2 class="text-primary font-bold tracking-[0.2em] text-sm mb-4" data-lang-key="solutions_badge">THE SOLUTION</h2>
                 <h3 class="font-display text-4xl md:text-5xl font-bold text-slate-900" data-lang-key="solutions_title">Empowering Farmers</h3>
-                <p class="text-slate-500 mt-4 max-w-2xl mx-auto">Smart & Sustainable Technology for the modern Indian field.</p>
+                <p class="text-slate-500 mt-4 max-w-2xl mx-auto" data-lang-key="solutions_desc">Smart & Sustainable Technology for the modern Indian field.</p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- 1. Irrigation -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-rose-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-faucet-drip"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Smart Irrigation</h4>
-                    <p class="text-sm text-slate-500">Precision watering using real-time weather & soil data to prevent wastage.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_irrig_title">Smart Irrigation</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_irrig_desc">Precision watering using real-time weather & soil data to prevent wastage.</p>
                 </div>
                 <!-- 2. Disease -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-blue-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-virus-slash"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Disease AI</h4>
-                    <p class="text-sm text-slate-500">Early detection using AI ensures healthier crops & reduced financial loss.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_disease_title">Disease AI</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_disease_desc">Early detection using AI ensures healthier crops & reduced financial loss.</p>
                 </div>
                 <!-- 3. Health -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-yellow-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center text-yellow-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-heart-pulse"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Crop Health</h4>
-                    <p class="text-sm text-slate-500">Real-time sensor insights preventing pest attacks & soil degradation.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_health_title">Crop Health</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_health_desc">Real-time sensor insights preventing pest attacks & soil degradation.</p>
                 </div>
                 <!-- 4. Planning -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-green-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-calendar-days"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Crop Planning</h4>
-                    <p class="text-sm text-slate-500">AI recommends best crops based on climate patterns & soil conditions.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_planning_title">Crop Planning</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_planning_desc">AI recommends best crops based on climate patterns & soil conditions.</p>
                 </div>
                 <!-- 5. Hardware -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-slate-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-microchip"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Cost-Effective HW</h4>
-                    <p class="text-sm text-slate-500">Durable, affordable IoT solutions built specifically for Indian farming.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_hw_title">Cost-Effective HW</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_hw_desc">Durable, affordable IoT solutions built specifically for Indian farming.</p>
                 </div>
                 <!-- 6. Market -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-red-600 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-store"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Direct Marketplace</h4>
-                    <p class="text-sm text-slate-500">Farmers sell directly to buyers, ensuring fair pricing & higher profits.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_market_title">Direct Marketplace</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_market_desc">Farmers sell directly to buyers, ensuring fair pricing & higher profits.</p>
                 </div>
                 <!-- 7. Analysis -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-indigo-600 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-pie"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Market Insights</h4>
-                    <p class="text-sm text-slate-500">AI-driven intelligence helps farmers predict demand & optimize sales.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_insights_title">Market Insights</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_insights_desc">AI-driven intelligence helps farmers predict demand & optimize sales.</p>
                 </div>
                 <!-- 8. Language -->
                 <div class="glass-card p-6 rounded-3xl border-l-4 border-gray-500 bg-white hover:shadow-xl transition-all group">
                     <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-language"></i></div>
-                    <h4 class="text-lg font-bold text-slate-900 mb-2">Multi-Language</h4>
-                    <p class="text-sm text-slate-500">Breaking barriers by providing technology in local regional languages.</p>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2" data-lang-key="sol_language_title">Multi-Language</h4>
+                    <p class="text-sm text-slate-500" data-lang-key="sol_language_desc">Breaking barriers by providing technology in local regional languages.</p>
                 </div>
             </div>
         </div>
@@ -403,7 +412,7 @@
                 <div class="relative flex justify-center group" data-aos="zoom-in">
                     <div class="absolute inset-0 bg-emerald-100 rounded-full blur-[80px] opacity-50 group-hover:opacity-80 transition-opacity"></div>
                     <!-- Using a placeholder for the hardware product -->
-                    <img src="https://cdn-icons-png.flaticon.com/512/2857/2857433.png" class="w-80 relative z-10 drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500" alt="Controller Device">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2857/2857433.png" class="w-80 relative z-10 drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500" alt="Controller Device" data-alt-key="alt_controller">
                 </div>
 
                 <!-- Features List -->
@@ -411,22 +420,22 @@
                     <div class="flex gap-5">
                         <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-700 text-3xl flex-shrink-0 shadow-sm border border-slate-100"><i class="fa-solid fa-solar-panel"></i></div>
                         <div>
-                            <h4 class="text-xl font-bold text-slate-900" data-lang-key="feat_solar">Solar Powered</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed mt-1">Zero electricity needed. Runs 24/7 with built-in 5000mAh battery backup.</p>
+                                    <h4 class="text-xl font-bold text-slate-900" data-lang-key="feat_solar">Solar Powered</h4>
+                                    <p class="text-slate-500 text-sm leading-relaxed mt-1" data-lang-key="feat_solar_desc">Zero electricity needed. Runs 24/7 with built-in 5000mAh battery backup.</p>
                         </div>
                     </div>
                     <div class="flex gap-5">
                         <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-700 text-3xl flex-shrink-0 shadow-sm border border-slate-100"><i class="fa-solid fa-wifi"></i></div>
                         <div>
                             <h4 class="text-xl font-bold text-slate-900" data-lang-key="feat_lora">LoRaWAN Range</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed mt-1">Connect sensors up to 5km away. Works even in remote areas with no 4G.</p>
+                            <p class="text-slate-500 text-sm leading-relaxed mt-1" data-lang-key="feat_lora_desc">Connect sensors up to 5km away. Works even in remote areas with no 4G.</p>
                         </div>
                     </div>
                     <div class="flex gap-5">
                         <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-700 text-3xl flex-shrink-0 shadow-sm border border-slate-100"><i class="fa-solid fa-shield-water"></i></div>
                         <div>
                             <h4 class="text-xl font-bold text-slate-900" data-lang-key="feat_ip65">IP65 Weatherproof</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed mt-1">Dust, rain, and heat proof. Engineered specifically for Indian conditions.</p>
+                            <p class="text-slate-500 text-sm leading-relaxed mt-1" data-lang-key="feat_ip65_desc">Dust, rain, and heat proof. Engineered specifically for Indian conditions.</p>
                         </div>
                     </div>
                     
@@ -473,19 +482,19 @@
                     <h4 class="font-bold text-xl mb-6 border-b border-slate-100 pb-4" data-lang-key="calc_results_title">Estimated Seasonal Savings</h4>
                     <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <p class="text-xs text-slate-500 uppercase font-bold">Water Saved</p>
+                            <p class="text-xs text-slate-500 uppercase font-bold" data-lang-key="res_water_label">Water Saved</p>
                             <p class="text-3xl font-black text-blue-600 mt-1" id="res-water">0 L</p>
                         </div>
                         <div>
-                            <p class="text-xs text-slate-500 uppercase font-bold">Money Saved</p>
+                            <p class="text-xs text-slate-500 uppercase font-bold" data-lang-key="res_money_label">Money Saved</p>
                             <p class="text-3xl font-black text-emerald-600 mt-1" id="res-money">₹0</p>
                         </div>
                         <div class="col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Estimated Water Saved</p>
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-1" data-lang-key="res_estimated_water">Estimated Water Saved</p>
                             <p class="text-lg font-bold text-slate-800" id="res-saved" aria-live="polite">0 L</p>
                         </div>
                         <div class="col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Yield Improvement</p>
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-1" data-lang-key="res_yield_improve">Yield Improvement</p>
                             <p class="text-lg font-bold text-slate-800"><span class="text-green-500">▲ 25%</span> due to precision irrigation</p>
                         </div>
                     </div>
@@ -498,7 +507,7 @@
     <section id="market" class="py-24 bg-slate-50 border-t border-slate-200">
         <div class="container mx-auto px-6">
              <div class="text-center mb-16">
-                <h2 class="text-purple-500 font-bold tracking-[0.2em] text-sm mb-2">SMART COMMERCE</h2>
+                <h2 class="text-purple-500 font-bold tracking-[0.2em] text-sm mb-2" data-lang-key="market_badge">SMART COMMERCE</h2>
                 <h3 class="font-display text-4xl md:text-5xl font-bold text-slate-900" data-lang-key="market_title">Market Intelligence</h3>
             </div>
 
@@ -511,10 +520,10 @@
                     </div>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
-                            <input type="text" id="contract-buyer" placeholder="Buyer Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
-                            <input type="text" id="contract-crop" placeholder="Crop" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                            <input type="text" id="contract-buyer" data-placeholder-key="placeholder_buyer" placeholder="Buyer Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                            <input type="text" id="contract-crop" data-placeholder-key="placeholder_crop" placeholder="Crop" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
                         </div>
-                        <button id="contract-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all">Draft Legal Agreement</button>
+                        <button id="contract-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all" data-lang-key="btn_draft">Draft Legal Agreement</button>
                         <div id="contract-result" class="hidden bg-slate-50 p-4 rounded-xl text-xs text-slate-600 max-h-40 overflow-y-auto prose border border-slate-200"></div>
                     </div>
                 </div>
@@ -527,10 +536,10 @@
                     </div>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
-                            <input type="number" id="scheme-land" placeholder="Acres" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <input type="text" id="scheme-crop" placeholder="Crop" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <input type="number" id="scheme-land" data-placeholder-key="placeholder_acres" placeholder="Acres" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <input type="text" id="scheme-crop" data-placeholder-key="placeholder_crop" placeholder="Crop" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                         </div>
-                        <button id="find-schemes-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all">Find My Schemes</button>
+                        <button id="find-schemes-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all" data-lang-key="btn_find_schemes">Find My Schemes</button>
                         <div id="scheme-results" class="hidden bg-slate-50 p-4 rounded-xl text-xs text-slate-600 max-h-40 overflow-y-auto prose border border-slate-200"></div>
                     </div>
                 </div>
@@ -546,16 +555,16 @@
                     <div class="flex items-center gap-2 text-white mb-4"><div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white"><i class="fa-solid fa-leaf"></i></div><span class="font-display font-bold text-xl">JalTantra</span></div>
                     <p class="text-sm leading-relaxed mb-6">Empowering 1.4 Billion Indians with AI-driven agriculture.</p>
                      <div class="flex items-center gap-2">
-                         <span class="inline-flex items-center bg-slate-800 px-3 py-1 rounded-full text-xs font-bold text-emerald-400 border border-slate-700">
-                            <i class="fa-solid fa-shield-halved mr-2"></i> Trusted by 4,500+ Villages
-                         </span>
+                                 <span class="inline-flex items-center bg-slate-800 px-3 py-1 rounded-full text-xs font-bold text-emerald-400 border border-slate-700">
+                                     <i class="fa-solid fa-shield-halved mr-2"></i> <span data-lang-key="trusted_villages">Trusted by 4,500+ Villages</span>
+                                 </span>
                     </div>
                 </div>
-                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_platform">Platform</h4><ul class="space-y-3 text-sm"><li><a href="#home" class="hover:text-primary">Home</a></li><li><a href="#product" class="hover:text-primary">Hardware</a></li><li><a href="#market" class="hover:text-primary">Marketplace</a></li></ul></div>
-                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_resources">Resources</h4><ul class="space-y-3 text-sm"><li><a href="#" class="hover:text-primary">Blog</a></li><li><a href="#" class="hover:text-primary">Help Center</a></li><li><a href="#" class="hover:text-primary">Schemes</a></li></ul></div>
-                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_newsletter">Newsletter</h4><div class="flex gap-2"><input type="email" placeholder="Email" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white w-full"><button class="bg-primary text-white px-4 py-2 rounded-lg"><i class="fa-solid fa-arrow-right"></i></button></div></div>
+                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_platform">Platform</h4><ul class="space-y-3 text-sm"><li><a href="#home" class="hover:text-primary" data-lang-key="footer_link_home">Home</a></li><li><a href="#product" class="hover:text-primary" data-lang-key="footer_link_product">Hardware</a></li><li><a href="#market" class="hover:text-primary" data-lang-key="footer_link_market">Marketplace</a></li></ul></div>
+                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_resources">Resources</h4><ul class="space-y-3 text-sm"><li><a href="#" class="hover:text-primary" data-lang-key="footer_link_blog">Blog</a></li><li><a href="#" class="hover:text-primary" data-lang-key="footer_link_help">Help Center</a></li><li><a href="#" class="hover:text-primary" data-lang-key="footer_link_schemes">Schemes</a></li></ul></div>
+                <div><h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider" data-lang-key="footer_newsletter">Newsletter</h4><div class="flex gap-2"><input type="email" data-placeholder-key="placeholder_email" placeholder="Email" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white w-full"><button class="bg-primary text-white px-4 py-2 rounded-lg"><i class="fa-solid fa-arrow-right"></i></button></div></div>
             </div>
-            <div class="border-t border-slate-800 pt-8 text-xs text-slate-500 text-center"><p>&copy; 2025 JalTantra Solutions Pvt. Ltd.</p></div>
+            <div class="border-t border-slate-800 pt-8 text-xs text-slate-500 text-center"><p data-lang-key="footer_copyright">&copy; 2025 JalTantra Solutions Pvt. Ltd.</p></div>
         </div>
     </footer>
 
@@ -570,7 +579,7 @@
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white shadow-sm">
                         <!-- Farmer Avatar -->
-                        <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover">
+                        <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover" data-alt-key="alt_avatar">
                     </div>
                     <div><span class="font-bold block text-sm">Kisan Sahayak</span><span class="text-[10px] opacity-90 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-300 rounded-full animate-pulse"></span> Online</span></div>
                 </div>
@@ -580,14 +589,14 @@
                 <div class="chat-bubble chat-bot" id="chat-intro">Ram Ram! 🙏 I am your digital farming assistant. Ask me about crops, weather, or schemes!</div>
             </div>
             <div class="p-3 bg-white border-t border-gray-100 flex gap-2">
-                <input type="text" id="chat-input-float" placeholder="Ask in Hindi/Marathi..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50 transition-all">
+                <input type="text" id="chat-input-float" data-placeholder-key="placeholder_chat" placeholder="Ask in Hindi/Marathi..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50 transition-all">
                 <button id="chat-send-float" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-emerald-600 shadow-md transition-all"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
         <!-- Toggle Button with Avatar -->
         <button onclick="toggleChat()" id="chat-toggle-btn" aria-label="Open chat" aria-expanded="false" class="group relative w-20 h-20 bg-transparent shadow-none hover:scale-110 transition-transform p-0 border-none outline-none">
             <div class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-2xl bg-primary relative">
-                 <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover">
+                 <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover" data-alt-key="alt_avatar">
                  <!-- Notification Dot -->
                  <span class="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
             </div>
@@ -598,7 +607,7 @@
     <div id="modal-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
         <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl m-4 max-h-[80vh] overflow-y-auto relative">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3 sticky top-0 bg-white z-10">
-                <h3 id="modal-title" class="font-bold text-lg text-slate-900"><i class="fa-solid fa-leaf text-primary mr-2"></i> Diagnosis Result</h3>
+                <h3 id="modal-title" class="font-bold text-lg text-slate-900"><i class="fa-solid fa-leaf text-primary mr-2"></i> <span data-lang-key="modal_title">Diagnosis Result</span></h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div id="modal-content" class="prose prose-sm text-slate-600 leading-relaxed"></div>
@@ -616,8 +625,8 @@
             // or inject with your build system. For demo / local dev you may use a valid key here.
             const apiKey = "__REPLACE_WITH_YOUR_API_KEY__";
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            // language engine (persisted)
-            let currentLang = localStorage.getItem('jalTantra_lang') || 'en';
+            // language engine (persisted) — default to Marathi per user request
+            let currentLang = localStorage.getItem('jalTantra_lang') || 'mr';
 
             // --- MODAL LOGIC ---
             window.closeModal = function() {
@@ -670,10 +679,30 @@
                     btn_talk: 'Ask Sahayak', btn_calc_hero: 'Check Savings', ticker_label: 'LIVE MANDI RATES', chat_greet: 'Ram Ram! 🙏 Ask me anything!', chat_bubble: 'Ram Ram! 🙏 Need Help?',
                     prod_title: 'JalTantra Controller Pro', prod_desc: 'Industrial grade smart irrigation controller. Solar powered, LoRaWAN enabled, and built for the harsh Indian fields.',
                     feat_solar: 'Solar Powered', feat_lora: 'LoRaWAN Range', feat_ip65: 'IP65 Weatherproof', btn_order: 'Pre-Order Now',
+                    feat_solar_desc: 'Zero electricity needed. Runs 24/7 with built-in 5000mAh battery backup.',
+                    feat_lora_desc: 'Connect sensors up to 5km away. Works even in remote areas with no 4G.',
+                    feat_ip65_desc: 'Dust, rain, and heat proof. Engineered specifically for Indian conditions.',
                     calc_title: 'Calculate Your Savings', market_title: 'Market Intelligence', tool_contract_title: 'Contract Drafter', scheme_title: 'Govt Schemes',
+                    solutions_desc: 'Smart & Sustainable Technology for the modern Indian field.',
+                    sol_irrig_title: 'Smart Irrigation', sol_irrig_desc: 'Precision watering using real-time weather & soil data to prevent wastage.',
+                    sol_disease_title: 'Disease AI', sol_disease_desc: 'Early detection using AI ensures healthier crops & reduced financial loss.',
+                    sol_health_title: 'Crop Health', sol_health_desc: 'Real-time sensor insights preventing pest attacks & soil degradation.',
+                    sol_planning_title: 'Crop Planning', sol_planning_desc: 'AI recommends best crops based on climate patterns & soil conditions.',
+                    sol_hw_title: 'Cost-Effective HW', sol_hw_desc: 'Durable, affordable IoT solutions built specifically for Indian farming.',
+                    sol_market_title: 'Direct Marketplace', sol_market_desc: 'Farmers sell directly to buyers, ensuring fair pricing & higher profits.',
+                    sol_insights_title: 'Market Insights', sol_insights_desc: 'AI-driven intelligence helps farmers predict demand & optimize sales.',
+                    sol_language_title: 'Multi-Language', sol_language_desc: 'Breaking barriers by providing technology in local regional languages.',
+                    farmers_trust: 'trust JalTantra', farmers_count: '4,500+ Farmers', trusted_villages: 'Trusted by 4,500+ Villages',
+                    hero_scan_placeholder: "Identify disease (e.g. 'Yellow leaves')...", placeholder_buyer: 'Buyer Name', placeholder_crop: 'Crop', placeholder_acres: 'Acres', placeholder_email: 'Email', placeholder_chat: 'Ask in Hindi/Marathi...',
+                    hero_scan_attached: 'Image attached! Click Diagnose ->',
+                    ai_thinking: 'Thinking...', connecting_text: 'Connecting to Satellite...', analyzing_text: 'Analyzing...', connection_error: 'Connection Error', check_settings: 'Check API key, network, and CORS settings.',
+                    input_symptom_missing: 'Type a symptom or upload a photo', calc_invalid: 'Please enter a valid farm area (acres) greater than 0.', demo_mode_message: 'Demo mode — API key not configured. Add your key to enable chat.', chat_error_text: 'Error',
+                    btn_diagnose: 'Diagnose', btn_draft: 'Draft Legal Agreement', btn_find_schemes: 'Find My Schemes', modal_title: 'Diagnosis Result', menu_title: 'Menu',
                     solutions_badge: 'THE SOLUTION', solutions_title: 'Empowering Farmers', hardware_badge: 'HARDWARE', market_badge: 'SMART COMMERCE',
                     calc_btn: 'Calculate Impact', calc_results_title: 'Estimated Seasonal Savings', label_select_crop: 'Select Crop', label_farm_area: 'Farm Area (Acres)',
                     footer_platform: 'Platform', footer_resources: 'Resources', footer_newsletter: 'Newsletter'
+                    , footer_link_home: 'Home', footer_link_product: 'Hardware', footer_link_market: 'Marketplace', footer_link_blog: 'Blog', footer_link_help: 'Help Center', footer_link_schemes: 'Schemes', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'Skip to content',
+                    alt_mascot: 'JalTantra mascot — farmer character smiling and holding crops', alt_controller: 'Controller device illustration', alt_avatar: 'Farmer avatar image'
                 },
                 hi: {
                     nav_home: 'होम', nav_product: 'हार्डवेयर', nav_features: 'समाधान', nav_market: 'बाजार', nav_calc: 'बचत',
@@ -682,9 +711,26 @@
                     prod_title: 'JalTantra कंट्रोलर प्रो', prod_desc: 'इंडस्ट्रियल ग्रेड स्मार्ट सिंचाई कंट्रोलर। सोलर पावर्ड, LoRaWAN सक्षम।',
                     feat_solar: 'सोलर पावर्ड', feat_lora: 'LoRaWAN रेंज', feat_ip65: 'IP65 वेदरप्रूफ', btn_order: 'प्री-ऑर्डर करें',
                     calc_title: 'अपनी बचत की गणना करें', market_title: 'बाजार बुद्धिमत्ता', tool_contract_title: 'कॉन्ट्रैक्ट ड्राफ्टर', scheme_title: 'सरकारी योजनाएँ',
+                    solutions_desc: 'आधुनिक भारतीय खेत के लिए स्मार्ट और टिकाऊ टेक्नोलॉजी।',
+                    sol_irrig_title: 'स्मार्ट सिंचाई', sol_irrig_desc: 'मल्टी-रियल-टाइम मौसम और मिट्टी के डेटा का उपयोग कर सटीक सिंचाई।',
+                    sol_disease_title: 'रोग पहचान AI', sol_disease_desc: 'शुरूआती पहचान - फसल स्वास्थ्य बेहतर होती है और नुकसान कम होता है।',
+                    sol_health_title: 'फसल स्वास्थ्य', sol_health_desc: 'सीमांत सेंसर इनसाइट्स: कीट, मिट्टी क्षरण रोकने में मदद।',
+                    sol_planning_title: 'फसल योजना', sol_planning_desc: 'कलाइमेट पैटर्न्स और मिट्टी के अनुसार सर्वश्रेष्ठ फसल की सिफारिश।',
+                    sol_hw_title: 'लागत-प्रभावी हार्डवेयर', sol_hw_desc: 'टिकाऊ, किफायती IoT समाधान जो भारतीय खेती के लिए बनाए गए हैं।',
+                    sol_market_title: 'डायरेक्ट मार्केटप्लेस', sol_market_desc: 'किसान सीधे खरीदारों को बेचते हैं, सही कीमत और अधिक मुनाफा सुनिश्चित करते हैं।',
+                    sol_insights_title: 'बाजार अंतर्दृष्टि', sol_insights_desc: 'AI-ड्रिवन इंटेलिजेंस मांग की भविष्यवाणी कर बिक्री ऑप्टिमाइज़ करता है।',
+                    sol_language_title: 'मल्टी-लैंग्वेज', sol_language_desc: 'स्थानीय भाषाओं में तकनीक उपलब्ध कराकर बाधाएँ तोड़ना।',
+                    farmers_trust: 'हमें भरोसा करते हैं', farmers_count: '4,500+ किसान', trusted_villages: '4,500+ गाँवों द्वारा भरोसेमंद',
+                    hero_scan_placeholder: "रोग पहचानें (उदा. 'पीले पत्ते')...", placeholder_buyer: 'खरीदार का नाम', placeholder_crop: 'फसल', placeholder_acres: 'एकड़', placeholder_email: 'ईमेल', placeholder_chat: 'हिंदी/मराठी में पूछें...',
+                    hero_scan_attached: 'इमेज अटैच्ड! Diagnose पर क्लिक करें ->',
+                    ai_thinking: 'विचार किया जा रहा है...', connecting_text: 'सैटेलाइट से कनेक्ट कर रहे हैं...', analyzing_text: 'विश्लेषण कर रहे हैं...', connection_error: 'कनेक्शन त्रुटि', check_settings: 'API कुंजी, नेटवर्क और CORS सेटिंग्स जांचें।',
+                    input_symptom_missing: 'कृपया लक्षण टाइप करें या फोटो अपलोड करें', calc_invalid: 'कृपया 0 से अधिक एक मान्य खेत क्षेत्र (एकड़) दर्ज करें।', demo_mode_message: 'डेमो मोड — API की कॉन्फ़िगर नहीं है। चैट सक्षम करने के लिए अपनी कुंजी जोड़ें।', chat_error_text: 'त्रुटी',
+                    btn_diagnose: 'निदान', btn_draft: 'कानूनी अनुबंध मसौदा', btn_find_schemes: 'मेरी योजनाएँ खोजें', modal_title: 'निदान परिणाम', menu_title: 'मेनू',
                     solutions_badge: 'समाधान', solutions_title: 'किसानों को सशक्त बनाना', hardware_badge: 'हार्डवेयर', market_badge: 'स्मार्ट वाणिज्य',
                     calc_btn: 'बचत की गणना करें', calc_results_title: 'अनुमानित मौसमी बचत', label_select_crop: 'फसल चुनें', label_farm_area: 'खेत क्षेत्र (एकड़)',
                     footer_platform: 'प्लेटफार्म', footer_resources: 'संसाधन', footer_newsletter: 'न्यूज़लेटर'
+                    , footer_link_home: 'होम', footer_link_product: 'हार्डवेयर', footer_link_market: 'बाजार', footer_link_blog: 'ब्लॉग', footer_link_help: 'हेल्प सेंटर', footer_link_schemes: 'योजनाएँ', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'सामग्री पर जाएँ',
+                    alt_mascot: 'JalTantra मैस्कट — हसणारा शेतकरी', alt_controller: 'कंट्रोलर डिव्हाइस प्रतिमा', alt_avatar: 'शेतकरी अवतार प्रतिमा'
                 },
                 mr: {
                     nav_home: 'होम', nav_product: 'हार्डवेअर', nav_features: 'उपाय', nav_market: 'बाजार', nav_calc: 'बचत',
@@ -693,19 +739,48 @@
                     prod_title: 'JalTantra कंट्रोलर प्रो', prod_desc: 'इंडस्ट्रियल ग्रेड स्मार्ट सिंचाई कंट्रोलर. सोलर पावर्ड, LoRaWAN सक्षम.',
                     feat_solar: 'सोलर पावर्ड', feat_lora: 'LoRaWAN रेंज', feat_ip65: 'IP65 वेदरप्रूफ', btn_order: 'प्री-ऑर्डर करा',
                     calc_title: 'तुमच्या बचतीची गणना करा', market_title: 'बाजार बुद्धिमत्ता', tool_contract_title: 'करार मसुदा तयार करा', scheme_title: 'शासकीय योजना',
+                    solutions_desc: 'आधुनिक भारतीय शेतासाठी स्मार्ट आणि शाश्वत तंत्रज्ञान.',
+                    sol_irrig_title: 'स्मार्ट सिंचन', sol_irrig_desc: 'रिअल-टाइम हवामान व माती माहितीने अचूक पाणी देणे.',
+                    sol_disease_title: 'रोग ओळख AI', sol_disease_desc: 'लवकर ओळख — फळवंत आरोग्य सुधारते आणि नुकसान कमी होते.',
+                    sol_health_title: 'पिक आरोग्य', sol_health_desc: 'रिअल-टाइम सेन्सर इनसाइट्स — कीड व मातीची समस्या प्रतिबंधित करा.',
+                    sol_planning_title: 'पीक नियोजन', sol_planning_desc: 'हवामान व मातीच्या आधारे सर्वोत्तम पिक सुचवते.',
+                    sol_hw_title: 'खर्च-प्रभावी हार्डवेअर', sol_hw_desc: 'टिकाऊ, स्वस्त IoT सोल्यूशन्स भारतीय शेतकरी लक्षात घेऊन.',
+                    sol_market_title: 'थेट बाजारपेठ', sol_market_desc: 'शेतकरी थेट खरेदीदारांना विकतात — योग्य दर व जास्त नफा.',
+                    sol_insights_title: 'बाजार अंतर्दृष्टी', sol_insights_desc: 'AI-आधारित अंतर्दृष्टी मागणीचा अंदाज व विक्री योजना सुधारते.',
+                    sol_language_title: 'अनेक भाषा', sol_language_desc: 'स्थानीय भाषा मध्ये तंत्रज्ञान उपलब्ध करून अडथळे हटविते.',
+                    farmers_trust: 'आम्हांवर विश्वास ठेवतात', farmers_count: '4,500+ शेतकरी', trusted_villages: '4,500+ गावांनी विश्वास ठेवलाय',
+                    hero_scan_placeholder: "रोग ओळखा (उदा. 'पिवळे पाने')...", placeholder_buyer: 'खरेदीदार नाव', placeholder_crop: 'पीक', placeholder_acres: 'एकर', placeholder_email: 'ईमेल', placeholder_chat: 'हिंदी/मराठी मध्ये विचारा...',
+                    hero_scan_attached: "चित्र जोडले गेले आहे! निदान करण्यासाठी क्लिक करा ->",
+                    ai_thinking: 'विचार चालू आहे...', connecting_text: 'सेटेलाइटशी कनेक्ट करत आहोत...', analyzing_text: 'विश्लेषण करीत आहोत...', connection_error: 'कनेक्शन त्रुटी', check_settings: 'API की, नेटवर्क व CORS सेटिंग तपासा.',
+                    input_symptom_missing: 'कृपया लक्षण टाइप करा किंवा फोटो अपलोड करा', calc_invalid: 'कृपया 0 पेक्षा मोठे वैध शेत क्षेत्र (एकर) प्रविष्ट करा.', demo_mode_message: 'प्रदर्शन मोड — API की कॉन्फिगर केलेली नाही. चैट सक्षम करण्यासाठी आपली की जोडा.', chat_error_text: 'त्रुटी',
+                    btn_diagnose: 'निदान', btn_draft: 'कायदेशीर करार मसुदा', btn_find_schemes: 'माझ्या योजना शोधा', modal_title: 'निदान निकाल', menu_title: 'मेन्यू',
                     solutions_badge: 'उपाय', solutions_title: 'शेतकऱ्यांना सशक्त करणे', hardware_badge: 'हार्डवेअर', market_badge: 'स्मार्ट कॉमर्स',
                     calc_btn: 'बचत मोजा', calc_results_title: 'आकलन موسमी बचत', label_select_crop: 'पीक निवडा', label_farm_area: 'शेत क्षेत्र (एकर)',
                     footer_platform: 'प्लॅटफॉर्म', footer_resources: 'संसाधने', footer_newsletter: 'न्यूझलॅटर'
+                    , footer_link_home: 'होम', footer_link_product: 'हार्डवेअर', footer_link_market: 'बाजार', footer_link_blog: 'ब्लॉग', footer_link_help: 'सहाय्य केंद्र', footer_link_schemes: 'योजना', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'सामग्रीकडे जा',
+                    alt_mascot: 'JalTantra मॅस्कॉट — हसणारा शेतकरी', alt_controller: 'कंट्रोलर डिव्हाइस प्रतिमा', alt_avatar: 'शेतकरी अवतार प्रतिमा'
                 }
             };
 
             window.setLang = function(lang) {
+                // set HTML lang attribute for screen readers and CSS rules
+                try { document.documentElement.lang = lang; } catch(e) { }
                 currentLang = lang;
                 // persist user preference
                 try { localStorage.setItem('jalTantra_lang', lang); } catch(e) { /* ignore */ }
                 document.querySelectorAll('[data-lang-key]').forEach(el => {
                     const key = el.getAttribute('data-lang-key');
                     if(translations[lang] && translations[lang][key]) el.innerText = translations[lang][key];
+                });
+                // placeholders: inputs and textareas
+                document.querySelectorAll('[data-placeholder-key]').forEach(inp => {
+                    const pk = inp.getAttribute('data-placeholder-key');
+                    if (translations[lang] && translations[lang][pk]) inp.placeholder = translations[lang][pk];
+                });
+                // alt attributes for images
+                document.querySelectorAll('[data-alt-key]').forEach(el => {
+                    const ak = el.getAttribute('data-alt-key');
+                    if (translations[lang] && translations[lang][ak]) el.alt = translations[lang][ak];
                 });
                 // accessibility: inform screen-readers
                 const intro = document.getElementById('chat-intro');
@@ -737,12 +812,12 @@
                 if(btn) {
                     var oldText = btn.innerHTML;
                     btn.disabled = true;
-                    btn.innerHTML = `<span class="ai-loader"></span> Thinking...`;
+                    btn.innerHTML = `<span class="ai-loader"></span> ${(translations[currentLang] && translations[currentLang].ai_thinking) ? translations[currentLang].ai_thinking : 'Thinking...'}`;
                 }
 
                 if(!useModal && resBox) {
                     resBox.classList.remove('hidden');
-                    resBox.innerHTML = "<i>Connecting to Satellite...</i>";
+                    resBox.innerHTML = `<i>${(translations[currentLang] && translations[currentLang].connecting_text) ? translations[currentLang].connecting_text : 'Connecting to Satellite...'}</i>`;
                 } else if (useModal) {
                     const modal = document.getElementById('modal-overlay');
                     const content = document.getElementById('modal-content');
@@ -754,7 +829,7 @@
                         const closeBtn = modal.querySelector('button[onclick="closeModal()"]');
                         if (closeBtn) closeBtn.focus();
                     }, 80);
-                    content.innerHTML = '<div class="text-center p-4"><span class="ai-loader"></span> Analyzing...</div>';
+                    content.innerHTML = `<div class="text-center p-4"><span class="ai-loader"></span> ${(translations[currentLang] && translations[currentLang].analyzing_text) ? translations[currentLang].analyzing_text : 'Analyzing...'}</div>`;
                 }
 
                 // API key safety check
@@ -807,7 +882,8 @@
                     }
                 } catch(e) {
                     console.error('Gemini request error', e);
-                    const errHTML = `<p class="text-red-500">Connection Error: ${e?.message || 'unknown'}. Check API key, network, and CORS settings.</p>`;
+                    const errMsg = (translations[currentLang] && translations[currentLang].connection_error) ? translations[currentLang].connection_error : 'Connection Error';
+                    const errHTML = `<p class="text-red-500">${errMsg}: ${e?.message || 'unknown'}. ${(translations[currentLang] && translations[currentLang].check_settings) ? translations[currentLang].check_settings : 'Check API key, network, and CORS settings.'}</p>`;
                     if(useModal) document.getElementById('modal-content').innerHTML = errHTML;
                     else if(resBox) resBox.innerHTML = errHTML;
                 }
@@ -825,12 +901,13 @@
             let heroImgBase64 = null;
             heroImgInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
-                if(file) {
+                    if(file) {
                     const reader = new FileReader();
                     reader.onload = (ev) => { 
                         heroImgBase64 = ev.target.result.split(',')[1];
                         document.getElementById('hero-img-indicator').classList.remove('hidden');
-                        document.getElementById('hero-scan-input').placeholder = "Image attached! Click Diagnose ->";
+                        const att = (translations[currentLang] && translations[currentLang].hero_scan_attached) ? translations[currentLang].hero_scan_attached : "Image attached! Click Diagnose ->";
+                        document.getElementById('hero-scan-input').placeholder = att;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -849,7 +926,7 @@
 
             document.getElementById('hero-scan-btn').addEventListener('click', () => {
                 const val = document.getElementById('hero-scan-input').value;
-                if(!val && !heroImgBase64) return alert("Type a symptom or upload a photo");
+                if(!val && !heroImgBase64) return alert((translations[currentLang] && translations[currentLang].input_symptom_missing) ? translations[currentLang].input_symptom_missing : "Type a symptom or upload a photo");
                 
                 let prompt = `Act as a Senior Plant Pathologist. I am a farmer. `;
                 if(val) prompt += `My crop has "${val}". `;
@@ -874,7 +951,7 @@
                 // validation
                 if (!area || area <= 0 || isNaN(area)) {
                     // friendly inline validation
-                    alert('Please enter a valid farm area (acres) greater than 0.');
+                    alert((translations[currentLang] && translations[currentLang].calc_invalid) ? translations[currentLang].calc_invalid : 'Please enter a valid farm area (acres) greater than 0.');
                     return;
                 }
 
@@ -934,13 +1011,13 @@
                     msgs.scrollTop = msgs.scrollHeight;
                     try {
                         if (!apiKey || apiKey === '__REPLACE_WITH_YOUR_API_KEY__') {
-                            document.getElementById(loadId).innerText = "Demo mode — API key not configured. Add your key to enable chat.";
+                            document.getElementById(loadId).innerText = (translations[currentLang] && translations[currentLang].demo_mode_message) ? translations[currentLang].demo_mode_message : "Demo mode — API key not configured. Add your key to enable chat.";
                             return;
                         }
                         const res = await fetch(geminiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `User: ${txt}. Reply in ${currentLang}.` }] }] }) });
                         const d = await res.json();
                         document.getElementById(loadId).innerHTML = marked.parse(d.candidates[0].content.parts[0].text);
-                    } catch(e) { document.getElementById(loadId).innerText = "Error"; }
+                    } catch(e) { document.getElementById(loadId).innerText = (translations[currentLang] && translations[currentLang].chat_error_text) ? translations[currentLang].chat_error_text : "Error"; }
                 })();
             });
 
