@@ -1,113 +1,100 @@
-# JalTantra
+# JalTantra Enterprise 🌾
 
-Smart, Green, and Grounded – Empowering Farmers with Technology for Tomorrow
+> **The Next-Generation Operating System for Smart Indian Agriculture.**
 
----
+![JalTantra Banner](https://images.unsplash.com/photo-1625246333195-58197bd47d26?q=80&w=1000&auto=format&fit=crop)
 
-## 🚀 Overview
-JalTantra is a modern, smart irrigation and agri-tech platform designed to revolutionize Indian agriculture. It combines IoT, AI, and real-time analytics to help farmers save water, increase crop yield, and connect directly to markets – all in their own language.
-
----
-
-## 📝 Problem Statement & Solution
-### Problem Statement
-![Problem Statement](./Problem_statemet_Solution/problem_statement.png)
-
-### Solution
-![Solution](./Problem_statemet_Solution/solution.png)
+**JalTantra** is a comprehensive, AI-powered platform designed to empower Indian farmers with real-time market intelligence, precision irrigation tools, and instant crop disease diagnosis. Built with a "Farmer First" philosophy, it bridges the gap between traditional farming and modern technology.
 
 ---
 
-## 🌟 Features
-- **Smart Irrigation Control** (Automated + Manual)
-- **AI-Powered Crop Disease Detection**
-- **Live Crop Health Insights**
-- **Market Connection** (Direct selling to retailers)
-- **Mobile App with Multilingual Support**
-- **Future-Ready Planting Suggestions & Growth Analytics**
-- **Real-Time Market Analysis & Insights**
-- **Multi-Regional Language Support**
+## 🚀 Key Features
+
+### 1. 📈 Live Market Intelligence
+
+- **Real-Time Mandi Rates**: View live price updates from major APMC markets (Lasalgaon, Azadpur, Vashi, etc.).
+- **Price Trends**: Interactive charts to track price history and predict future trends.
+- **Smart Alerts**: Get instant notifications when crop prices surge or drop significantly.
+- **Data Export**: Download market reports in CSV format for offline analysis.
+
+### 2. 🤖 AI-Powered Assistants
+
+- **Kisan Sahayak Chatbot**: A 24/7 digital assistant that answers queries in Hindi, Marathi, and English.
+- **Disease Diagnosis**: Upload a photo of your crop to instantly identify diseases and get remedy suggestions.
+- **Yield Prediction**: AI models that analyze weather and soil data to forecast crop yield.
+
+### 3. 💧 Precision Agriculture
+
+- **Smart Irrigation**: IoT integration to automate water cycles based on soil moisture levels.
+- **Crop Planning**: Data-driven recommendations for the best crops to plant based on seasonal forecasts.
 
 ---
 
-## 🏗️ Project Structure
-```
-JalTantra/
-├── index.html                # Main landing page
-├── Jal-Tantra.pdf            # Project documentation
-└── web_jaltantra/
-    ├── Final Logo-1.png      # Logo asset
-    ├── scripts.js            # Custom JS (interactivity)
-    ├── style.css             # Custom CSS (styling)
-```
+## 🛠️ Technology Stack
+
+- **Frontend**: HTML5, Tailwind CSS (CDN), Vanilla JavaScript (ES6+)
+- **Visuals**: FontAwesome 6, AOS (Animate On Scroll), Chart.js
+- **Design System**: "Midnight Emerald" Theme (Dark Mode optimized for low-light field usage)
+- **Architecture**: Single-File Component structure for easy deployment on low-bandwidth networks.
 
 ---
 
-## ⚡ Getting Started
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/kulkarnishub377/JalTantra.git
+## 📦 Installation & Usage
+
+### Prerequisites
+
+- A modern web browser (Chrome, Edge, Firefox, Safari).
+- Internet connection (for CDN assets).
+
+### Running Locally
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/JalTantra.git
    ```
-2. **Open the project folder** in your code editor (VS Code recommended).
-3. **Run locally**
-   - Open `index.html` in your browser.
-   - All assets are local; no build step required.
+2. **Navigate to the directory**:
+   ```bash
+   cd JalTantra
+   ```
+3. **Open the file**:
+   Simply double-click `test2.html` or open it via your terminal:
+   ```bash
+   # Windows
+   start test2.html
+   ```
 
 ---
 
-## 🖥️ Tech Stack
-- **HTML5, CSS3, JavaScript**
-- **Tailwind CSS** (CDN)
-- **Bootstrap 5** (CDN)
-- **Bootstrap Icons** (CDN)
-- **Google Fonts**
+## 🌟 Pro Features (New)
+
+| Feature              | Description                                     | Status    |
+| :------------------- | :---------------------------------------------- | :-------- |
+| **Export to CSV**    | Download live market data for record-keeping.   | ✅ Active |
+| **Price Alerts**     | Toast notifications for sudden price movements. | ✅ Active |
+| **Glassmorphism UI** | Premium, modern aesthetic with blur effects.    | ✅ Active |
+| **Multi-Language**   | Full support for English, Hindi, and Marathi.   | ✅ Active |
 
 ---
 
-## 📊 Stats
-- **Liters Water Saved:** 1,200,000+
-- **Farmers Helped:** 3,500+
-- **Coverage Area:** 180+ sq km
+## 🤝 Contributing
 
----
+We welcome contributions from the developer community!
 
-## 👥 Team
-- Shubham Kulkarni – Founder & CEO
-- Aniket Gudgal – Co-Founder
-- Yadnyesh Dhangar – Co-Founder
-- Mr. Sarim Moin – Advisor (Innovation Officer, MoE’s Innovation Cell)
-
----
-
-## 📞 Contact
-- **Email:** [contact@jaltantra.in](mailto:contact@jaltantra.in)
-- **LinkedIn:** [JalTantra LinkedIn](#)
-- **Instagram:** [JalTantra Instagram](#)
-- **WhatsApp:** [JalTantra WhatsApp](#)
+1. Fork the project.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
 
 ---
 
 ## 📄 License
-This project is for demonstration and educational purposes. All rights reserved © 2025 JalTantra.
+
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 🌱 Contributing
-We welcome ideas, feedback, and collaboration! Please open an issue or contact us for partnership opportunities.
-
----
-
-## 📝 Documentation
-See `Jal-Tantra.pdf` for detailed project documentation, architecture, and future roadmap.
-
----
-
-## 🙏 Acknowledgements
-Thanks to all farmers, mentors, and supporters who inspire innovation in agriculture.
-
----
-
-## ⭐ Demo
-Want to pilot JalTantra in your region? [Request a Demo](#contact) via the contact form on our website.
-
-
+<div align="center">
+  <p>Made with ❤️ for Indian Farmers</p>
+  <p>&copy; 2025 JalTantra Solutions Pvt. Ltd.</p>
+</div>
