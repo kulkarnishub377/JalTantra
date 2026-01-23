@@ -8,14 +8,14 @@
 
 ---
 
-## 🚀 Key Features
+## 📝 Problem Statement & Solution
+### Problem Statement
 
-### 1. 📈 Live Market Intelligence
+![Problem Statement](./Problem_Statement_And_Solution/problem_statement.png)
 
-- **Real-Time Mandi Rates**: View live price updates from major APMC markets (Lasalgaon, Azadpur, Vashi, etc.).
-- **Price Trends**: Interactive charts to track price history and predict future trends.
-- **Smart Alerts**: Get instant notifications when crop prices surge or drop significantly.
-- **Data Export**: Download market reports in CSV format for offline analysis.
+### Solution
+![Solution](./Problem_Statement_And_Solution/solution.png)
+---
 
 ### 2. 🤖 AI-Powered Assistants
 
