@@ -1,554 +1,369 @@
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init({ duration: 800, once: true });
 
-    // IMPORTANT: remove or replace the placeholder below with your own API key.
-    // Do NOT commit real private API keys into source control. Set as a runtime environment variable
-    // or inject with your build system. For demo / local dev you may use a valid key here.
+    // --- CONFIGURATION ---
     const apiKey = "__REPLACE_WITH_YOUR_API_KEY__";
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-    // language engine (persisted) — default to Marathi per user request
-    let currentLang = localStorage.getItem('jalTantra_lang') || 'mr';
+    let currentLang = 'en';
 
-    // --- MODAL LOGIC ---
-    window.closeModal = function() {
-        const modal = document.getElementById('modal-overlay');
-        if (!modal) return;
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        modal.setAttribute('aria-hidden', 'true');
-    }
-
-    // --- HELPERS ---
-    // Copy to Clipboard
-    window.copyToClipboard = function(btn) {
-        const text = btn.getAttribute('data-text');
-        
-        // Fallback for restricted environments
-        try {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            
-            // Ensure it's not visible but part of DOM
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            textArea.style.top = "0";
-            document.body.appendChild(textArea);
-            
-            textArea.focus();
-            textArea.select();
-            
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            if (successful) {
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check text-green-500"></i>';
-                setTimeout(() => btn.innerHTML = original, 2000);
-            } else {
-                console.error('Fallback copy failed.');
-            }
-        } catch (err) {
-            console.error('Unable to copy', err);
+    // --- ANIMATED BACKGROUND (Original Particles) ---
+    const canvas = document.getElementById('bgCanvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; createParticles(); }
+        function createParticles() {
+            particles = []; const count = Math.floor(width / 50);
+            for(let i=0; i<count; i++) { particles.push({x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2 + 1, alpha: Math.random()*0.5}); }
         }
+        function animate() {
+            ctx.clearRect(0, 0, width, height); ctx.fillStyle = '#059669';
+            particles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > width) p.vx *= -1; if(p.y < 0 || p.y > height) p.vy *= -1; ctx.globalAlpha = p.alpha; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', resize); resize(); animate();
     }
 
-    // --- TRANSLATIONS ---
+    // --- TRANSLATIONS (Full) ---
     const translations = {
-        en: {
-            nav_home: 'Home', nav_product: 'Hardware', nav_features: 'Solutions', nav_market: 'Market', nav_calc: 'Savings',
-            hero_badge: 'Smart Farming System 2.0', hero_title_1: 'Farm Smarter,', hero_title_2: 'Earn Better.', hero_desc: 'Your complete digital dashboard. Monitor soil health, automate irrigation, and sell at the right price—all from one app.',
-            btn_talk: 'Ask Sahayak', btn_calc_hero: 'Check Savings', ticker_label: 'LIVE MANDI RATES', chat_greet: 'Ram Ram! 🙏 Ask me anything!', chat_bubble: 'Ram Ram! 🙏 Need Help?',
-            prod_title: 'JalTantra Controller Pro', prod_desc: 'Industrial grade smart irrigation controller. Solar powered, LoRaWAN enabled, and built for the harsh Indian fields.',
-            feat_solar: 'Solar Powered', feat_lora: 'LoRaWAN Range', feat_ip65: 'IP65 Weatherproof', btn_order: 'Pre-Order Now',
-            feat_solar_desc: 'Zero electricity needed. Runs 24/7 with built-in 5000mAh battery backup.',
-            feat_lora_desc: 'Connect sensors up to 5km away. Works even in remote areas with no 4G.',
-            feat_ip65_desc: 'Dust, rain, and heat proof. Engineered specifically for Indian conditions.',
-            calc_title: 'Calculate Your Savings', market_title: 'Market Intelligence', tool_contract_title: 'Contract Drafter', scheme_title: 'Govt Schemes',
-            solutions_desc: 'Smart & Sustainable Technology for the modern Indian field.',
-            sol_irrig_title: 'Smart Irrigation', sol_irrig_desc: 'Precision watering using real-time weather & soil data to prevent wastage.',
-            sol_disease_title: 'Disease AI', sol_disease_desc: 'Early detection using AI ensures healthier crops & reduced financial loss.',
-            sol_health_title: 'Crop Health', sol_health_desc: 'Real-time sensor insights preventing pest attacks & soil degradation.',
-            sol_planning_title: 'Crop Planning', sol_planning_desc: 'AI recommends best crops based on climate patterns & soil conditions.',
-            sol_hw_title: 'Cost-Effective HW', sol_hw_desc: 'Durable, affordable IoT solutions built specifically for Indian farming.',
-            sol_market_title: 'Direct Marketplace', sol_market_desc: 'Farmers sell directly to buyers, ensuring fair pricing & higher profits.',
-            sol_insights_title: 'Market Insights', sol_insights_desc: 'AI-driven intelligence helps farmers predict demand & optimize sales.',
-            sol_language_title: 'Multi-Language', sol_language_desc: 'Breaking barriers by providing technology in local regional languages.',
-            farmers_trust: 'trust JalTantra', farmers_count: '4,500+ Farmers', trusted_villages: 'Trusted by 4,500+ Villages',
-            hero_scan_placeholder: "Identify disease (e.g. 'Yellow leaves')...", placeholder_buyer: 'Buyer Name', placeholder_crop: 'Crop', placeholder_acres: 'Acres', placeholder_email: 'Email', placeholder_chat: 'Ask in Hindi/Marathi...',
-            hero_scan_attached: 'Image attached! Click Diagnose ->',
-            ai_thinking: 'Thinking...', connecting_text: 'Connecting to Satellite...', analyzing_text: 'Analyzing...', connection_error: 'Connection Error', check_settings: 'Check API key, network, and CORS settings.',
-            input_symptom_missing: 'Type a symptom or upload a photo', calc_invalid: 'Please enter a valid farm area (acres) greater than 0.', demo_mode_message: 'Demo mode — API key not configured. Add your key to enable chat.', chat_error_text: 'Error',
-            btn_diagnose: 'Diagnose', btn_draft: 'Draft Legal Agreement', btn_find_schemes: 'Find My Schemes', modal_title: 'Diagnosis Result', menu_title: 'Menu',
-            solutions_badge: 'THE SOLUTION', solutions_title: 'Empowering Farmers', hardware_badge: 'HARDWARE', market_badge: 'SMART COMMERCE',
-            calc_btn: 'Calculate Impact', calc_results_title: 'Estimated Seasonal Savings', label_select_crop: 'Select Crop', label_farm_area: 'Farm Area (Acres)',
-            footer_platform: 'Platform', footer_resources: 'Resources', footer_newsletter: 'Newsletter'
-            , footer_link_home: 'Home', footer_link_product: 'Hardware', footer_link_market: 'Marketplace', footer_link_blog: 'Blog', footer_link_help: 'Help Center', footer_link_schemes: 'Schemes', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'Skip to content',
-            alt_mascot: 'JalTantra mascot — farmer character smiling and holding crops', alt_controller: 'Controller device illustration', alt_avatar: 'Farmer avatar image',
+        'en': {
+            nav_home: 'Home', nav_iot: 'IoT Live', nav_ai: 'AI Labs', nav_market: 'Market', nav_schemes: 'Schemes',
+            hero_desc: 'The world\'s first operating system for the Indian Farmer. Integrate satellite data, market intelligence, and automated irrigation in one dashboard.',
+            btn_ai: 'Access AI Tools', btn_radar: 'Live Radar', weather_label: 'Live from Pune Field #4',
+            iot_subtitle: 'Field Telemetry', iot_title: 'Smart Irrigation Dashboard', btn_ai_advisor: 'AI Advisor',
             radar_subtitle: 'Satellite Intelligence', radar_title: 'Live Rain Radar', btn_locate: 'Locate Farm',
-            maps_subtitle: 'Weather Intelligence', maps_title: 'Detailed Weather Maps'
+            ai_title: 'JalTantra AI Suite', ai_desc: 'Diagnostic & Advisory Tools',
+            tool1_title: 'Crop Doctor', tool1_desc: 'Identify diseases from photos.', lbl_upload: 'Upload', btn_diagnose: 'Diagnose',
+            tool2_title: 'Smart Farm Planner', tool2_desc: 'Daily tasks based on weather.', ph_enter_crop: 'Enter Crop (e.g. Wheat)', lbl_context: 'Syncs with live weather', btn_plan: 'Generate Plan',
+            tool5_title: 'Soil Health Decoder', tool5_desc: 'Analyze NPK reports.', btn_soil: 'Analyze',
+            tool6_title: 'Profit Calculator', tool6_desc: 'Estimate Cost vs Revenue.', ph_enter_crop: 'Crop Name', ph_enter_acres: 'Land Size (Acres)', btn_calc: 'Calculate',
+            tool3_title: 'Price Predictor', tool3_desc: 'Forecast Mandi rates.', btn_predict: 'Predict',
+            tool4_title: 'Kisan Sahayak', tool4_desc: 'Speak in Hindi, Marathi, English.', chat_welcome: 'Namaste! Ask me anything.', ph_chat: 'Type...',
+            market_title: 'Smart Commerce', market_desc: 'Negotiate better and draft contracts instantly.',
+            tool_contract_title: 'Contract Drafter', btn_draft: 'Draft',
+            tool_negot_title: 'Negotiation Coach', btn_coach: 'Get Strategy',
+            scheme_title: 'Govt Schemes', scheme_desc: 'Find financial aid tailored for you.', scheme_ai_title: 'AI Scheme Matcher', btn_find_schemes: 'Find My Schemes',
+            sch1_title: 'PM-Kisan', sch1_desc: '₹6000/year support.', sch3_title: 'PM-KUSUM', sch3_desc: 'Solar pump subsidy.',
+            footer_desc: 'Empowering 1.4 Billion Indians.',
+            ticker_apmc: 'PUNE APMC LIVE:', ticker_alert: 'WEATHER ALERT:', ticker_msg: 'Heavy rainfall alert for Ratnagiri & Sindhudurg. Keep livestock indoors.',
+            crop_onion: 'Onion', crop_tomato: 'Tomato', crop_soybean: 'Soybean', crop_rice: 'Rice',
+            hero_title_1: 'Smart Farming', hero_title_2: 'Simplified.', hero_badge: 'Active in 4,500+ Villages | v4.1'
         },
-        hi: {
-            nav_home: 'होम', nav_product: 'हार्डवेयर', nav_features: 'समाधान', nav_market: 'बाजार', nav_calc: 'बचत',
-            hero_badge: 'स्मार्ट खेती सिस्टम 2.0', hero_title_1: 'अधिक स्मार्ट खेती,', hero_title_2: 'अधिक आय।', hero_desc: 'आपका पूरा डिजिटल डैशबोर्ड। मृदा स्वास्थ्य की निगरानी, सिंचाई स्वचालन और सही कीमत पर बिक्री।',
-            btn_talk: 'सहायक से पूछें', btn_calc_hero: 'बचत देखें', ticker_label: 'लाइव मंडी रेट्स', chat_greet: 'राम राम! 🙏 मुझसे कुछ भी पूछें!', chat_bubble: 'राम राम! 🙏 मदद चाहिए?',
-            prod_title: 'JalTantra कंट्रोलर प्रो', prod_desc: 'इंडस्ट्रियल ग्रेड स्मार्ट सिंचाई कंट्रोलर। सोलर पावर्ड, LoRaWAN सक्षम।',
-            feat_solar: 'सोलर पावर्ड', feat_lora: 'LoRaWAN रेंज', feat_ip65: 'IP65 वेदरप्रूफ', btn_order: 'प्री-ऑर्डर करें',
-            calc_title: 'अपनी बचत की गणना करें', market_title: 'बाजार बुद्धिमत्ता', tool_contract_title: 'कॉन्ट्रैक्ट ड्राफ्टर', scheme_title: 'सरकारी योजनाएँ',
-            solutions_desc: 'आधुनिक भारतीय खेत के लिए स्मार्ट और टिकाऊ टेक्नोलॉजी।',
-            sol_irrig_title: 'स्मार्ट सिंचाई', sol_irrig_desc: 'मल्टी-रियल-टाइम मौसम और मिट्टी के डेटा का उपयोग कर सटीक सिंचाई।',
-            sol_disease_title: 'रोग पहचान AI', sol_disease_desc: 'शुरूआती पहचान - फसल स्वास्थ्य बेहतर होती है और नुकसान कम होता है।',
-            sol_health_title: 'फसल स्वास्थ्य', sol_health_desc: 'सीमांत सेंसर इनसाइट्स: कीट, मिट्टी क्षरण रोकने में मदद।',
-            sol_planning_title: 'फसल योजना', sol_planning_desc: 'कलाइमेट पैटर्न्स और मिट्टी के अनुसार सर्वश्रेष्ठ फसल की सिफारिश।',
-            sol_hw_title: 'लागत-प्रभावी हार्डवेयर', sol_hw_desc: 'टिकाऊ, किफायती IoT समाधान जो भारतीय खेती के लिए बनाए गए हैं।',
-            sol_market_title: 'डायरेक्ट मार्केटप्लेस', sol_market_desc: 'किसान सीधे खरीदारों को बेचते हैं, सही कीमत और अधिक मुनाफा सुनिश्चित करते हैं।',
-            sol_insights_title: 'बाजार अंतर्दृष्टि', sol_insights_desc: 'AI-ड्रिवन इंटेलिजेंस मांग की भविष्यवाणी कर बिक्री ऑप्टिमाइज़ करता है।',
-            sol_language_title: 'मल्टी-लैंग्वेज', sol_language_desc: 'स्थानीय भाषाओं में तकनीक उपलब्ध कराकर बाधाएँ तोड़ना।',
-            farmers_trust: 'हमें भरोसा करते हैं', farmers_count: '4,500+ किसान', trusted_villages: '4,500+ गाँवों द्वारा भरोसेमंद',
-            hero_scan_placeholder: "रोग पहचानें (उदा. 'पीले पत्ते')...", placeholder_buyer: 'खरीदार का नाम', placeholder_crop: 'फसल', placeholder_acres: 'एकड़', placeholder_email: 'ईमेल', placeholder_chat: 'हिंदी/मराठी में पूछें...',
-            hero_scan_attached: 'इमेज अटैच्ड! Diagnose पर क्लिक करें ->',
-            ai_thinking: 'विचार किया जा रहा है...', connecting_text: 'सैटेलाइट से कनेक्ट कर रहे हैं...', analyzing_text: 'विश्लेषण कर रहे हैं...', connection_error: 'कनेक्शन त्रुटि', check_settings: 'API कुंजी, नेटवर्क और CORS सेटिंग्स जांचें।',
-            input_symptom_missing: 'कृपया लक्षण टाइप करें या फोटो अपलोड करें', calc_invalid: 'कृपया 0 से अधिक एक मान्य खेत क्षेत्र (एकड़) दर्ज करें।', demo_mode_message: 'डेमो मोड — API की कॉन्फ़िगर नहीं है। चैट सक्षम करने के लिए अपनी कुंजी जोड़ें।', chat_error_text: 'त्रुटी',
-            btn_diagnose: 'निदान', btn_draft: 'कानूनी अनुबंध मसौदा', btn_find_schemes: 'मेरी योजनाएँ खोजें', modal_title: 'निदान परिणाम', menu_title: 'मेनू',
-            solutions_badge: 'समाधान', solutions_title: 'किसानों को सशक्त बनाना', hardware_badge: 'हार्डवेयर', market_badge: 'स्मार्ट वाणिज्य',
-            calc_btn: 'बचत की गणना करें', calc_results_title: 'अनुमानित मौसमी बचत', label_select_crop: 'फसल चुनें', label_farm_area: 'खेत क्षेत्र (एकड़)',
-            footer_platform: 'प्लेटफार्म', footer_resources: 'संसाधन', footer_newsletter: 'न्यूज़लेटर'
-            , footer_link_home: 'होम', footer_link_product: 'हार्डवेयर', footer_link_market: 'बाजार', footer_link_blog: 'ब्लॉग', footer_link_help: 'हेल्प सेंटर', footer_link_schemes: 'योजनाएँ', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'सामग्री पर जाएँ',
-            alt_mascot: 'JalTantra मैस्कट — हसणारा शेतकरी', alt_controller: 'कंट्रोलर डिव्हाइस प्रतिमा', alt_avatar: 'शेतकरी अवतार प्रतिमा'
+        'hi': {
+            nav_home: 'होम', nav_iot: 'IoT लाइव', nav_ai: 'AI लैब्स', nav_market: 'बाज़ार', nav_schemes: 'योजनाएं',
+            hero_desc: 'भारतीय किसान के लिए दुनिया का पहला ऑपरेटिंग सिस्टम। सैटेलाइट डेटा, मार्केट इंटेलिजेंस और स्वचालित सिंचाई एक ही डैशबोर्ड में।',
+            btn_ai: 'AI टूल्स', btn_radar: 'लाइव रडार', weather_label: 'पुणे फील्ड #4 से लाइव',
+            iot_subtitle: 'फील्ड टेलीमेट्री', iot_title: 'स्मार्ट सिंचाई डैशबोर्ड', btn_ai_advisor: 'AI सलाहकार',
+            radar_subtitle: 'उपग्रह खुफिया', radar_title: 'लाइव वर्षा रडार', btn_locate: 'खेत खोजें',
+            ai_title: 'जलतंत्र AI सुइट', ai_desc: 'निदान और सलाह उपकरण',
+            tool1_title: 'फसल डॉक्टर', tool1_desc: 'फोटो से बीमारी पहचानें।', lbl_upload: 'अपलोड', btn_diagnose: 'निदान करें',
+            tool2_title: 'स्मार्ट फार्म प्लानर', tool2_desc: 'मौसम के अनुसार दैनिक कार्य।', ph_enter_crop: 'फसल (जैसे गेहूं)', lbl_context: 'लाइव मौसम से लिंक', btn_plan: 'योजना बनाएं',
+            tool5_title: 'मृदा डिकोडर', tool5_desc: 'NPK रिपोर्ट विश्लेषण।', btn_soil: 'विश्लेषण',
+            tool6_title: 'लाभ कैलकुलेटर', tool6_desc: 'लागत बनाम आय का अनुमान।', ph_enter_crop: 'फसल का नाम', ph_enter_acres: 'जमीन (एकड़)', btn_calc: 'गणना करें',
+            tool3_title: 'मूल्य पूर्वानुमान', tool3_desc: 'मंडी भाव का अनुमान।', btn_predict: 'अनुमान',
+            tool4_title: 'किसान सहायक', tool4_desc: 'हिंदी, मराठी, अंग्रेजी में बोलें।', chat_welcome: 'नमस्ते! कुछ भी पूछें।', ph_chat: 'लिखें...',
+            market_title: 'स्मार्ट कॉमर्स', market_desc: 'बेहतर मोलभाव और तुरंत अनुबंध।',
+            tool_contract_title: 'अनुबंध निर्माता', btn_draft: 'बनाएं',
+            tool_negot_title: 'मोलभाव कोच', btn_coach: 'रणनीति पाएं',
+            scheme_title: 'सरकारी योजनाएं', scheme_desc: 'अपने लिए मदद खोजें।', scheme_ai_title: 'AI योजना खोजक', btn_find_schemes: 'मेरी योजनाएं',
+            sch1_title: 'पीएम-किसान', sch1_desc: '₹6000/वर्ष सहायता।', sch3_title: 'पीएम-कुसुम', sch3_desc: 'सोलर पंप सब्सिडी।',
+            footer_desc: '1.4 अरब भारतीयों को सशक्त बनाना।',
+            ticker_apmc: 'पुणे APMC लाइव:', ticker_alert: 'मौसम चेतावनी:', ticker_msg: 'रत्नागिरी और सिंधुदुर्ग के लिए भारी बारिश का अलर्ट। पशुओं को अंदर रखें।',
+            crop_onion: 'प्याज़', crop_tomato: 'टमाटर', crop_soybean: 'सोयाबीन', crop_rice: 'चावल',
+            hero_title_1: 'स्मार्ट खेती', hero_title_2: 'आसान हो गई।', hero_badge: '4,500+ गांवों में सक्रिय | v4.1'
         },
-        mr: {
-            nav_home: 'होम', nav_product: 'हार्डवेअर', nav_features: 'उपाय', nav_market: 'बाजार', nav_calc: 'बचत',
-            hero_badge: 'स्मार्ट शेती सिस्टीम 2.0', hero_title_1: 'शेती स्मार्ट करा,', hero_title_2: 'नफा वाढवा.', hero_desc: 'तुमचा संपूर्ण डिजिटल डॅशबोर्ड. मातीची स्थिती पहा, सिंचन स्वयंचलित करा आणि योग्य किमतीत विक्री करा.',
-            btn_talk: 'सहायकाला विचारा', btn_calc_hero: 'बचत पहा', ticker_label: 'लाइव मंडी रेट्स', chat_greet: 'राम राम! 🙏 मला काहीही विचारा!', chat_bubble: 'राम राम! 🙏 मदत हवी?',
-            prod_title: 'JalTantra कंट्रोलर प्रो', prod_desc: 'इंडस्ट्रियल ग्रेड स्मार्ट सिंचाई कंट्रोलर. सोलर पावर्ड, LoRaWAN सक्षम.',
-            feat_solar: 'सोलर पावर्ड', feat_lora: 'LoRaWAN रेंज', feat_ip65: 'IP65 वेदरप्रूफ', btn_order: 'प्री-ऑर्डर करा',
-            calc_title: 'तुमच्या बचतीची गणना करा', market_title: 'बाजार बुद्धिमत्ता', tool_contract_title: 'करार मसुदा तयार करा', scheme_title: 'शासकीय योजना',
-            solutions_desc: 'आधुनिक भारतीय शेतासाठी स्मार्ट आणि शाश्वत तंत्रज्ञान.',
-            sol_irrig_title: 'स्मार्ट सिंचन', sol_irrig_desc: 'रिअल-टाइम हवामान व माती माहितीने अचूक पाणी देणे.',
-            sol_disease_title: 'रोग ओळख AI', sol_disease_desc: 'लवकर ओळख — फळवंत आरोग्य सुधारते आणि नुकसान कमी होते.',
-            sol_health_title: 'पिक आरोग्य', sol_health_desc: 'रिअल-टाइम सेन्सर इनसाइट्स — कीड व मातीची समस्या प्रतिबंधित करा.',
-            sol_planning_title: 'पीक नियोजन', sol_planning_desc: 'हवामान व मातीच्या आधारे सर्वोत्तम पिक सुचवते.',
-            sol_hw_title: 'खर्च-प्रभावी हार्डवेअर', sol_hw_desc: 'टिकाऊ, स्वस्त IoT सोल्यूशन्स भारतीय शेतकरी लक्षात घेऊन.',
-            sol_market_title: 'थेट बाजारपेठ', sol_market_desc: 'शेतकरी थेट खरेदीदारांना विकतात — योग्य दर व जास्त नफा.',
-            sol_insights_title: 'बाजार अंतर्दृष्टी', sol_insights_desc: 'AI-आधारित अंतर्दृष्टी मागणीचा अंदाज व विक्री योजना सुधारते.',
-            sol_language_title: 'अनेक भाषा', sol_language_desc: 'स्थानीय भाषा मध्ये तंत्रज्ञान उपलब्ध करून अडथळे हटविते.',
-            farmers_trust: 'आम्हांवर विश्वास ठेवतात', farmers_count: '4,500+ शेतकरी', trusted_villages: '4,500+ गावांनी विश्वास ठेवलाय',
-            hero_scan_placeholder: "रोग ओळखा (उदा. 'पिवळे पाने')...", placeholder_buyer: 'खरेदीदार नाव', placeholder_crop: 'पीक', placeholder_acres: 'एकर', placeholder_email: 'ईमेल', placeholder_chat: 'हिंदी/मराठी मध्ये विचारा...',
-            hero_scan_attached: "चित्र जोडले गेले आहे! निदान करण्यासाठी क्लिक करा ->",
-            ai_thinking: 'विचार चालू आहे...', connecting_text: 'सेटेलाइटशी कनेक्ट करत आहोत...', analyzing_text: 'विश्लेषण करीत आहोत...', connection_error: 'कनेक्शन त्रुटी', check_settings: 'API की, नेटवर्क व CORS सेटिंग तपासा.',
-            input_symptom_missing: 'कृपया लक्षण टाइप करा किंवा फोटो अपलोड करा', calc_invalid: 'कृपया 0 पेक्षा मोठे वैध शेत क्षेत्र (एकर) प्रविष्ट करा.', demo_mode_message: 'प्रदर्शन मोड — API की कॉन्फिगर केलेली नाही. चैट सक्षम करण्यासाठी आपली की जोडा.', chat_error_text: 'त्रुटी',
-            btn_diagnose: 'निदान', btn_draft: 'कायदेशीर करार मसुदा', btn_find_schemes: 'माझ्या योजना शोधा', modal_title: 'निदान निकाल', menu_title: 'मेन्यू',
-            solutions_badge: 'उपाय', solutions_title: 'शेतकऱ्यांना सशक्त करणे', hardware_badge: 'हार्डवेअर', market_badge: 'स्मार्ट कॉमर्स',
-            calc_btn: 'बचत मोजा', calc_results_title: 'आकलन موسमी बचत', label_select_crop: 'पीक निवडा', label_farm_area: 'शेत क्षेत्र (एकर)',
-            footer_platform: 'प्लॅटफॉर्म', footer_resources: 'संसाधने', footer_newsletter: 'न्यूझलॅटर'
-            , footer_link_home: 'होम', footer_link_product: 'हार्डवेअर', footer_link_market: 'बाजार', footer_link_blog: 'ब्लॉग', footer_link_help: 'सहाय्य केंद्र', footer_link_schemes: 'योजना', footer_copyright: '© 2025 JalTantra Solutions Pvt. Ltd.', skip_to_content: 'सामग्रीकडे जा',
-            alt_mascot: 'JalTantra मॅस्कॉट — हसणारा शेतकरी', alt_controller: 'कंट्रोलर डिव्हाइस प्रतिमा', alt_avatar: 'शेतकरी अवतार प्रतिमा',
-            radar_subtitle: 'सेटेलाइट इंटेलिजेंस', radar_title: 'लाइव रेन रडार', btn_locate: 'फार्म लोके करा',
-            maps_subtitle: 'हवामान इंटेलिजेंस', maps_title: 'तपशीलवार हवामान नकाशे'
+        'mr': {
+            nav_home: 'होम', nav_iot: 'IoT लाइव', nav_ai: 'AI लॅब्स', nav_market: 'बाजार', nav_schemes: 'योजना',
+            hero_desc: 'भारतीय शेतकऱ्यासाठी जगातील पहिले ऑपरेटिंग सिस्टम. उपग्रह डेटा, मार्केट इंटेलिजन्स आणि स्वयंचलित सिंचन एकाच डॅशबोर्डवर.',
+            btn_ai: 'AI टूल्स', btn_radar: 'लाइव रडार', weather_label: 'पुणे फील्ड #4 वरून थेट',
+            iot_subtitle: 'फील्ड टेलिमेट्री', iot_title: 'स्मार्ट सिंचन डॅशबोर्ड', btn_ai_advisor: 'AI सल्लागार',
+            radar_subtitle: 'उपग्रह बुद्धिमत्ता', radar_title: 'थेट पाऊस रडार', btn_locate: 'शेत शोधा',
+            ai_title: 'जलतंत्र AI सुइट', ai_desc: 'निदान आणि सल्ला साधने',
+            tool1_title: 'पीक डॉक्टर', tool1_desc: 'फोटोवरून रोग ओळखा.', lbl_upload: 'अपलोड', btn_diagnose: 'निदान करा',
+            tool2_title: 'स्मार्ट फार्म प्लॅनर', tool2_desc: 'हवामानानुसार दैनंदिन कामे.', ph_enter_crop: 'पीक (उदा. गहू)', lbl_context: 'थेट हवामानाशी लिंक', btn_plan: 'योजना बनवा',
+            tool5_title: 'मृदा डिकोडर', tool5_desc: 'NPK रिपोर्ट विश्लेषण.', btn_soil: 'विश्लेषण',
+            tool6_title: 'नफा कॅल्क्युलेटर', tool6_desc: 'खर्च विरुद्ध उत्पन्नाचा अंदाज.', ph_enter_crop: 'पिकाचे नाव', ph_enter_acres: 'जमीन (एकर)', btn_calc: 'गणना करा',
+            tool3_title: 'भाव अंदाज', tool3_desc: 'बाजार भावाचा अंदाज.', btn_predict: 'अंदाज',
+            tool4_title: 'किसान सहाय्यक', tool4_desc: 'मराठी, हिंदी, इंग्रजीत बोला.', chat_welcome: 'नमस्कार! काहीही विचारा.', ph_chat: 'लिहा...',
+            market_title: 'स्मार्ट कॉमर्स', market_desc: 'चांगली वाटाघाटी आणि त्वरित करार.',
+            tool_contract_title: 'करार मसुदा', btn_draft: 'बनवा',
+            tool_negot_title: 'निगोशिएशन कोच', btn_coach: 'रणनीती मिळवा',
+            scheme_title: 'सरकारी योजना', scheme_desc: 'तुमच्यासाठी मदत शोधा.', scheme_ai_title: 'AI योजना शोधक', btn_find_schemes: 'माझ्या योजना',
+            sch1_title: 'पीएम-किसान', sch1_desc: '₹6000/वर्ष मदत.', sch3_title: 'पीएम-कुसुम', sch3_desc: 'सोलर पंप सबसिडी.',
+            footer_desc: '१.४ अब्ज भारतीयांना सक्षम करणे.',
+            ticker_apmc: 'पुणे APMC लाइव्ह:', ticker_alert: 'हवामान इशारा:', ticker_msg: 'रत्नागिरी आणि सिंधुदुर्गसाठी मुसळधार पावसाचा इशारा. जनावरांना आत ठेवा.',
+            crop_onion: 'कांदा', crop_tomato: 'टोमॅटो', crop_soybean: 'सोयाबीन', crop_rice: 'तांदूळ',
+            hero_title_1: 'स्मार्ट शेती', hero_title_2: 'सोपी झाली.', hero_badge: '4,500+ गावांमध्ये सक्रिय | v4.1'
         }
     };
-
-    // --- PRODUCT TAB SWITCHING ---
-    window.showProduct = function(productId) {
-        // Hide all product contents
-        const contents = document.querySelectorAll('.product-content');
-        contents.forEach(content => content.classList.add('hidden'));
-        
-        // Remove active class from all tabs
-        const tabs = document.querySelectorAll('.tab-btn');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        
-        // Show selected product content
-        const selectedContent = document.getElementById(productId);
-        if (selectedContent) {
-            selectedContent.classList.remove('hidden');
-        }
-        
-        // Add active class to clicked tab
-        const clickedTab = document.querySelector(`[data-product="${productId}"]`);
-        if (clickedTab) {
-            clickedTab.classList.add('active');
-        }
-    }
 
     window.setLang = function(lang) {
-        // set HTML lang attribute for screen readers and CSS rules
-        try { document.documentElement.lang = lang; } catch(e) { }
         currentLang = lang;
-        // persist user preference
-        try { localStorage.setItem('jalTantra_lang', lang); } catch(e) { /* ignore */ }
         document.querySelectorAll('[data-lang-key]').forEach(el => {
             const key = el.getAttribute('data-lang-key');
-            if(translations[lang] && translations[lang][key]) el.innerText = translations[lang][key];
+            if(translations[lang][key]) {
+                el.innerText = translations[lang][key];
+                if(el.tagName === 'INPUT') el.placeholder = translations[lang][key];
+            }
         });
-        // placeholders: inputs and textareas
-        document.querySelectorAll('[data-placeholder-key]').forEach(inp => {
-            const pk = inp.getAttribute('data-placeholder-key');
-            if (translations[lang] && translations[lang][pk]) inp.placeholder = translations[lang][pk];
-        });
-        // alt attributes for images
-        document.querySelectorAll('[data-alt-key]').forEach(el => {
-            const ak = el.getAttribute('data-alt-key');
-            if (translations[lang] && translations[lang][ak]) el.alt = translations[lang][ak];
-        });
-        // accessibility: inform screen-readers
-        const intro = document.getElementById('chat-intro');
-        const greeting = document.getElementById('chat-greeting');
-        if (intro) intro.innerText = translations[lang].chat_greet;
-        if (greeting) greeting.innerText = translations[lang].chat_bubble;
         ['en','hi','mr'].forEach(l => {
             const btn = document.getElementById('lang-'+l);
-            const mbtn = document.getElementById('lang-'+l+'-mobile');
-            if(btn) {
-                if(l === lang) { btn.classList.add('bg-primary', 'text-white'); btn.classList.remove('text-slate-500'); }
-                else { btn.classList.remove('bg-primary', 'text-white'); btn.classList.add('text-slate-500'); }
-            }
-            if(mbtn) {
-                if(l === lang) { mbtn.classList.add('bg-primary', 'text-white'); mbtn.classList.remove('text-slate-500'); }
-                else { mbtn.classList.remove('bg-primary', 'text-white'); mbtn.classList.add('text-slate-500'); }
+            if(l === lang) {
+                btn.classList.remove('text-gray-500', 'hover:text-gray-900');
+                btn.classList.add('lang-active', 'text-white', 'shadow-lg');
+            } else {
+                btn.classList.remove('lang-active', 'text-white', 'shadow-lg');
+                btn.classList.add('text-gray-500', 'hover:text-gray-900');
             }
         });
     };
 
-    // Initialize language (apply any translations loaded before JS executed)
-    if (translations[currentLang]) window.setLang(currentLang);
-
-    // --- WEATHER FETCH ---
+    // --- WEATHER & IOT SIMULATION ---
     async function fetchWeather() {
         try {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=18.52&longitude=73.85&current_weather=true&hourly=temperature_2m,relative_humidity_2m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=7`);
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=18.52&longitude=73.85&current_weather=true`);
             const data = await res.json();
-            const current = data.current_weather;
-            document.getElementById('hero-temp').innerText = `${Math.round(current.temperature)}°C`;
-            // Map weathercode to condition
-            const conditions = {
-                0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
-                45: 'Fog', 48: 'Depositing Rime Fog', 51: 'Light Drizzle', 53: 'Moderate Drizzle', 55: 'Dense Drizzle',
-                56: 'Light Freezing Drizzle', 57: 'Dense Freezing Drizzle', 61: 'Slight Rain', 63: 'Moderate Rain', 65: 'Heavy Rain',
-                66: 'Light Freezing Rain', 67: 'Heavy Freezing Rain', 71: 'Slight Snow', 73: 'Moderate Snow', 75: 'Heavy Snow',
-                77: 'Snow Grains', 80: 'Slight Rain Showers', 81: 'Moderate Rain Showers', 82: 'Violent Rain Showers',
-                85: 'Slight Snow Showers', 86: 'Heavy Snow Showers', 95: 'Thunderstorm', 96: 'Thunderstorm with Slight Hail', 99: 'Thunderstorm with Heavy Hail'
-            };
-            document.getElementById('hero-cond').innerText = conditions[current.weathercode] || 'Unknown';
-            document.getElementById('hero-wind').innerText = `${current.windspeed} km/h`;
-            // If there's a humidity element, add it
-            const humidityEl = document.getElementById('hero-humidity');
-            if (humidityEl && data.hourly.relative_humidity_2m) {
-                humidityEl.innerText = `${data.hourly.relative_humidity_2m[0]}%`;
-            }
-            // Store temperature for background effects
-            window.currentTemp = current.temperature;
-            // Populate forecast
-            const forecastContainer = document.getElementById('forecast-container');
-            if (forecastContainer && data.daily) {
-                forecastContainer.innerHTML = '';
-                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                data.daily.time.forEach((date, i) => {
-                    const day = new Date(date).getDay();
-                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
-                    const minTemp = Math.round(data.daily.temperature_2m_min[i]);
-                    const code = data.daily.weathercode[i];
-                    const condition = conditions[code] || 'Unknown';
-                    const icon = getWeatherIcon(code);
-                    forecastContainer.innerHTML += `
-                        <div class="text-center p-4 bg-gray-50 rounded-xl">
-                            <p class="font-bold text-gray-900">${days[day]}</p>
-                            <i class="${icon} text-3xl text-primary my-2"></i>
-                            <p class="text-sm text-gray-600">${condition}</p>
-                            <p class="font-bold text-lg">${maxTemp}° / ${minTemp}°</p>
-                        </div>
-                    `;
-                });
-            }
-        } catch(e) {
-            console.error('Weather fetch failed:', e);
-        }
-    }
-
-    function getWeatherIcon(code) {
-        if (code === 0 || code === 1) return 'fa-solid fa-sun';
-        if (code === 2 || code === 3) return 'fa-solid fa-cloud-sun';
-        if (code >= 45 && code <= 48) return 'fa-solid fa-smog';
-        if (code >= 51 && code <= 67) return 'fa-solid fa-cloud-rain';
-        if (code >= 71 && code <= 86) return 'fa-solid fa-snowflake';
-        if (code >= 95) return 'fa-solid fa-bolt';
-        return 'fa-solid fa-cloud';
+            document.getElementById('hero-temp').innerText = `${Math.round(data.current_weather.temperature)}°`;
+            document.getElementById('hero-cond').innerText = "Clear";
+            document.getElementById('hero-wind').innerText = `${data.current_weather.windspeed} km/h`;
+        } catch(e) {}
     }
     fetchWeather();
 
-    // --- GPS LOCATE ---
-    document.getElementById('gps-btn').addEventListener('click', () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                // Update the iframe src with new location
-                const iframes = document.querySelectorAll('#radar iframe, #weather-maps iframe');
-                iframes.forEach(iframe => {
-                    const src = iframe.src;
-                    const newSrc = src.replace(/lat=[^&]*/, `lat=${lat}`).replace(/lon=[^&]*/, `lon=${lon}`).replace(/detailLat=[^&]*/, `detailLat=${lat}`).replace(/detailLon=[^&]*/, `detailLon=${lon}`);
-                    iframe.src = newSrc;
-                });
-                alert('Maps updated to your location!');
-            }, () => {
-                alert('Unable to retrieve your location.');
-            });
-        } else {
-            alert('Geolocation is not supported by this browser.');
-        }
-    });
-
-    // --- GENERIC GEMINI CALLER ---
-    async function callGemini(prompt, resId, btnId, useModal = false, imgBase64 = null) {
-        const btn = document.getElementById(btnId);
-        const resBox = document.getElementById(resId);
+    function updateIoT() {
+        const m1 = 60 + Math.floor(Math.random() * 5);
+        const m2 = 40 + Math.floor(Math.random() * 5);
+        const t = 30 + Math.floor(Math.random() * 2);
+        const h = 45 + Math.floor(Math.random() * 3);
         
-        if(btn) {
-            var oldText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<span class="ai-loader"></span> ${(translations[currentLang] && translations[currentLang].ai_thinking) ? translations[currentLang].ai_thinking : 'Thinking...'}`;
-        }
+        const valA = document.getElementById('val-a');
+        if(valA) valA.innerText = m1 + '%';
+        const valB = document.getElementById('val-b');
+        if(valB) valB.innerText = m2 + '%';
+        
+        const iotTemp = document.getElementById('iot-temp');
+        if(iotTemp) iotTemp.innerText = t + '°C';
+        const iotHum = document.getElementById('iot-hum');
+        if(iotHum) iotHum.innerText = h + '%';
+        
+        const c = 251.2; // Circumference for r=40
+        const gaugeA = document.getElementById('gauge-a');
+        if(gaugeA) gaugeA.style.strokeDashoffset = c - (c * m1 / 100);
+        const gaugeB = document.getElementById('gauge-b');
+        if(gaugeB) gaugeB.style.strokeDashoffset = c - (c * m2 / 100);
+    }
+    setInterval(updateIoT, 3000);
+    document.getElementById('iot-refresh')?.addEventListener('click', updateIoT);
 
-        if(!useModal && resBox) {
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `<i>${(translations[currentLang] && translations[currentLang].connecting_text) ? translations[currentLang].connecting_text : 'Connecting to Satellite...'}</i>`;
-        } else if (useModal) {
-            const modal = document.getElementById('modal-overlay');
-            const content = document.getElementById('modal-content');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            modal.setAttribute('aria-hidden', 'false');
-            // focus the nearest close button in the modal
-            setTimeout(() => {
-                const closeBtn = modal.querySelector('button[onclick="closeModal()"]');
-                if (closeBtn) closeBtn.focus();
-            }, 80);
-            content.innerHTML = `<div class="text-center p-4"><span class="ai-loader"></span> ${(translations[currentLang] && translations[currentLang].analyzing_text) ? translations[currentLang].analyzing_text : 'Analyzing...'}</div>`;
-        }
+    // --- GENERIC GEMINI HANDLER ---
+    async function callGemini(promptText, resultElementId, btnId, loadingText = "Thinking...", systemInstr = "") {
+        const resBox = document.getElementById(resultElementId);
+        const btn = document.getElementById(btnId);
+        if (!resBox || !btn) return;
 
-        // API key safety check
-        if (!apiKey || apiKey === '__REPLACE_WITH_YOUR_API_KEY__') {
-            const message = '<p class="text-yellow-500">API key not configured — set your Generative Language API key in the page (for development) or via your build environment. The current demo will not make external calls.</p>';
-            if (useModal) {
-                document.getElementById('modal-content').innerHTML = message;
-                document.getElementById('modal-overlay').setAttribute('aria-hidden', 'false');
-                document.getElementById('modal-overlay').classList.remove('hidden');
-                document.getElementById('modal-overlay').classList.add('flex');
-            } else if (resBox) {
-                resBox.innerHTML = message;
-            }
-            if (btn) { btn.disabled = false; btn.innerHTML = oldText; }
-            return;
-        }
+        const originalBtnHtml = btn.innerHTML;
+        
+        btn.disabled = true;
+        btn.innerHTML = `<span class="ai-loader"></span> ${loadingText}`;
+        resBox.classList.remove('hidden');
+        resBox.innerHTML = "<i>Connecting to Gemini Satellite...</i>";
 
         try {
-            const parts = [{ text: prompt }];
-            if (imgBase64) {
-                parts.push({ inlineData: { mimeType: "image/jpeg", data: imgBase64 } });
-            }
-
             const res = await fetch(geminiUrl, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ contents: [{ parts: parts }] })
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }],
+                    systemInstruction: systemInstr ? { parts: [{ text: systemInstr }] } : undefined
+                })
             });
-            if (!res.ok) {
-                throw new Error('Non-OK response: ' + res.status + ' ' + res.statusText);
-            }
             const data = await res.json();
-            const md = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
-            const parsed = marked.parse(md);
-
-            // Add Copy Button Wrapper
-            const safeText = md.replace(/"/g, '&quot;');
-            const finalHtml = `
-                <div class="relative group">
-                    <button onclick="copyToClipboard(this)" data-text="${safeText}" class="absolute top-0 right-0 text-slate-400 hover:text-primary p-2 transition-opacity opacity-0 group-hover:opacity-100" title="Copy">
-                        <i class="fa-regular fa-copy"></i>
-                    </button>
-                    ${parsed}
-                </div>
-            `;
-
-            if(useModal) {
-                document.getElementById('modal-content').innerHTML = finalHtml;
-            } else if (resBox) {
-                resBox.innerHTML = finalHtml;
-            }
-        } catch(e) {
-            console.error('Gemini request error', e);
-            const errMsg = (translations[currentLang] && translations[currentLang].connection_error) ? translations[currentLang].connection_error : 'Connection Error';
-            const errHTML = `<p class="text-red-500">${errMsg}: ${e?.message || 'unknown'}. ${(translations[currentLang] && translations[currentLang].check_settings) ? translations[currentLang].check_settings : 'Check API key, network, and CORS settings.'}</p>`;
-            if(useModal) document.getElementById('modal-content').innerHTML = errHTML;
-            else if(resBox) resBox.innerHTML = errHTML;
+            const mdText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Signal lost.";
+            resBox.innerHTML = marked.parse(mdText);
+        } catch (e) {
+            resBox.innerText = "Connection Failed. Check API Key.";
         }
-        
-        if(btn) {
-            btn.disabled = false;
-            btn.innerHTML = oldText;
-        }
+        btn.disabled = false;
+        btn.innerHTML = originalBtnHtml;
     }
 
-    // --- NEW FEATURE LISTENERS ---
-    
-    // 1. Hero Quick Scan (Multimodal)
-    const heroImgInput = document.getElementById('hero-img-input');
-    let heroImgBase64 = null;
-    heroImgInput.addEventListener('change', (e) => {
+    // --- FEATURE LISTENERS ---
+    document.getElementById('ai-irrigate-btn')?.addEventListener('click', () => {
+        const t = document.getElementById('iot-temp').innerText;
+        const m = document.getElementById('val-a').innerText;
+        callGemini(`Act as irrigation expert. Temp: ${t}, Moisture: ${m}. Crop: Cotton. Advice? Reply in ${currentLang} (1 sentence).`, 'iot-ai-res', 'ai-irrigate-btn', 'Analyzing...');
+    });
+
+    const fileInput = document.getElementById('crop-image-input');
+    let imgBase64 = "";
+    fileInput?.addEventListener('change', e => {
         const file = e.target.files[0];
-            if(file) {
+        if(file) {
             const reader = new FileReader();
-            reader.onload = (ev) => { 
-                heroImgBase64 = ev.target.result.split(',')[1];
-                document.getElementById('hero-img-indicator').classList.remove('hidden');
-                const att = (translations[currentLang] && translations[currentLang].hero_scan_attached) ? translations[currentLang].hero_scan_attached : "Image attached! Click Diagnose ->";
-                document.getElementById('hero-scan-input').placeholder = att;
+            reader.onload = ev => {
+                imgBase64 = ev.target.result.split(',')[1];
+                document.getElementById('preview-img').src = ev.target.result;
+                document.getElementById('preview-img').classList.remove('hidden');
+                document.getElementById('preview-img').classList.add('block');
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // make the image label keyboard-operable
-    const heroLabel = document.querySelector('label[for="hero-img-input"]');
-    if (heroLabel) {
-        heroLabel.addEventListener('keydown', (ev) => {
-            if (ev.key === 'Enter' || ev.key === ' ') {
-                ev.preventDefault();
-                document.getElementById('hero-img-input').click();
-            }
-        });
-    }
-
-    document.getElementById('hero-scan-btn').addEventListener('click', () => {
-        const val = document.getElementById('hero-scan-input').value;
-        if(!val && !heroImgBase64) return alert((translations[currentLang] && translations[currentLang].input_symptom_missing) ? translations[currentLang].input_symptom_missing : "Type a symptom or upload a photo");
+    // 1. Enhanced Crop Doctor Listener (Structured Report)
+    document.getElementById('analyze-btn')?.addEventListener('click', async () => {
+        if(!imgBase64) return alert("Upload image");
+        const btn = document.getElementById('analyze-btn');
+        const resBox = document.getElementById('doctor-result');
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="ai-loader"></span> Scanning...';
+        resBox.classList.remove('hidden');
         
-        let prompt = `Act as a Senior Plant Pathologist. I am a farmer. `;
-        if(val) prompt += `My crop has "${val}". `;
-        prompt += `Diagnose and suggest cure in ${currentLang}. 
-        Format: Markdown. 
-        Structure: 
-        1. **Diagnosis** 2. **Organic Solution** (Home remedies)
-        3. **Chemical Solution** (Brands)
-        4. **Prevention**`;
-        
-        callGemini(prompt, null, 'hero-scan-btn', true, heroImgBase64);
+        const prompt = `Act as an expert Plant Pathologist. Analyze this crop image. Provide a detailed diagnosis report in ${currentLang}.
+        Format: Markdown.
+        Structure:
+        ## 🦠 Diagnosis
+        **Disease/Pest:** [Name]
+        **Confidence:** [High/Medium/Low]
+
+        ### 🔍 Symptoms Identified
+        - [Symptom 1]
+        - [Symptom 2]
+
+        ### 🌿 Organic Solution
+        - [Remedy 1]
+        - [Remedy 2]
+
+        ### 🧪 Chemical Treatment
+        - [Fungicide/Pesticide Name] with dosage
+
+        ### 🛡️ Future Prevention
+        - [Tip 1]`;
+
+        try {
+            const res = await fetch(geminiUrl, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: imgBase64 } }] }] }) 
+            });
+            const data = await res.json();
+            resBox.innerHTML = marked.parse(data.candidates?.[0]?.content?.parts?.[0]?.text || "Error");
+        } catch(e) { resBox.innerHTML = "Error"; }
+        btn.innerHTML = origHtml;
     });
 
-    // ensure modal aria-hidden toggles when callGemini opens/closes
-
-    // 3. ROI Advice
-    document.getElementById('calc-btn').addEventListener('click', () => {
-        const crop = document.getElementById('calc-crop').value;
-        const areaRaw = document.getElementById('calc-area').value;
-        const area = parseFloat(areaRaw || 0);
-
-        // validation
-        if (!area || area <= 0 || isNaN(area)) {
-            // friendly inline validation
-            alert((translations[currentLang] && translations[currentLang].calc_invalid) ? translations[currentLang].calc_invalid : 'Please enter a valid farm area (acres) greater than 0.');
-            return;
-        }
-
-        let profitPerAcre = 25000;
-        if (crop && crop.toLowerCase().includes('sugarcane')) profitPerAcre = 50000;
-
-        const totalProfit = profitPerAcre * area;
-        const waterUsed = area * 400000; // baseline estimate
-        const waterSaved = area * 150000; // estimated saved with system
-
-        // Format numbers with thousands separators
-        const fmt = v => Number(v).toLocaleString(undefined);
-
-        document.getElementById('res-water').innerText = fmt(waterUsed) + ' L';
-        const savedEl = document.getElementById('res-saved');
-        if (savedEl) savedEl.innerText = fmt(waterSaved) + ' L';
-        document.getElementById('res-money').innerText = '₹' + fmt(totalProfit);
+    document.getElementById('plan-btn')?.addEventListener('click', () => {
+        const crop = document.getElementById('plan-crop').value;
+        if(!crop) return alert("Enter crop");
+        callGemini(`Farmer in Pune. Weather: Clear. Crop: ${crop}. 3 tasks for today. Reply in ${currentLang} (Markdown).`, 'plan-result', 'plan-btn', 'Planning...');
     });
 
-    // --- EXISTING LISTENERS ---
-    document.getElementById('contract-btn')?.addEventListener('click', () => {
-        const b = document.getElementById('contract-buyer').value;
-        callGemini(`Draft contract for buyer ${b}. ${currentLang}. Markdown.`, 'contract-result', 'contract-btn');
+    document.getElementById('soil-btn')?.addEventListener('click', () => {
+        const n = document.getElementById('soil-n').value;
+        if(!n) return alert("Enter N");
+        callGemini(`Analyze soil N=${n}. Suggest fertilizer. Reply in ${currentLang} (Markdown).`, 'soil-result', 'soil-btn', 'Decoding...');
     });
-    document.getElementById('find-schemes-btn')?.addEventListener('click', () => {
-        const l = document.getElementById('scheme-land').value;
-        callGemini(`Schemes for ${l} acres in India. ${currentLang}. List.`, 'scheme-results', 'find-schemes-btn');
+
+    document.getElementById('roi-btn')?.addEventListener('click', () => {
+        const crop = document.getElementById('roi-crop').value;
+        if(!crop) return alert("Enter crop");
+        callGemini(`Estimate profit for ${crop} in India/acre. Table format. Reply in ${currentLang}.`, 'roi-result', 'roi-btn', 'Calculating...');
     });
-    document.getElementById('negot-btn')?.addEventListener('click', () => {
-        const s = document.getElementById('negot-situation').value;
-        callGemini(`Negotiation help: "${s}". ${currentLang}.`, 'negot-result', 'negot-btn');
+
+    document.getElementById('pred-btn')?.addEventListener('click', () => {
+        const crop = document.getElementById('pred-crop').value;
+        if(!crop) return alert("Enter crop");
+        callGemini(`Predict ${crop} price trend in Maharashtra. Reply in ${currentLang}.`, 'pred-result', 'pred-btn', 'Forecasting...');
     });
-    
-    // Chatbot
-    window.toggleChat = function() {
-        const win = document.getElementById('chat-window');
-        const greeting = document.getElementById('chat-greeting');
-        const toggleBtn = document.getElementById('chat-toggle-btn');
-        if (win) win.classList.toggle('hidden');
-        if (greeting) greeting.classList.toggle('hidden');
-        if (toggleBtn) {
-            const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-            toggleBtn.setAttribute('aria-expanded', (!expanded).toString());
-        }
-    };
-    document.getElementById('chat-send-float').addEventListener('click', () => {
-        const inp = document.getElementById('chat-input-float');
-        const txt = inp.value;
+
+    document.getElementById('send-chat-btn')?.addEventListener('click', () => {
+        const txt = document.getElementById('chat-input').value;
         if(!txt) return;
-        document.getElementById('chat-messages').innerHTML += `<div class="chat-bubble chat-user">${txt}</div>`;
-        inp.value = '';
+        const history = document.getElementById('chat-history');
+        history.innerHTML += `<div class="flex justify-end gap-2"><div class="bg-emerald-600 p-2 rounded-lg rounded-tr-none text-white">${txt}</div></div>`;
+        document.getElementById('chat-input').value = '';
         
-            (async () => {
-            const msgs = document.getElementById('chat-messages');
-            const loadId = 'l'+Date.now();
-            msgs.innerHTML += `<div id="${loadId}" class="chat-bubble chat-bot">...</div>`;
-            msgs.scrollTop = msgs.scrollHeight;
+        (async () => {
             try {
-                if (!apiKey || apiKey === '__REPLACE_WITH_YOUR_API_KEY__') {
-                    document.getElementById(loadId).innerText = (translations[currentLang] && translations[currentLang].demo_mode_message) ? translations[currentLang].demo_mode_message : "Demo mode — API key not configured. Add your key to enable chat.";
-                    return;
-                }
-                const res = await fetch(geminiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `User: ${txt}. Reply in ${currentLang}.` }] }] }) });
-                const d = await res.json();
-                document.getElementById(loadId).innerHTML = marked.parse(d.candidates[0].content.parts[0].text);
-            } catch(e) { document.getElementById(loadId).innerText = (translations[currentLang] && translations[currentLang].chat_error_text) ? translations[currentLang].chat_error_text : "Error"; }
+                const res = await fetch(geminiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `You are Kisan Sahayak. User: "${txt}". Reply in ${currentLang} (short).` }] }] }) });
+                const data = await res.json();
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
+                history.innerHTML += `<div class="flex gap-2"><div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px]"><i class="fa-solid fa-robot"></i></div><div class="bg-gray-100 p-2 rounded-lg rounded-tl-none text-gray-800">${marked.parse(reply)}</div></div>`;
+                history.scrollTop = history.scrollHeight;
+            } catch(e) {}
         })();
     });
 
-    // Mobile Menu
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const mobileClose = document.getElementById('mobile-close');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (mobileToggle && mobileMenu) {
-        mobileToggle.setAttribute('aria-controls', 'mobile-menu');
-        mobileToggle.setAttribute('aria-expanded', 'false');
-        mobileToggle.addEventListener('click', () => {
-            mobileMenu.classList.add('open');
-            mobileToggle.setAttribute('aria-expanded', 'true');
-            // move focus to close so keyboard users can escape quickly
-            setTimeout(() => mobileClose?.focus(), 120);
-        });
+    document.getElementById('contract-btn')?.addEventListener('click', () => {
+        const buyer = document.getElementById('contract-buyer').value;
+        if(!buyer) return alert("Enter buyer");
+        callGemini(`Draft farming contract for buyer ${buyer}. Reply in ${currentLang} (Markdown).`, 'contract-result', 'contract-btn', 'Drafting...');
+    });
+
+    document.getElementById('negot-btn')?.addEventListener('click', () => {
+        const sit = document.getElementById('negot-situation').value;
+        if(!sit) return alert("Enter situation");
+        callGemini(`Negotiation help: "${sit}". 3 arguments. Reply in ${currentLang}.`, 'negot-result', 'negot-btn', 'Thinking...');
+    });
+
+    // Export Manager Listener
+    document.getElementById('export-btn')?.addEventListener('click', () => {
+        const crop = document.getElementById('export-crop').value;
+        if(!crop) return alert("Enter crop");
+        callGemini(`Act as Export Consultant. Crop: ${crop}. List top 3 export countries from India and 1 key quality standard for each. Reply in ${currentLang}.`, 'export-result', 'export-btn', 'Checking Global Markets...');
+    });
+
+    // Intercropping Genius Listener
+    document.getElementById('inter-btn')?.addEventListener('click', () => {
+        const crop = document.getElementById('inter-crop').value;
+        if(!crop) return alert("Enter crop");
+        callGemini(`Suggest 2 best intercrops for ${crop} to increase income and soil health. Reply in ${currentLang}.`, 'inter-result', 'inter-btn', 'Finding Pairs...');
+    });
+
+    // Pashu Vaidya Listener
+    document.getElementById('vet-btn')?.addEventListener('click', () => {
+        const animal = document.getElementById('vet-animal').value;
+        const sym = document.getElementById('vet-symptom').value;
+        if(!animal || !sym) return alert("Enter details");
+        callGemini(`Act as a Veterinarian. Animal: ${animal}. Symptoms: ${sym}. Diagnosis and immediate home remedies? Reply in ${currentLang} (Markdown).`, 'vet-result', 'vet-btn', 'Diagnosing...');
+    });
+
+    // Yantra Doctor Listener
+    document.getElementById('mech-btn')?.addEventListener('click', () => {
+        const equip = document.getElementById('mech-equip').value;
+        const prob = document.getElementById('mech-issue').value;
+        if(!equip || !prob) return alert("Enter details");
+        callGemini(`Act as a Mechanic. Equipment: ${equip}. Problem: ${prob}. 3 troubleshooting steps? Reply in ${currentLang} (Markdown).`, 'mech-result', 'mech-btn', 'Troubleshooting...');
+    });
+
+    document.getElementById('find-schemes-btn')?.addEventListener('click', () => {
+        const land = document.getElementById('scheme-land').value;
+        if(!land) return alert("Enter details");
+        callGemini(`Suggest 3 Indian govt schemes for farmer with ${land} acres. Reply in ${currentLang} (Markdown list).`, 'scheme-results', 'find-schemes-btn', 'Searching DB...');
+    });
+
+    // --- NAVBAR MOBILE TOGGLE ---
+    const mobileToggle = document.querySelector('.lg\\:hidden');
+    const mobileMenu = document.createElement('div');
+    mobileMenu.id = 'mobile-menu-overlay';
+    mobileMenu.className = 'fixed inset-0 z-50 bg-white transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col p-6';
+    mobileMenu.innerHTML = `
+        <button id="mobile-close" class="self-end text-3xl mb-8">&times;</button>
+        <a href="#home" class="mb-4 text-xl font-bold" onclick="closeMobileMenu()">Home</a>
+        <a href="#iot" class="mb-4 text-xl font-bold" onclick="closeMobileMenu()">IoT Public</a>
+        <a href="#ai-labs" class="mb-4 text-xl font-bold" onclick="closeMobileMenu()">AI Labs</a>
+        <a href="#market" class="mb-4 text-xl font-bold" onclick="closeMobileMenu()">Market</a>
+    `;
+    document.body.appendChild(mobileMenu);
+
+    function openMobileMenu() {
+        document.getElementById('mobile-menu-overlay').classList.remove('translate-x-full');
     }
-    if (mobileClose && mobileMenu) {
-        mobileClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('open');
-            mobileToggle?.setAttribute('aria-expanded', 'false');
-            mobileToggle?.focus();
-        });
-        // make close key accessible via keyboard
-        mobileClose.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') mobileClose.click(); });
+    window.closeMobileMenu = function() {
+        document.getElementById('mobile-menu-overlay').classList.add('translate-x-full');
     }
 
-    // Global Escape key to close overlays
-    document.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Escape') {
-            closeModal();
-            if (mobileMenu && mobileMenu.classList.contains('open')) {
-                mobileMenu.classList.remove('open');
-                mobileToggle?.setAttribute('aria-expanded', 'false');
-            }
-            const chatWindow = document.getElementById('chat-window');
-            if (chatWindow && !chatWindow.classList.contains('hidden')) toggleChat();
-        }
-    });
+    if(mobileToggle) mobileToggle.addEventListener('click', openMobileMenu);
+    document.getElementById('mobile-close')?.addEventListener('click', closeMobileMenu);
 
 });

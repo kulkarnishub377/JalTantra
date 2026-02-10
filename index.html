@@ -3,595 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JalTantra - Smart Farming System</title>
-    <meta name="description" content="JalTantra: Smart Farming System 2.0. AI-driven crop diagnosis, smart irrigation, and market intelligence for Indian farmers.">
-    <meta name="theme-color" content="#059669">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="assets/images/logo.png">
+    <title>JalTantra Enterprise | Smart Farming OS</title>
+    <meta name="description" content="India's leading AI Agriculture platform. Satellite Weather, Mandi Rates, and Crop Doctor for Pune and Maharashtra farmers.">
 
-    <!-- Fonts -->
+    <!-- 1. FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&family=Noto+Sans+Devanagari:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- 2. ANIMATION LIB -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
-    <!-- Tailwind CSS -->
+    <!-- 3. MARKDOWN PARSER -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- 4. TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        devanagari: ['Noto Sans Devanagari', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#059669', // Emerald 600
-                        secondary: '#0ea5e9', // Sky 500
-                        dark: '#0f172a', // Slate 900
-                    }
+                    colors: { primary: '#059669', secondary: '#0ea5e9', dark: '#0f172a', surface: '#ffffff' },
+                    fontFamily: { sans: ['Manrope', 'sans-serif'], display: ['Outfit', 'sans-serif'] }
                 }
             }
         }
     </script>
-
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
+    
+    <!-- 5. LOCAL STYLES -->
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
 </head>
-<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
-    <!-- Animated Background -->
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- CANVAS BG -->
     <canvas id="bgCanvas"></canvas>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="assets/images/logo.png" alt="JalTantra Logo" class="h-10 w-10 rounded-full mr-3 shadow-md border-2 border-primary">
-                    <span class="font-display font-bold text-2xl tracking-tight text-primary">JalTantra</span>
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+                    <img src="assets/images/logo.png" alt="JalTantra Logo" class="h-10 w-10 relative rounded-lg bg-white p-1">
                 </div>
+                <span class="text-2xl font-bold font-display text-slate-800 tracking-tight">Jal<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">Tantra</span></span>
+            </a>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-sm font-medium hover:text-primary transition-colors" data-lang-key="nav_home">Home</a>
-                    <a href="#product" class="text-sm font-medium hover:text-primary transition-colors" data-lang-key="nav_product">Hardware</a>
-                    <a href="#features" class="text-sm font-medium hover:text-primary transition-colors" data-lang-key="nav_features">Solutions</a>
-                    <a href="#market" class="text-sm font-medium hover:text-primary transition-colors" data-lang-key="nav_market">Market</a>
-                    <a href="#calculator" class="text-sm font-medium hover:text-primary transition-colors" data-lang-key="nav_calc">Savings</a>
-                    
-                    <!-- Language Switcher -->
-                    <div class="flex bg-slate-200 rounded-full p-1 ml-4">
-                        <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 rounded-full text-xs font-bold transition-all bg-primary text-white">EN</button>
-                        <button onclick="setLang('hi')" id="lang-hi" class="px-3 py-1 rounded-full text-xs font-bold transition-all text-slate-500 hover:text-slate-800">HI</button>
-                        <button onclick="setLang('mr')" id="lang-mr" class="px-3 py-1 rounded-full text-xs font-bold transition-all text-slate-500 hover:text-slate-800">MR</button>
-                    </div>
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="#home" class="nav-link font-medium hover:text-primary transition" data-lang-key="nav_home">Home</a>
+                <a href="#iot" class="nav-link font-medium hover:text-primary transition" data-lang-key="nav_iot">IoT Live</a>
+                <a href="#ai-labs" class="nav-link font-medium hover:text-primary transition" data-lang-key="nav_ai">AI Labs</a>
+                <a href="#market" class="nav-link font-medium hover:text-primary transition" data-lang-key="nav_market">Market</a>
+                <a href="#schemes" class="nav-link font-medium hover:text-primary transition" data-lang-key="nav_schemes">Schemes</a>
+            </div>
 
-                    <!-- CTA -->
-                    <a href="#contact" class="bg-primary text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all hover:-translate-y-1" data-lang-key="btn_talk">Ask Sahayak</a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-toggle" class="text-slate-700 hover:text-primary focus:outline-none p-2" aria-label="Open Menu">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
+            <!-- Language & CTA -->
+            <div class="hidden lg:flex items-center gap-3">
+                <div class="flex items-center bg-gray-100/50 rounded-full p-1 border border-gray-200">
+                    <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 text-sm rounded-full transition-all duration-300 font-medium">EN</button>
+                    <button onclick="setLang('hi')" id="lang-hi" class="px-3 py-1 text-sm rounded-full transition-all duration-300 font-medium font-devanagari">हि</button>
+                    <button onclick="setLang('mr')" id="lang-mr" class="px-3 py-1 text-sm rounded-full transition-all duration-300 font-medium font-devanagari">म</button>
                 </div>
             </div>
+
+            <!-- Mobile Toggle -->
+            <button class="lg:hidden text-2xl text-slate-700" id="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col justify-center items-center space-y-8 md:hidden transition-transform duration-300 translate-x-full">
-        <button id="mobile-close" class="absolute top-6 right-6 text-3xl text-slate-500 hover:text-red-500 p-2" aria-label="Close Menu">
-            <i class="fa-solid fa-times"></i>
-        </button>
-        <span class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-4" data-lang-key="menu_title">Menu</span>
-        <a href="#home" class="text-2xl font-bold hover:text-primary" onclick="document.getElementById('mobile-close').click()" data-lang-key="nav_home">Home</a>
-        <a href="#product" class="text-2xl font-bold hover:text-primary" onclick="document.getElementById('mobile-close').click()" data-lang-key="nav_product">Hardware</a>
-        <a href="#features" class="text-2xl font-bold hover:text-primary" onclick="document.getElementById('mobile-close').click()" data-lang-key="nav_features">Solutions</a>
-        <a href="#market" class="text-2xl font-bold hover:text-primary" onclick="document.getElementById('mobile-close').click()" data-lang-key="nav_market">Market</a>
-        <div class="flex gap-4 mt-8">
-            <button onclick="setLang('en')" id="lang-en-mobile" class="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center font-bold bg-primary text-white">EN</button>
-            <button onclick="setLang('hi')" id="lang-hi-mobile" class="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500">HI</button>
-            <button onclick="setLang('mr')" id="lang-mr-mobile" class="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center font-bold text-slate-500">MR</button>
+    <!-- TICKER -->
+    <div class="fixed bottom-0 w-full z-40 bg-slate-900 text-white py-2 overflow-hidden border-t border-slate-700 shadow-xl lg:static lg:mt-[72px] lg:bg-emerald-900">
+        <div class="animate-marquee whitespace-nowrap flex gap-12 text-sm">
+            <span class="ticker-item"><span class="text-emerald-400 mr-2" data-lang-key="ticker_apmc">PUNE APMC LIVE:</span> <span data-lang-key="crop_onion">Onion</span> ₹2400 <i class="fa-solid fa-arrow-trend-up price-up ml-1"></i></span>
+            <span class="ticker-item"><span data-lang-key="crop_tomato">Tomato</span> ₹1800 <i class="fa-solid fa-arrow-trend-down price-down ml-1"></i></span>
+            <span class="ticker-item"><span data-lang-key="crop_soybean">Soybean</span> ₹4500 <i class="fa-solid fa-minus text-gray-400 ml-1"></i></span>
+            <span class="ticker-item"><span class="text-amber-400 mr-2" data-lang-key="ticker_alert">WEATHER ALERT:</span> <span data-lang-key="ticker_msg">Heavy rainfall alert for Ratnagiri. Keep livestock indoors.</span></span>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative pt-32 pb-20 min-h-screen flex items-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <!-- HERO SECTION -->
+    <section id="home" class="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
                 <!-- Text Content -->
-                <div data-aos="fade-right">
-                    <span class="inline-block py-1 px-3 bg-green-100 text-primary text-xs font-bold rounded-full mb-6 tracking-wide" data-lang-key="hero_badge">Smart Farming System 2.0</span>
-                    <h1 class="text-5xl md:text-7xl font-display font-extrabold leading-tight mb-6">
-                        <span data-lang-key="hero_title_1">Farm Smarter,</span><br>
-                        <span class="text-gradient" data-lang-key="hero_title_2">Earn Better.</span>
+                <div class="lg:w-1/2 text-center lg:text-left" data-aos="fade-right">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-wider shadow-sm border border-emerald-200">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span data-lang-key="hero_badge">Active in 4,500+ Villages | v4.1</span>
+                    </div>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6">
+                        <span data-lang-key="hero_title_1">Smart Farming,</span><br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-500" data-lang-key="hero_title_2">Simplified.</span>
                     </h1>
-                    <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-lg leading-relaxed" data-lang-key="hero_desc">
-                        Your complete digital dashboard. Monitor soil health, automate irrigation, and sell at the right price—all from one app.
+                    
+                    <p class="text-xl text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed" data-lang-key="hero_desc">
+                        The world's first operating system for the Indian Farmer. Integrate satellite data, market intelligence, and automated irrigation in one dashboard.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <button onclick="document.getElementById('hero-img-input').click()" class="hero-cta bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-primary/30 flex items-center justify-center gap-3">
-                            <i class="fa-solid fa-camera"></i> <span data-lang-key="btn_diagnose">Diagnose</span>
-                        </button>
-                        <input type="file" id="hero-img-input" accept="image/*" class="hidden">
-                        <a href="#calculator" class="hero-cta bg-white text-slate-800 border border-slate-200 px-8 py-4 rounded-xl font-bold shadow-sm hover:bg-slate-50 flex items-center justify-center gap-3">
-                            <i class="fa-solid fa-calculator text-secondary"></i> <span data-lang-key="btn_calc_hero">Check Savings</span>
-                        </a>
-                    </div>
-
-                    <!-- Quick Scan Input -->
-                    <div class="bg-white p-2 rounded-2xl shadow-xl flex items-center max-w-md border border-slate-100 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
-                        <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 ml-1">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <input type="text" id="hero-scan-input" data-placeholder-key="hero_scan_placeholder" placeholder="Identify disease (e.g. 'Yellow leaves')..." class="flex-1 bg-transparent border-none focus:ring-0 px-4 py-2 text-sm md:text-base outline-none">
-                        <span id="hero-img-indicator" class="hidden text-xs text-green-600 font-bold px-2 whitespace-nowrap"><i class="fa-solid fa-check-circle"></i> Img</span>
-                        <button id="hero-scan-btn" class="bg-gradient-to-r from-primary to-emerald-500 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-md hover:scale-105 transition-transform">
+                    <!-- Quick Scan -->
+                    <div class="glass-panel p-2 rounded-2xl shadow-xl max-w-md mx-auto lg:mx-0 flex items-center gap-2 border border-emerald-100">
+                        <label for="hero-img-input" class="cursor-pointer p-3 bg-slate-100 hover:bg-slate-200 rounded-xl transition text-slate-500 group relative overflow-hidden" tabindex="0">
+                            <i class="fa-solid fa-camera text-xl group-hover:scale-110 transition-transform"></i>
+                            <input type="file" id="hero-img-input" accept="image/*" class="hidden">
+                            <div id="hero-img-indicator" class="absolute inset-0 bg-emerald-500 hidden items-center justify-center text-white text-xs"><i class="fa-solid fa-check"></i></div>
+                        </label>
+                        <input type="text" id="hero-scan-input" data-placeholder-key="hero_scan_placeholder" placeholder="Identify disease (e.g. 'Yellow leaves')..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400">
+                        <button id="hero-scan-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95">
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
-
-                    <!-- Trust Badges -->
-                    <div class="mt-10 flex items-center gap-4 text-sm text-slate-500 font-medium">
-                        <div class="flex -space-x-3">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Farmer" loading="lazy">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Farmer" loading="lazy">
-                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/85.jpg" alt="Farmer" loading="lazy">
-                        </div>
-                        <p><span class="text-slate-900 font-bold" data-lang-key="farmers_count">4,500+ Farmers</span> <span data-lang-key="farmers_trust">trust JalTantra</span></p>
+                    <div class="mt-2 text-xs text-slate-400 flex items-center justify-center lg:justify-start gap-2">
+                        <i class="fa-brands fa-google text-emerald-500"></i> Powered by Gemini 2.5 Advanced Vision
                     </div>
                 </div>
 
-                <!-- Interactive Visuals (Weather + Radar) -->
-                <div class="relative" data-aos="fade-left">
-                    <!-- Weather Card -->
-                    <div class="glass-card rounded-3xl p-6 mb-6 relative z-10 w-full max-w-sm ml-auto">
-                        <div class="flex justify-between items-start mb-4">
+                <!-- Hero Image -->
+                <div class="lg:w-1/2 relative" data-aos="fade-left">
+                    <div class="relative z-10 animate-float">
+                        <img src="assets/images/isometric-agriculture-automation-elements-collection-332869.png" alt="Smart Farming" class="w-full drop-shadow-2xl">
+                        
+                        <!-- Floating Stats Cards -->
+                        <div class="absolute -left-4 top-20 glass-card p-4 rounded-xl flex items-center gap-3 animate-pulse-slow">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
                             <div>
-                                <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">Pune, India</p>
-                                <h3 class="text-4xl font-display font-bold text-slate-800 mt-1" id="hero-temp">--°C</h3>
-                                <p class="text-sm text-primary font-medium mt-1" id="hero-cond">Loading...</p>
-                            </div>
-                            <div class="bg-blue-50 p-3 rounded-full text-blue-500">
-                                <i class="fa-solid fa-cloud-sun text-2xl"></i>
+                                <p class="text-xs text-gray-500">Moisture</p>
+                                <p class="font-bold text-gray-800">64%</p>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-3 rounded-xl">
-                                <p class="text-xs text-slate-400 mb-1">Wind</p>
-                                <p class="font-bold text-slate-700" id="hero-wind">-- km/h</p>
+                        
+                        <div class="absolute -right-4 bottom-20 glass-card p-4 rounded-xl flex items-center gap-3 animate-pulse-slow" style="animation-delay: 1s;">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                                <i class="fa-solid fa-sun"></i>
                             </div>
-                            <div class="bg-slate-50 p-3 rounded-xl">
-                                <p class="text-xs text-slate-400 mb-1">Humidity</p>
-                                <p class="font-bold text-slate-700" id="hero-humidity">--%</p>
+                            <div>
+                                <p class="text-xs text-gray-500">Temp</p>
+                                <p class="font-bold text-gray-800" id="hero-temp">--°</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decor -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-emerald-300/30 to-cyan-300/30 rounded-full blur-3xl -z-10"></div>
+                </div>
+            </div>
+            
+            <!-- Weather Strip -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16" data-aos="fade-up">
+                <div class="glass-panel p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold tracking-wider" data-lang-key="weather_label">PUNE FIELD 4</p>
+                        <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-500" id="hero-cond">Clear</h3>
+                    </div>
+                    <i class="fa-solid fa-cloud-sun text-4xl text-emerald-500"></i>
+                </div>
+                <div class="glass-panel p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold tracking-wider">WIND</p>
+                        <h3 class="text-2xl font-bold text-slate-700" id="hero-wind">12 km/h</h3>
+                    </div>
+                    <i class="fa-solid fa-wind text-4xl text-blue-400"></i>
+                </div>
+                <a href="#iot" class="group glass-panel p-4 rounded-2xl flex items-center justify-between hover:border-emerald-400 transition cursor-pointer bg-white/50">
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold tracking-wider" data-lang-key="iot_subtitle">TELEMETRY</p>
+                        <h3 class="text-lg font-bold text-emerald-700 group-hover:underline decoration-2 underline-offset-2" data-lang-key="iot_title">Open Dashboard</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+                <a href="#radar" class="group glass-panel p-4 rounded-2xl flex items-center justify-between hover:border-blue-400 transition cursor-pointer bg-white/50">
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold tracking-wider" data-lang-key="radar_subtitle">SATELLITE</p>
+                        <h3 class="text-lg font-bold text-blue-700 group-hover:underline decoration-2 underline-offset-2" data-lang-key="radar_title">Live Radar</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- IOT & RADAR SECTION -->
+    <section id="iot" class="py-20 bg-emerald-50/50">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- IoT Dashboard -->
+                <div class="glass-card rounded-3xl p-6 lg:p-8 border-t-4 border-t-emerald-500 relative overflow-hidden" data-aos="fade-right">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded mb-2 inline-block">LIVE CONNECTED</span>
+                            <h2 class="text-3xl font-bold text-slate-800" data-lang-key="iot_title">Smart Irrigation</h2>
+                        </div>
+                        <button id="iot-refresh" class="text-emerald-600 hover:bg-emerald-50 p-2 rounded-full transition"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-8 mb-8">
+                        <!-- Gauge 1 -->
+                        <div class="flex flex-col items-center relative">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="8" fill="none"></circle>
+                                <circle id="gauge-a" cx="50" cy="50" r="40" stroke="#059669" stroke-width="8" fill="none" class="gauge-fill" stroke-dasharray="251.2" stroke-dashoffset="100"></circle>
+                            </svg>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                                <span class="text-2xl font-bold text-slate-800" id="val-a">--</span>
+                                <p class="text-xs text-gray-500">Soil A</p>
+                            </div>
+                        </div>
+                        <!-- Gauge 2 -->
+                        <div class="flex flex-col items-center relative">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="8" fill="none"></circle>
+                                <circle id="gauge-b" cx="50" cy="50" r="40" stroke="#0ea5e9" stroke-width="8" fill="none" class="gauge-fill" stroke-dasharray="251.2" stroke-dashoffset="150"></circle>
+                            </svg>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                                <span class="text-2xl font-bold text-slate-800" id="val-b">--</span>
+                                <p class="text-xs text-gray-500">Soil B</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Embedded Map/Radar mockup -->
-                    <div class="absolute -z-10 top-20 -left-10 w-full h-full bg-emerald-200/20 rounded-full blur-3xl opacity-60 animate-pulse"></div>
-                    
-                    <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border-4 border-white/50 w-full aspect-video relative group">
-                         <iframe class="w-full h-full object-cover" 
-                                 src="https://www.rainviewer.com/map.html?loc=18.52,73.85,6&oFa=0&oC=0&oU=0&oCS=1&oF=0&oAP=1&c=1&o=83&lm=1&layer=radar&sm=1&sn=1" 
-                                 id="radar-frame" title="Rain Radar"></iframe>
-                         <div class="absolute bottom-4 right-4">
-                            <button id="gps-btn" class="bg-white/90 backdrop-blur text-slate-800 px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-white flex items-center gap-2">
-                                <i class="fa-solid fa-location-crosshairs text-primary"></i> <span data-lang-key="btn_locate">Locate Farm</span>
-                            </button>
-                         </div>
+                    <div class="bg-gray-50 rounded-xl p-4 flex justify-around text-center mb-6">
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase">Avg Temp</p>
+                            <p class="text-xl font-bold text-slate-800" id="iot-temp">28°C</p>
+                        </div>
+                        <div class="w-px bg-gray-200"></div>
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase">Humidity</p>
+                            <p class="text-xl font-bold text-slate-800" id="iot-hum">45%</p>
+                        </div>
+                        <div class="w-px bg-gray-200"></div>
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase">Pump Status</p>
+                            <p class="text-xl font-bold text-emerald-600"><i class="fa-solid fa-power-off"></i> AUTO</p>
+                        </div>
                     </div>
+
+                    <button id="ai-irrigate-btn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI Irrigation Advisor
+                    </button>
+                    <div id="iot-ai-res" class="mt-4 p-4 bg-emerald-50 rounded-xl text-sm border border-emerald-100 hidden"></div>
+                </div>
+
+                <!-- Radar Map -->
+                <div id="radar" class="glass-card rounded-3xl p-1 overflow-hidden h-[500px]" data-aos="fade-left">
+                     <iframe src="https://embed.windy.com/embed2.html?lat=18.52&lon=73.85&detailLat=18.52&detailLon=73.85&width=650&height=450&zoom=10&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" 
+                     width="100%" height="100%" frameborder="0" class="rounded-2xl w-full h-full"></iframe>
+                     <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold shadow-md pointer-events-none">
+                         <i class="fa-solid fa-circle text-red-500 text-[8px] animate-pulse mr-1"></i> LIVE SATELLITE
+                     </div>
+                     <button id="gps-btn" class="absolute bottom-4 right-4 bg-white text-slate-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition z-10" title="Locate Me">
+                         <i class="fa-solid fa-crosshairs"></i>
+                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Ticker -->
-    <div class="bg-slate-900 border-y border-slate-800 py-3 overflow-hidden relative">
-        <div class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-900 to-transparent z-10"></div>
-        <div class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-900 to-transparent z-10"></div>
-        <div class="flex whitespace-nowrap animate-marquee" id="mandi-ticker">
-            <!-- JS Populated -->
-        </div>
-    </div>
-
-    <!-- Weather Forecast Section -->
-    <section class="py-20 bg-white" id="weather-maps">
-         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-secondary font-bold tracking-widest text-xs uppercase" data-lang-key="maps_subtitle">Weather Intelligence</span>
-                <h2 class="text-3xl md:text-4xl font-display font-extrabold mt-2 mb-4" data-lang-key="maps_title">Detailed Weather Maps</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                 <div class="glass-card p-2 rounded-3xl overflow-hidden h-64 md:h-80 relative">
-                     <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=18.52&lon=73.85&detailLat=18.52&detailLon=73.85&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0"></iframe>
-                 </div>
-                 <div class="glass-card p-2 rounded-3xl overflow-hidden h-64 md:h-80 relative">
-                    <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=18.52&lon=73.85&detailLat=18.52&detailLon=73.85&width=650&height=450&zoom=5&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" frameborder="0"></iframe>
-                 </div>
-            </div>
-            
-            <!-- 7 Day Forecast Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4" id="forecast-container">
-                <!-- JS Populated -->
-            </div>
-         </div>
-    </section>
-
-    <!-- Solutions Grid -->
-    <section id="features" class="py-20 bg-slate-50 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16 max-w-2xl mx-auto">
-                <span class="text-primary font-bold tracking-widest text-xs uppercase" data-lang-key="solutions_badge">THE SOLUTION</span>
-                <h2 class="text-3xl md:text-4xl font-display font-extrabold mt-2 mb-4" data-lang-key="solutions_title">Empowering Farmers</h2>
-                <p class="text-slate-600" data-lang-key="solutions_desc">Smart & Sustainable Technology for the modern Indian field.</p>
+    <!-- AI LABS -->
+    <section id="ai-labs" class="py-24 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-emerald-50/50 to-transparent"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-emerald-600 font-bold tracking-wider uppercase text-sm">Artificial Intelligence Suite</span>
+                <h2 class="text-4xl lg:text-5xl font-bold mt-2 mb-4 text-slate-900" data-lang-key="ai_title">JalTantra AI Labs</h2>
+                <p class="text-xl text-slate-500 max-w-2xl mx-auto" data-lang-key="ai_desc">Powerful diagnostic and advisory tools powered by Gemini Pro.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-primary text-2xl mb-6">
-                        <i class="fa-solid fa-faucet-drip"></i>
+                <!-- Tool 1: Crop Doctor -->
+                <div class="glass-card p-6 rounded-2xl hover:border-emerald-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-red-500 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-user-doctor"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_irrig_title">Smart Irrigation</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_irrig_desc">Precision watering using real-time weather & soil data to prevent wastage.</p>
+                    <h3 class="text-xl font-bold mb-2" data-lang-key="tool1_title">Crop Doctor</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10" data-lang-key="tool1_desc">Identify diseases from photos.</p>
+                    <label class="block w-full text-center bg-white border border-dashed border-gray-300 rounded-lg p-2 cursor-pointer hover:bg-gray-50 transition mb-3">
+                        <span class="text-xs font-bold text-gray-500"><i class="fa-solid fa-upload mr-1"></i> <span data-lang-key="lbl_upload">Upload</span></span>
+                        <input type="file" id="crop-image-input" class="hidden">
+                    </label>
+                    <img id="preview-img" class="w-full h-32 object-cover rounded-lg mb-3 hidden">
+                    <button id="analyze-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-emerald-600 transition" data-lang-key="btn_diagnose">Diagnose</button>
+                    <div id="doctor-result" class="mt-3 text-xs p-2 bg-red-50 text-red-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar prose prose-sm"></div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-red-500 text-2xl mb-6">
-                        <i class="fa-solid fa-virus-slash"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_disease_title">Disease AI</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_disease_desc">Early detection using AI ensures healthier crops & reduced financial loss.</p>
-                </div>
-                
-                <!-- Card 3 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-500 text-2xl mb-6">
-                        <i class="fa-solid fa-seedling"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_health_title">Crop Health</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_health_desc">Real-time sensor insights preventing pest attacks & soil degradation.</p>
-                </div>
-                
-                <!-- Card 4 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="400">
-                    <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-500 text-2xl mb-6">
+                <!-- Tool 2: Farm Planner -->
+                <div class="glass-card p-6 rounded-2xl hover:border-blue-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-500 text-2xl mb-4 group-hover:scale-110 transition">
                         <i class="fa-solid fa-calendar-days"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_planning_title">Crop Planning</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_planning_desc">AI recommends best crops based on climate patterns & soil conditions.</p>
-                </div>
-                
-                <!-- Card 5 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="500">
-                    <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-2xl mb-6">
-                        <i class="fa-solid fa-microchip"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_hw_title">Cost-Effective HW</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_hw_desc">Durable, affordable IoT solutions built specifically for Indian farming.</p>
-                </div>
-                
-                <!-- Card 6 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="600">
-                    <div class="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-500 text-2xl mb-6">
-                        <i class="fa-solid fa-store"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_market_title">Direct Marketplace</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_market_desc">Farmers sell directly to buyers, ensuring fair pricing & higher profits.</p>
+                    <h3 class="text-xl font-bold mb-2" data-lang-key="tool2_title">Smart Planner</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10" data-lang-key="tool2_desc">Daily tasks based on weather.</p>
+                    <input type="text" id="plan-crop" data-placeholder-key="ph_enter_crop" placeholder="Enter Crop" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                    <button id="plan-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition" data-lang-key="btn_plan">Plan</button>
+                    <div id="plan-result" class="mt-3 text-xs p-2 bg-blue-50 text-blue-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar  prose prose-sm"></div>
                 </div>
 
-                <!-- Card 7 -->
-                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="700">
-                    <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 text-2xl mb-6">
-                        <i class="fa-solid fa-chart-line"></i>
+                <!-- Tool 3: Profit Calc -->
+                <div class="glass-card p-6 rounded-2xl hover:border-green-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-calculator"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_insights_title">Market Insights</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_insights_desc">AI-driven intelligence helps farmers predict demand & optimize sales.</p>
-                </div>
-                
-                 <!-- Card 8 -->
-                 <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="800">
-                    <div class="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-600 text-2xl mb-6">
-                        <i class="fa-solid fa-language"></i>
+                    <h3 class="text-xl font-bold mb-2" data-lang-key="tool6_title">Profit Calc</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10" data-lang-key="tool6_desc">Estimate ROI per acre.</p>
+                    <div class="flex gap-2 mb-3">
+                        <input type="text" id="roi-crop" placeholder="Crop" class="w-1/2 p-2 bg-gray-50 border rounded-lg text-sm">
+                        <input type="number" id="roi-acres" placeholder="Acres" class="w-1/2 p-2 bg-gray-50 border rounded-lg text-sm">
                     </div>
-                    <h3 class="text-xl font-bold mb-3" data-lang-key="sol_language_title">Multi-Language</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed" data-lang-key="sol_language_desc">Breaking barriers by providing technology in local regional languages.</p>
+                    <button id="roi-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-green-600 transition" data-lang-key="btn_calc">Calculate</button>
+                    <div id="roi-result" class="mt-3 text-xs p-2 bg-green-50 text-green-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
                 </div>
+
+                <!-- Tool 4: Price Predictor -->
+                <div class="glass-card p-6 rounded-2xl hover:border-purple-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-purple-500 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" data-lang-key="tool3_title">Price Predictor</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10" data-lang-key="tool3_desc">Forecast Mandi rates.</p>
+                    <input type="text" id="pred-crop" data-placeholder-key="ph_enter_crop" placeholder="Mandi/Crop" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-3">
+                    <button id="pred-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-purple-600 transition" data-lang-key="btn_predict">Predict</button>
+                    <div id="pred-result" class="mt-3 text-xs p-2 bg-purple-50 text-purple-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <!-- Row 2 -->
+                 <!-- Tool 5: Soil Decoder -->
+                 <div class="glass-card p-6 rounded-2xl hover:border-amber-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" data-lang-key="tool5_title">Soil Decoder</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10" data-lang-key="tool5_desc">Analyze NPK reports.</p>
+                    <input type="text" id="soil-n" placeholder="N Value (e.g. 240)" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-3">
+                    <button id="soil-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-amber-600 transition" data-lang-key="btn_soil">Analyze</button>
+                    <div id="soil-result" class="mt-3 text-xs p-2 bg-amber-50 text-amber-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <!-- Tool 6: Intercropping -->
+                 <div class="glass-card p-6 rounded-2xl hover:border-lime-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-lime-100 rounded-xl flex items-center justify-center text-lime-600 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Intercropping</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10">Maximize yield with mixed crops.</p>
+                    <input type="text" id="inter-crop" placeholder="Main Crop" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-3">
+                    <button id="inter-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-lime-600 transition">Find Partners</button>
+                    <div id="inter-result" class="mt-3 text-xs p-2 bg-lime-50 text-lime-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <!-- Tool 7: Pashu Vaidya -->
+                <div class="glass-card p-6 rounded-2xl hover:border-pink-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-pink-100 rounded-xl flex items-center justify-center text-pink-500 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-cow"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Pashu Vaidya</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10">Livestock health assistant.</p>
+                    <input type="text" id="vet-animal" placeholder="Animal (e.g. Cow)" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-2">
+                    <input type="text" id="vet-symptom" placeholder="Symptom" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm mb-3">
+                    <button id="vet-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-pink-600 transition">Diagnose</button>
+                    <div id="vet-result" class="mt-3 text-xs p-2 bg-pink-50 text-pink-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <!-- Tool 8: Yantra Doctor -->
+                <div class="glass-card p-6 rounded-2xl hover:border-gray-400 border border-transparent transition group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Yantra Doctor</h3>
+                    <p class="text-sm text-gray-500 mb-4 h-10">Fix tractors and pumps.</p>
+                    <input type="text" id="mech-equip" placeholder="Equipment" class="w-full p-2 bg-white border border-gray-200 rounded-lg text-sm mb-2">
+                    <input type="text" id="mech-issue" placeholder="Problem" class="w-full p-2 bg-white border border-gray-200 rounded-lg text-sm mb-3">
+                    <button id="mech-btn" class="w-full bg-slate-900 text-white py-2 rounded-lg text-sm font-bold hover:bg-gray-600 transition">Fix It</button>
+                    <div id="mech-result" class="mt-3 text-xs p-2 bg-gray-50 text-gray-900 rounded hidden max-h-40 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Product Section with Tabs -->
-    <section id="product" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                 <span class="text-primary font-bold tracking-widest text-xs uppercase" data-lang-key="hardware_badge">HARDWARE</span>
-                 <h2 class="text-3xl md:text-4xl font-display font-extrabold mt-2" data-lang-key="prod_title">JalTantra Controller Pro</h2>
-            </div>
-            
-            <div class="bg-slate-50 rounded-[3rem] p-8 md:p-12 overflow-hidden shadow-inner">
-                <div class="flex flex-col md:flex-row gap-12 items-center">
-                    <div class="w-full md:w-1/2 flex justify-center">
-                        <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full bg-white shadow-2xl flex items-center justify-center border-8 border-slate-100">
-                             <!-- Placeholder for Product Image -->
-                             <img src="https://placehold.co/400x400/059669/ffffff?text=Controller+Pro" data-alt-key="alt_controller" alt="Controller Pro" class="w-2/3 h-2/3 object-contain" loading="lazy">
-                             <div class="absolute -right-4 top-10 bg-white p-3 rounded-xl shadow-lg animate-bounce">
-                                 <i class="fa-solid fa-wifi text-primary text-xl"></i>
-                             </div>
-                             <div class="absolute -left-4 bottom-10 bg-white p-3 rounded-xl shadow-lg animate-bounce" style="animation-delay: 0.5s">
-                                 <i class="fa-solid fa-solar-panel text-amber-500 text-xl"></i>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="w-full md:w-1/2">
-                        <div class="space-y-8">
-                            <div>
-                                <h3 class="text-2xl font-bold mb-2" data-lang-key="prod_title">JalTantra Controller Pro</h3>
-                                <p class="text-slate-600" data-lang-key="prod_desc">Industrial grade smart irrigation controller.</p>
-                            </div>
-                            
-                            <div class="space-y-4">
-                                <div class="flex gap-4">
-                                    <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 flex-shrink-0">
-                                        <i class="fa-solid fa-sun delay-100"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800" data-lang-key="feat_solar">Solar Powered</h4>
-                                        <p class="text-xs text-slate-500" data-lang-key="feat_solar_desc">Runs 24/7 without electricity.</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
-                                        <i class="fa-solid fa-tower-broadcast"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800" data-lang-key="feat_lora">LoRaWAN Range</h4>
-                                        <p class="text-xs text-slate-500" data-lang-key="feat_lora_desc">5km range connectivity.</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-12 h-12 bg-slate-200 rounded-lg flex items-center justify-center text-slate-600 flex-shrink-0">
-                                        <i class="fa-solid fa-shield-halved"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-800" data-lang-key="feat_ip65">IP65 Weatherproof</h4>
-                                        <p class="text-xs text-slate-500" data-lang-key="feat_ip65_desc">Dust & Rain proof.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-colors" data-lang-key="btn_order">Pre-Order Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Impact Calculator -->
-    <section id="calculator" class="py-20 bg-primary/5">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-             <div class="text-center mb-10">
-                <h2 class="text-3xl font-display font-extrabold" data-lang-key="calc_title">Calculate Your Savings</h2>
-             </div>
-             <div class="glass-card p-8 rounded-3xl bg-white">
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                     <div>
-                         <label class="block text-xs font-bold uppercase text-slate-500 mb-2" data-lang-key="label_select_crop">Select Crop</label>
-                         <div class="relative">
-                            <select id="calc-crop" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 appearance-none focus:outline-none focus:border-primary">
-                                <option>Sugarcane</option>
-                                <option>Wheat</option>
-                                <option>Cotton</option>
-                                <option>Rice</option>
-                                <option>Tomato</option>
-                            </select>
-                            <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-slate-400 pointer-events-none"></i>
-                         </div>
-                     </div>
-                     <div>
-                         <label class="block text-xs font-bold uppercase text-slate-500 mb-2" data-lang-key="label_farm_area">Farm Area (Acres)</label>
-                         <input type="number" id="calc-area" data-placeholder-key="placeholder_acres" placeholder="e.g. 5" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary">
-                     </div>
-                 </div>
-                 
-                 <button id="calc-btn" class="w-full bg-primary text-white py-3 rounded-xl font-bold mb-8 hover:bg-emerald-700 transition-colors shadow-lg shadow-primary/20" data-lang-key="calc_btn">Calculate Impact</button>
-
-                 <div class="border-t border-slate-100 pt-8">
-                     <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6" data-lang-key="calc_results_title">Estimated Seasonal Savings</p>
-                     <div class="grid grid-cols-2 gap-4 text-center">
-                         <div class="p-4 bg-blue-50 rounded-2xl">
-                             <p class="text-2xl font-black text-blue-600" id="res-water">0 L</p>
-                             <p class="text-xs text-blue-400 font-bold mt-1">Water Saved</p>
-                         </div>
-                         <div class="p-4 bg-green-50 rounded-2xl">
-                             <p class="text-2xl font-black text-green-600" id="res-money">₹0</p>
-                             <p class="text-xs text-green-400 font-bold mt-1">Extra Profit</p>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-        </div>
-    </section>
-
-    <!-- Tools Section -->
+    <!-- MARKET & SCHEMES -->
     <section id="market" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                 <span class="text-pink-500 font-bold tracking-widest text-xs uppercase" data-lang-key="market_badge">SMART COMMERCE</span>
-                 <h2 class="text-3xl md:text-4xl font-display font-extrabold mt-2" data-lang-key="market_title">Market Intelligence</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Contract Drafter -->
-                <div class="glass-card p-8 rounded-3xl border border-slate-100">
-                    <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center text-pink-500 mb-4">
-                        <i class="fa-solid fa-file-signature text-xl"></i>
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Smart Market -->
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl font-bold mb-6 text-slate-800" data-lang-key="market_title">Smart Commerce</h2>
+                    <p class="text-gray-500 mb-8" data-lang-key="market_desc">AI tools to help you sell better.</p>
+                    
+                    <div class="bg-indigo-50 rounded-2xl p-6 mb-6">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center"><i class="fa-solid fa-file-signature"></i></div>
+                            <h3 class="font-bold text-lg" data-lang-key="tool_contract_title">Contract Drafter</h3>
+                        </div>
+                        <input type="text" id="contract-buyer" data-placeholder-key="placeholder_buyer" placeholder="Buyer Name" class="w-full p-3 rounded-xl border-none mb-3 shadow-sm">
+                        <button id="contract-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 w-full" data-lang-key="btn_draft">Draft Contract</button>
+                        <div id="contract-result" class="mt-4 p-4 bg-white rounded-xl shadow-inner hidden max-h-40 overflow-y-auto text-sm"></div>
                     </div>
-                    <h3 class="text-xl font-bold mb-4" data-lang-key="tool_contract_title">Contract Drafter</h3>
-                    <div class="flex gap-2">
-                        <input type="text" id="contract-buyer" data-placeholder-key="placeholder_buyer" placeholder="Buyer Name" class="flex-1 bg-slate-50 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-pink-200">
-                        <button id="contract-btn" class="bg-pink-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-pink-600 transition-colors" data-lang-key="btn_draft">Draft</button>
+
+                    <div class="bg-fuchsia-50 rounded-2xl p-6">
+                         <div class="flex items-center gap-4 mb-4">
+                            <div class="w-10 h-10 bg-fuchsia-100 text-fuchsia-600 rounded-lg flex items-center justify-center"><i class="fa-solid fa-handshake"></i></div>
+                            <h3 class="font-bold text-lg" data-lang-key="tool_negot_title">Negotiation Coach</h3>
+                        </div>
+                        <input type="text" id="negot-situation" placeholder="Situation (e.g. Buyer offering ₹15/kg)" class="w-full p-3 rounded-xl border-none mb-3 shadow-sm">
+                        <button id="negot-btn" class="bg-fuchsia-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-fuchsia-700 w-full" data-lang-key="btn_coach">Get Strategy</button>
+                        <div id="negot-result" class="mt-4 p-4 bg-white rounded-xl shadow-inner hidden max-h-40 overflow-y-auto text-sm"></div>
                     </div>
-                    <div id="contract-result" class="mt-4 text-xs text-slate-500 max-h-40 overflow-y-auto hidden bg-slate-50 p-3 rounded-lg"></div>
                 </div>
 
-                <!-- Scheme Finder -->
-                <div class="glass-card p-8 rounded-3xl border border-slate-100">
-                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-500 mb-4">
-                        <i class="fa-solid fa-landmark text-xl"></i>
+                <!-- Schemes & Export -->
+                <div data-aos="fade-left">
+                    <h2 class="text-3xl font-bold mb-6 text-slate-800" data-lang-key="scheme_title">Govt Schemes</h2>
+                     <p class="text-gray-500 mb-8" data-lang-key="scheme_desc">Find financial aid.</p>
+
+                    <div class="bg-orange-50 rounded-2xl p-6 mb-6 border border-orange-100">
+                        <h3 class="font-bold text-orange-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass"></i> <span data-lang-key="scheme_ai_title">AI Scheme Finder</span></h3>
+                        <div class="flex gap-2">
+                             <input type="number" id="scheme-land" data-placeholder-key="placeholder_acres" placeholder="Acres" class="flex-1 p-3 rounded-xl border-none shadow-sm">
+                             <button id="find-schemes-btn" class="bg-orange-500 text-white px-6 rounded-xl font-bold hover:bg-orange-600" data-lang-key="btn_find_schemes">Find</button>
+                        </div>
+                        <div id="scheme-results" class="mt-4 hidden p-3 bg-white rounded-xl text-sm shadow-sm max-h-40 overflow-y-auto prose prose-sm"></div>
                     </div>
-                    <h3 class="text-xl font-bold mb-4" data-lang-key="scheme_title">Govt Schemes</h3>
-                    <div class="flex gap-2">
-                         <input type="number" id="scheme-land" data-placeholder-key="placeholder_acres" placeholder="Acres" class="flex-1 bg-slate-50 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-purple-200">
-                         <button id="find-schemes-btn" class="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-purple-700 transition-colors" data-lang-key="btn_find_schemes">Find</button>
+
+                    <!-- Export Tool -->
+                    <div class="bg-cyan-50 rounded-2xl p-6 border border-cyan-100">
+                        <h3 class="font-bold text-cyan-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-globe"></i> Export Manager</h3>
+                        <input type="text" id="export-crop" placeholder="Crop to Export" class="w-full p-3 rounded-xl border-none mb-3 shadow-sm">
+                        <button id="export-btn" class="bg-cyan-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-cyan-700 w-full">Check Markets</button>
+                        <div id="export-result" class="mt-4 p-4 bg-white rounded-xl shadow-inner hidden max-h-40 overflow-y-auto text-sm"></div>
                     </div>
-                    <div id="scheme-results" class="mt-4 text-xs text-slate-500 max-h-40 overflow-y-auto hidden bg-slate-50 p-3 rounded-lg"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-slate-900 text-slate-300 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
-                    <div class="flex items-center gap-2 mb-4 text-white">
-                        <img src="assets/images/logo.png" class="h-8 w-8 rounded-full border border-slate-600">
-                        <span class="font-display font-bold text-xl">JalTantra</span>
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                         <img src="assets/images/logo.png" alt="Logo" class="h-8 w-8 bg-white rounded p-1">
+                         <span class="text-2xl font-bold text-white">JalTantra</span>
                     </div>
-                    <p class="text-sm text-slate-500 mb-6">Empowering Indian farmers with next-gen technology.</p>
+                    <p class="mb-6 max-w-sm" data-lang-key="footer_desc">Empowering 1.4 Billion Indians with AI, IoT, and Market Intelligence.</p>
                     <div class="flex gap-4">
-                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4" data-lang-key="footer_platform">Platform</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#home" class="hover:text-primary" data-lang-key="footer_link_home">Home</a></li>
-                        <li><a href="#product" class="hover:text-primary" data-lang-key="footer_link_product">Hardware</a></li>
-                        <li><a href="#market" class="hover:text-primary" data-lang-key="footer_link_market">Marketplace</a></li>
-                    </ul>
+                     <h4 class="text-white font-bold mb-6">Platform</h4>
+                     <ul class="space-y-3 text-sm">
+                         <li><a href="#" class="hover:text-emerald-400">Home</a></li>
+                         <li><a href="#" class="hover:text-emerald-400">IoT Hardware</a></li>
+                         <li><a href="#" class="hover:text-emerald-400">AI Labs</a></li>
+                         <li><a href="#" class="hover:text-emerald-400">Marketplace</a></li>
+                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4" data-lang-key="footer_resources">Resources</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-primary" data-lang-key="footer_link_blog">Blog</a></li>
-                        <li><a href="#" class="hover:text-primary" data-lang-key="footer_link_help">Help Center</a></li>
-                        <li><a href="#" class="hover:text-primary" data-lang-key="footer_link_schemes">Schemes</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-4" data-lang-key="footer_newsletter">Newsletter</h4>
-                    <div class="flex gap-2">
-                        <input type="email" placeholder="Email" data-placeholder-key="placeholder_email" class="bg-slate-800 border-none rounded-lg px-3 py-2 text-sm w-full focus:ring-1 focus:ring-primary">
-                        <button class="bg-primary text-white px-3 py-2 rounded-lg"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
+                     <h4 class="text-white font-bold mb-6">Contact</h4>
+                     <ul class="space-y-3 text-sm">
+                         <li><i class="fa-solid fa-phone mr-2 text-emerald-500"></i> +91 98765 43210</li>
+                         <li><i class="fa-solid fa-envelope mr-2 text-emerald-500"></i> help@jaltantra.ag</li>
+                         <li><i class="fa-solid fa-location-dot mr-2 text-emerald-500"></i> Pune, MH, India</li>
+                     </ul>
                 </div>
             </div>
-            <div class="border-t border-slate-800 pt-8 text-center text-xs text-slate-600">
-                <p data-lang-key="footer_copyright">© 2025 JalTantra Solutions Pvt. Ltd.</p>
+            <div class="border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
+                &copy; 2025 JalTantra Solutions Pvt. Ltd. Made with ❤️ for India.
             </div>
         </div>
     </footer>
 
-    <!-- Chatbot Floating UI -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-        <!-- Greetings bubble -->
-        <div id="chat-greeting" class="greeting-bubble mb-2 mr-2 origin-bottom-right" data-lang-key="chat_bubble">
-            Ram Ram! 🙏 Need Help?
-        </div>
-        
-        <!-- Toggle Key -->
-        <button id="chat-toggle-btn" onclick="toggleChat()" class="w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center text-3xl hover:scale-110 transition-transform hover:shadow-primary/50" aria-label="Open Chat">
-            <i class="fa-solid fa-robot"></i>
-        </button>
-    </div>
-
-    <!-- Chat Window -->
-    <div id="chat-window" class="hidden fixed bottom-24 right-6 z-50 w-80 md:w-96 bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col h-[500px] animate-fade-in origin-bottom-right">
-        <!-- Header -->
-        <div class="bg-primary p-4 flex justify-between items-center text-white">
+    <!-- CHATBOT -->
+    <div id="chat-window" class="fixed bottom-24 right-4 w-96 h-[500px] glass-panel bg-white rounded-2xl shadow-2xl z-50 flex flex-col hidden border border-emerald-100 overflow-hidden transform origin-bottom-right transition-all duration-300">
+        <div class="bg-emerald-600 text-white p-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <i class="fa-solid fa-user-doctor"></i>
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <i class="fa-solid fa-user-astronaut text-lg"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm">Kisan Sahayak</h3>
-                    <p class="text-xs text-white/80 flex items-center gap-1"><span class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span> Online</p>
+                    <h3 class="font-bold">Kisan Sahayak</h3>
+                    <div class="flex items-center gap-1 text-xs text-emerald-100">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Online
+                    </div>
                 </div>
             </div>
-            <button onclick="toggleChat()" class="text-white/80 hover:text-white"><i class="fa-solid fa-chevron-down"></i></button>
+            <button onclick="toggleChat()" class="hover:bg-white/10 p-2 rounded-full transition"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
-        <!-- Messages -->
-        <div class="flex-1 bg-slate-50 p-4 overflow-y-auto" id="chat-messages">
-             <div class="chat-bubble chat-bot" id="chat-intro" data-lang-key="chat_greet">Ram Ram! 🙏 Ask me anything!</div>
+        <div id="chat-history" class="flex-1 p-4 overflow-y-auto bg-slate-50 space-y-4">
+             <div class="flex gap-2">
+                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px]"><i class="fa-solid fa-robot"></i></div>
+                <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm text-gray-800 text-sm border border-gray-100" data-lang-key="chat_welcome">Namaste! Ask me anything about farming.</div>
+            </div>
         </div>
-        
-        <!-- Input -->
-        <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
-            <input type="text" id="chat-input-float" class="flex-1 bg-slate-100 border-none rounded-xl px-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:bg-white transition-colors" data-placeholder-key="placeholder_chat" placeholder="Ask in Hindi/Marathi...">
-            <button id="chat-send-float" class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-emerald-700 transition-colors shadow-sm">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
+        <div class="p-4 bg-white border-t border-gray-100">
+             <div class="flex gap-2">
+                 <input type="text" id="chat-input" data-placeholder-key="ph_chat" placeholder="Type..." class="flex-1 bg-gray-100 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 outline-none">
+                 <button id="send-chat-btn" class="bg-emerald-600 text-white w-12 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center shadow-lg"><i class="fa-solid fa-paper-plane"></i></button>
+             </div>
         </div>
     </div>
 
-    <!-- Modal for Diagnosis/Results -->
-    <div id="modal-overlay" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 transition-opacity">
-        <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl animate-zoom-in relative">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-3xl">
-                <h3 class="text-xl font-bold text-slate-800" data-lang-key="modal_title">Diagnosis Result</h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-500 transition-colors">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+    <!-- CHAT TOGGLE -->
+    <button id="chat-toggle-btn" onclick="toggleChat()" class="fixed bottom-6 right-6 w-16 h-16 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center justify-center z-50 text-2xl transition hover:-translate-y-1 hover:scale-105 active:scale-95 group">
+        <i class="fa-solid fa-robot group-hover:rotate-12 transition"></i>
+        <!-- Greeting Bubble -->
+        <div id="chat-greeting" class="absolute bottom-20 right-0 bg-white text-slate-800 px-4 py-2 rounded-xl shadow-xl whitespace-nowrap text-sm font-bold border border-gray-100 animate-float origin-bottom-right">
+            Ram Ram! 🙏 Need help?
+            <div class="absolute -bottom-2 right-6 w-4 h-4 bg-white transform rotate-45 border-r border-b border-gray-100"></div>
+        </div>
+    </button>
+    
+    <!-- MODAL OVERLAY -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center" aria-hidden="true">
+        <div class="bg-white w-full max-w-2xl m-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="font-bold text-lg" data-lang-key="modal_title">Diagnosis Result</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
             </div>
-            <div id="modal-content" class="p-6 overflow-y-auto prose prose-sm max-w-none text-slate-600">
+            <div id="modal-content" class="p-6 overflow-y-auto prose prose-emerald">
                 <!-- Content injected here -->
-            </div>
-            <div class="p-4 border-t border-slate-100 bg-slate-50 rounded-b-3xl">
-                <button onclick="closeModal()" class="w-full bg-slate-200 text-slate-700 py-3 rounded-xl font-bold hover:bg-slate-300">Close</button>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <!-- App Scripts -->
-    <script src="assets/js/particles.js"></script>
-    <script src="assets/js/market.js"></script>
     <script src="assets/js/main.js"></script>
-    
-    <!-- Service Worker Registration -->
+    <!-- Register Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW Registered'))
-                    .catch(err => console.log('SW Error', err));
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered!', reg.scope)).catch(err => console.log('SW Fail:', err));
             });
         }
     </script>

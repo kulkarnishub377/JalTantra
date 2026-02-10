@@ -1,280 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap');
+
+/* Base Styles */
 body {
-  background-color: #f8fafc;
-  color: #0f172a;
-  overflow-x: hidden;
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    "Noto Sans",
-    sans-serif;
+    background-color: #f0fdfa;
+    color: #0f172a;
+    overflow-x: hidden;
+    font-family: 'Manrope', sans-serif;
 }
 
-/* Use a Devanagari font for readable text when page language is Marathi.
-   Avoid overriding icon fonts (Font Awesome) by targeting textual elements only. */
-html[lang="mr"] body,
-html[lang="mr"] p,
-html[lang="mr"] h1,
-html[lang="mr"] h2,
-html[lang="mr"] h3,
-html[lang="mr"] h4,
-html[lang="mr"] h5,
-html[lang="mr"] h6,
-html[lang="mr"] span,
-html[lang="mr"] a,
-html[lang="mr"] li,
-html[lang="mr"] label,
-html[lang="mr"] button,
-html[lang="mr"] input,
-html[lang="mr"] textarea,
-html[lang="mr"] select,
-html[lang="mr"] option,
-html[lang="mr"] small,
-html[lang="mr"] strong {
-  font-family:
-    "Noto Sans Devanagari",
-    "Inter",
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.55; /* slightly taller line-height for Devanagari readability */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
 }
 
-/* Ensure icon font rendering is preserved */
-/* Font Awesome rules: preserve proper fonts & weights for icons when a page-wide font is set */
-.fa-solid,
-.fas {
-  font-family: "Font Awesome 6 Free" !important;
-  font-weight: 900 !important;
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
 }
-.fa-regular,
-.far {
-  font-family: "Font Awesome 6 Free" !important;
-  font-weight: 400 !important;
+::-webkit-scrollbar-track {
+    background: #ccfbf1;
 }
-.fa-brands,
-.fab {
-  font-family: "Font Awesome 6 Brands" !important;
-  font-weight: 400 !important;
+::-webkit-scrollbar-thumb {
+    background: #0f766e;
+    border-radius: 5px;
 }
-/* Fallback for other fa-* class patterns */
-[class^="fa-"],
-[class*=" fa-"] {
-  font-family:
-    "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
-}
-/* Ensure pseudo-elements inherit the correct FA font */
-.fa::before,
-.fas::before,
-.far::before,
-.fab::before {
-  font-family: inherit !important;
+::-webkit-scrollbar-thumb:hover {
+    background: #115e59;
 }
 
 /* Glassmorphism */
+.glass-panel, .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
 .glass-nav {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px -10px rgba(5, 150, 105, 0.15);
-  border-color: rgba(5, 150, 105, 0.3);
-}
-
-/* Text Gradients */
+/* Dynamic Text Gradient */
 .text-gradient {
-  background: linear-gradient(to right, #059669, #0ea5e9);
-  -webkit-background-clip: text;
-  background-clip: text; /* standard property for broader compatibility */
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+    background: linear-gradient(to right, #059669, #0891b2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* Canvas Background */
 #bgCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.6;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
-/* Chatbot */
-.chat-bubble {
-  max-width: 85%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  line-height: 1.5;
-  animation: fadeIn 0.3s ease-out;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+/* Loaders */
+.ai-loader {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-right-color: transparent;
+    animation: spin 0.75s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.5rem;
 }
-.chat-user {
-  background: #059669;
-  color: white;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* Language Switcher */
+.lang-active {
+    background-color: #059669;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+    animation: marquee 40s linear infinite;
+    display: flex;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Toggle Switch */
+.toggle-checkbox:checked {
+    right: 0;
+    border-color: #059669;
+}
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #059669;
+}
+
+/* Gauge Animation */
+.gauge-fill {
+    transition: stroke-dasharray 1s ease-out, stroke-dashoffset 1s ease-out;
+}
+
+/* Chat bubble styles */
+.chat-bubble {
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    max-width: 85%;
+    position: relative;
+    word-wrap: break-word;
 }
 .chat-bot {
-  background: #f1f5f9;
-  color: #0f172a;
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-  border: 1px solid #e2e8f0;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    border-bottom-left-radius: 0;
+}
+.chat-user {
+    background-color: #059669;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
 }
 
-/* Greeting Bubble */
-.greeting-bubble {
-  position: absolute;
-  bottom: 85px;
-  right: 0;
-  background: white;
-  padding: 12px 20px;
-  border-radius: 16px;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
-  white-space: nowrap;
-  animation: float 3s ease-in-out infinite;
-  border: 1px solid #e2e8f0;
-  pointer-events: none;
-  z-index: 40;
+/* Custom Scrollbar for small areas */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
 }
-.greeting-bubble::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  right: 20px;
-  width: 16px;
-  height: 16px;
-  background: white;
-  transform: rotate(45deg);
-  border-bottom: 1px solid #e2e8f0;
-  border-right: 1px solid #e2e8f0;
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
 }
-
-/* Mobile Menu Animation */
-#mobile-menu {
-  transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#mobile-menu.open {
-  transform: translateX(0);
-}
-
-/* Ticker */
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 3rem;
-  font-weight: 600;
-}
-.price-up {
-  color: #34d399;
-}
-.price-down {
-  color: #f87171;
-}
-
-/* Loader */
-.ai-loader {
-  width: 8px;
-  height: 8px;
-  background: #10b981;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 2px;
-  animation: bounce 1s infinite;
-}
-.ai-loader:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.ai-loader:nth-child(3) {
-  animation-delay: 0.4s;
-}
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Active Lang */
-.lang-btn.active {
-  background-color: #059669;
-  color: white;
-  border-color: #059669;
-}
-
-/* keyboard focus visual polish */
-:focus {
-  outline: none;
-}
-button:focus,
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
-  transform: translateY(-2px);
-}
-
-/* hero CTA visual polish */
-.hero-cta {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
-}
-.hero-cta:hover,
-.hero-cta:focus {
-  transform: translateY(-4px) scale(1.02);
-  filter: brightness(1.05);
-}
-
-/* Input File Hack */
-input[type="file"]::file-selector-button {
-  display: none;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(5, 150, 105, 0.2);
+    border-radius: 20px;
 }
