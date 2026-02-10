@@ -1,0 +1,1068 @@
+<!-- test of the application -->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JalTantra Enterprise | Smart Farming OS</title>
+    <meta name="description" content="India's leading AI Agriculture platform. Satellite Weather, Mandi Rates, and Crop Doctor for Pune and Maharashtra farmers.">
+
+    <!-- 1. FONTS & ICONS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 2. TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Manrope"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#059669',   /* Emerald 600 */
+                        secondary: '#0D9488', /* Teal 600 */
+                        accent: '#F59E0B',    /* Amber 500 */
+                        dark: '#022c22',
+                        surface: '#ECFDF5',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'marquee': 'marquee 40s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 3. CUSTOM STYLES -->
+    <style>
+        body { background-color: #f0fdfa; color: #0f172a; overflow-x: hidden; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #ccfbf1; }
+        ::-webkit-scrollbar-thumb { background: #0f766e; border-radius: 5px; }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Dynamic Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #059669, #0891b2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Canvas Background */
+        #bgCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; opacity: 0.5;
+        }
+
+        /* Loaders */
+        .ai-loader {
+            display: inline-block;
+            width: 12px; height: 12px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            border-right-color: transparent;
+            animation: spin 0.75s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Lang Switcher Active State */
+        .lang-active {
+            background-color: #059669;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Markdown Styles */
+        .prose ul { list-style-type: disc; padding-left: 1.2em; margin-top: 0.5em; }
+        .prose strong { color: #059669; font-weight: 700; }
+        .prose p { margin-bottom: 0.5em; }
+        .prose h2 { font-size: 1.1em; font-weight: 800; color: #047857; margin-top: 1em; margin-bottom: 0.5em; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.2em; }
+        .prose h3 { font-size: 1em; font-weight: 700; color: #0f766e; margin-top: 0.8em; margin-bottom: 0.3em; }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #059669;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #059669;
+        }
+        
+        /* Gauge Animation */
+        .gauge-fill { transition: stroke-dasharray 1s ease-out; }
+    </style>
+</head>
+<body class="selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- BACKGROUND -->
+    <canvas id="bgCanvas"></canvas>
+    <div class="fixed top-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-emerald-300/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-teal-300/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+    <!-- TOP BAR: MANDI RATES -->
+    <div class="bg-teal-900 text-teal-50 text-xs font-medium py-2 relative z-50 border-b border-teal-800">
+        <div class="whitespace-nowrap animate-marquee flex gap-16 items-center">
+            <span class="flex items-center gap-2 text-accent font-bold"><i class="fa-solid fa-arrow-trend-up"></i> <span data-lang-key="ticker_apmc">PUNE APMC LIVE:</span></span>
+            <span>🧅 <span data-lang-key="crop_onion">Onion</span> (Lasalgaon): ₹2,100/Q <span class="text-emerald-400">▲ 2.4%</span></span>
+            <span>🍅 <span data-lang-key="crop_tomato">Tomato</span> (Narayangaon): ₹1,600/Q <span class="text-red-400">▼ 1.1%</span></span>
+            <span>🌱 <span data-lang-key="crop_soybean">Soybean</span> (Latur): ₹4,850/Q <span class="text-emerald-400">▲ 0.8%</span></span>
+            <span>🍚 <span data-lang-key="crop_rice">Rice</span> (Indrayani): ₹4,500/Q <span class="text-gray-400">▬ 0.0%</span></span>
+            <span class="flex items-center gap-2 text-accent font-bold border-l border-teal-700 pl-8"><i class="fa-solid fa-triangle-exclamation"></i> <span data-lang-key="ticker_alert">WEATHER ALERT:</span></span>
+            <span data-lang-key="ticker_msg">Heavy rainfall alert for Ratnagiri & Sindhudurg. Keep livestock indoors.</span>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-40 top-9 transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="glass-nav rounded-full px-6 py-3 flex justify-between items-center shadow-lg shadow-emerald-900/5">
+                <!-- Brand -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center text-white text-lg shadow-lg group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="font-display font-bold text-2xl tracking-tight text-gray-900">Jal<span class="text-primary">Tantra</span></span>
+                        <span class="block text-[10px] font-bold text-emerald-600 tracking-widest uppercase">Enterprise</span>
+                    </div>
+                </a>
+
+                <!-- Menu -->
+                <div class="hidden lg:flex items-center gap-8 font-semibold text-gray-600 text-sm">
+                    <a href="#home" class="hover:text-primary transition-colors" data-lang-key="nav_home">Home</a>
+                    <a href="#iot" class="hover:text-primary transition-colors flex items-center gap-1"><i class="fa-solid fa-wifi text-xs text-blue-500"></i> <span data-lang-key="nav_iot">IoT Live</span></a>
+                    <a href="#ai-labs" class="px-4 py-1.5 rounded-full bg-emerald-50 text-primary border border-emerald-100 hover:bg-emerald-100 transition-colors" data-lang-key="nav_ai">AI Labs ✨</a>
+                    <a href="#market" class="hover:text-primary transition-colors" data-lang-key="nav_market">Market</a>
+                    <a href="#schemes" class="hover:text-primary transition-colors" data-lang-key="nav_schemes">Schemes</a>
+                </div>
+
+                <!-- Controls -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <!-- Language Toggle -->
+                    <div class="flex bg-gray-100 rounded-full p-1 text-xs font-bold text-gray-500 cursor-pointer transition-all">
+                        <span onclick="setLang('en')" id="lang-en" class="px-3 py-1 rounded-full lang-active transition-all">EN</span>
+                        <span onclick="setLang('hi')" id="lang-hi" class="px-3 py-1 rounded-full transition-all hover:text-gray-900">HI</span>
+                        <span onclick="setLang('mr')" id="lang-mr" class="px-3 py-1 rounded-full transition-all hover:text-gray-900">MR</span>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center hover:bg-black transition-colors">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button class="lg:hidden text-2xl text-primary"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+        <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            
+            <!-- Content -->
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-emerald-100 text-emerald-700 text-xs font-bold uppercase shadow-sm mb-8">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span data-lang-key="hero_badge">Active in 4,500+ Villages | v4.1</span>
+                </div>
+                
+                <h1 class="font-display text-5xl lg:text-7xl font-black leading-[1.1] mb-6 text-gray-900">
+                    <span data-lang-key="hero_title_1">Smart Farming</span> <br>
+                    <span class="text-gradient" data-lang-key="hero_title_2">Simplified.</span>
+                </h1>
+                
+                <p class="text-lg text-gray-600 mb-10 leading-relaxed font-medium max-w-lg" data-lang-key="hero_desc">
+                    Your all-in-one dashboard for Satellite Weather, Crop Disease AI, and Mandi Rates. Designed for the modern Indian farmer.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="document.getElementById('ai-labs').scrollIntoView()" class="px-8 py-4 bg-gray-900 text-white rounded-2xl font-bold shadow-xl hover:bg-black hover:shadow-2xl transition-all transform hover:-translate-y-1 flex items-center gap-3 group">
+                        <span data-lang-key="btn_ai">Launch AI Assistant</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform text-emerald-400"></i>
+                    </button>
+                    <button onclick="document.getElementById('radar').scrollIntoView()" class="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl font-bold shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all transform hover:-translate-y-1 flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-primary"></i> <span data-lang-key="btn_radar">Live Radar</span>
+                    </button>
+                </div>
+
+                <!-- Live Weather Strip -->
+                <div class="mt-12 p-4 rounded-2xl bg-white/60 border border-white/50 shadow-sm flex items-center gap-6 max-w-md backdrop-blur-sm">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-500 text-2xl">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5" data-lang-key="weather_label">Current Weather (Pune)</p>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-black text-gray-800" id="hero-temp">--°</span>
+                            <span class="text-sm font-bold text-gray-500" id="hero-cond">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="ml-auto text-right">
+                        <p class="text-xs font-bold text-gray-400 uppercase" data-lang-key="weather_wind">Wind Speed</p>
+                        <p class="text-sm font-bold text-blue-600" id="hero-wind">-- km/h</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visuals -->
+            <div class="relative" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                <div class="relative z-10">
+                    <img 
+                        src="web_jaltantra/isometric-agriculture-automation-elements-collection-332869.png" 
+                        onerror="this.src='https://cdn.dribbble.com/users/2064002/screenshots/14438523/media/b086f695816748753178946a54044910.png?resize=800x600&vertical=center'"
+                        alt="Smart Farming" 
+                        class="w-full max-w-xl mx-auto drop-shadow-2xl rounded-3xl hover:scale-[1.02] transition-transform duration-500"
+                    >
+                </div>
+                <!-- Stats Card -->
+                <div class="absolute -bottom-8 -right-4 glass-panel p-5 rounded-3xl animate-float z-20 hidden md:block" style="animation-delay: 2s;">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-emerald-100 p-3 rounded-2xl text-emerald-600"><i class="fa-solid fa-chart-line"></i></div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase" data-lang-key="stat_yield">Yield Increase</p>
+                            <p class="text-xl font-black text-gray-800">+25%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IOT COMMAND CENTER -->
+    <section id="iot" class="py-20 bg-white relative overflow-hidden border-t border-gray-100">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-blue-600 font-bold tracking-widest uppercase text-sm mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 
+                        <span data-lang-key="iot_subtitle">Live Telemetry</span>
+                    </h2>
+                    <h3 class="font-display text-4xl font-bold text-gray-900" data-lang-key="iot_title">Smart Irrigation Dashboard</h3>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button id="iot-refresh" class="w-10 h-10 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-200 transition-all">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <button id="ai-irrigate-btn" class="px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-lg shadow-blue-200">
+                        <i class="fa-solid fa-robot"></i> <span data-lang-key="btn_ai_advisor">AI Advisor</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- IoT Grid -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Soil Moisture Gauges -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg border border-slate-100 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-droplet text-blue-500"></i> Soil Moisture</h4>
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">Healthy</span>
+                    </div>
+                    
+                    <div class="flex justify-around items-end flex-grow">
+                        <!-- Zone A -->
+                        <div class="text-center">
+                            <div class="relative w-24 h-24">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="48" cy="48" r="40" stroke="#e2e8f0" stroke-width="8" fill="none"></circle>
+                                    <circle id="gauge-a" cx="48" cy="48" r="40" stroke="#3b82f6" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="100" stroke-linecap="round" class="gauge-fill"></circle>
+                                </svg>
+                                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col">
+                                    <span class="text-xl font-black text-gray-800" id="val-a">60%</span>
+                                    <span class="text-[10px] font-bold text-gray-400">Zone A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Zone B -->
+                        <div class="text-center">
+                            <div class="relative w-24 h-24">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="48" cy="48" r="40" stroke="#e2e8f0" stroke-width="8" fill="none"></circle>
+                                    <circle id="gauge-b" cx="48" cy="48" r="40" stroke="#059669" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="150" stroke-linecap="round" class="gauge-fill"></circle>
+                                </svg>
+                                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col">
+                                    <span class="text-xl font-black text-gray-800" id="val-b">40%</span>
+                                    <span class="text-[10px] font-bold text-gray-400">Zone B</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-4 text-center">Last updated: Just now</p>
+                </div>
+
+                <!-- Card 2: Pump Controller -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg border border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-power-off text-red-500"></i> Pump Control</h4>
+                        <span class="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded">Manual Mode</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Pump 1 -->
+                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-600 shadow-sm"><i class="fa-solid fa-water"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-gray-800">Main Pump (5HP)</p>
+                                    <p class="text-[10px] text-gray-500">Flow: 1200 L/h</p>
+                                </div>
+                            </div>
+                            <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="pump1" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-gray-300"/>
+                                <label for="pump1" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+
+                        <!-- Pump 2 -->
+                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-teal-600 shadow-sm"><i class="fa-solid fa-faucet-drip"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-gray-800">Drip Line B</p>
+                                    <p class="text-[10px] text-gray-500">Pressure: 2.1 Bar</p>
+                                </div>
+                            </div>
+                            <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="pump2" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-gray-300"/>
+                                <label for="pump2" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Sensor Stats & AI -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 shadow-lg text-white flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <h4 class="font-bold text-slate-200 flex items-center gap-2"><i class="fa-solid fa-tower-broadcast"></i> Field Sensors</h4>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 my-6 z-10">
+                        <div class="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                            <p class="text-xs text-slate-400 mb-1">Temperature</p>
+                            <p class="text-2xl font-bold" id="iot-temp">32°C</p>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                            <p class="text-xs text-slate-400 mb-1">Humidity</p>
+                            <p class="text-2xl font-bold" id="iot-hum">45%</p>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                            <p class="text-xs text-slate-400 mb-1">NPK (N)</p>
+                            <p class="text-2xl font-bold text-yellow-400" id="iot-n">Med</p>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                            <p class="text-xs text-slate-400 mb-1">Battery</p>
+                            <p class="text-2xl font-bold text-green-400">88%</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Recommendation Box -->
+                    <div id="iot-ai-res" class="hidden bg-blue-600/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-100 z-10 prose prose-invert">
+                        Thinking...
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- RAIN RADAR -->
+    <section id="radar" class="py-20 bg-gray-50 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+                <div>
+                    <h2 class="text-primary font-bold tracking-widest uppercase text-sm mb-2" data-lang-key="radar_subtitle">Satellite Intelligence</h2>
+                    <h3 class="font-display text-3xl font-bold text-gray-900" data-lang-key="radar_title">Live Rain Radar</h3>
+                </div>
+                <button id="gps-btn" class="bg-emerald-50 text-emerald-700 px-5 py-2 rounded-lg border border-emerald-100 hover:bg-emerald-100 transition-all flex items-center gap-2 text-sm font-bold">
+                    <i class="fa-solid fa-crosshairs"></i> <span data-lang-key="btn_locate">Locate Farm</span>
+                </button>
+            </div>
+            <div class="h-[500px] w-full rounded-3xl overflow-hidden border border-gray-200 shadow-2xl">
+                <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=19.076&lon=72.877&detailLat=19.076&detailLon=72.877&width=650&height=450&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI LABS (8 TOOLS) -->
+    <section id="ai-labs" class="py-24 bg-gradient-to-b from-emerald-50 to-teal-50 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block p-1 px-4 rounded-full bg-white text-primary text-xs font-bold mb-4 border border-primary/20 shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Powered by Gemini 2.0 Flash
+                </div>
+                <h3 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-4" data-lang-key="ai_title">JalTantra AI Suite</h3>
+                <p class="text-gray-600 text-lg" data-lang-key="ai_desc">Diagnostic & Advisory Tools</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- 1. Crop Doctor (Enhanced) -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-2xl text-green-600 mb-6">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool1_title">Crop Doctor</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool1_desc">Snap a photo to detect diseases instantly.</p>
+                        <div class="flex-grow">
+                            <label class="block w-full h-32 border-2 border-dashed border-green-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-green-50 transition-colors relative overflow-hidden group">
+                                <input type="file" id="crop-image-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+                                <img id="preview-img" class="absolute inset-0 w-full h-full object-cover rounded-xl hidden z-10">
+                                <div class="text-center group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-camera text-2xl text-green-400 mb-2"></i>
+                                    <p class="text-xs text-green-700 font-bold" data-lang-key="lbl_upload">Upload</p>
+                                </div>
+                            </label>
+                            <div id="doctor-result" class="hidden mt-4 bg-green-50 border border-green-100 rounded-xl p-4 text-xs prose max-h-64 overflow-y-auto scroll-smooth custom-scrollbar"></div>
+                        </div>
+                        <button id="analyze-btn" class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition-all"><span data-lang-key="btn_diagnose">Diagnose</span></button>
+                    </div>
+                </div>
+
+                <!-- 2. Farm Planner -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-2xl text-indigo-600 mb-6">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool2_title">Smart Farm Planner</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool2_desc">Daily tasks based on weather.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="plan-crop" placeholder="Enter Crop (e.g. Wheat)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" data-lang-key="ph_enter_crop">
+                            <div class="flex items-center gap-2 text-xs text-indigo-600 bg-indigo-50 p-2 rounded-lg border border-indigo-100">
+                                <i class="fa-solid fa-cloud"></i> <span data-lang-key="lbl_context">Using current weather data</span>
+                            </div>
+                            <div id="plan-result" class="hidden bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-xs prose max-h-40 overflow-y-auto"></div>
+                        </div>
+                        <button id="plan-btn" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold transition-all"><span data-lang-key="btn_plan">Generate Plan</span></button>
+                    </div>
+                </div>
+
+                <!-- 3. Soil Decoder -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl text-orange-600 mb-6">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool5_title">Soil Health Decoder</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool5_desc">Understand your soil test report.</p>
+                        <div class="flex-grow space-y-4">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" id="soil-n" placeholder="N" class="w-full p-2 text-sm rounded-lg border bg-white">
+                                <input type="number" id="soil-p" placeholder="P" class="w-full p-2 text-sm rounded-lg border bg-white">
+                                <input type="number" id="soil-k" placeholder="K" class="w-full p-2 text-sm rounded-lg border bg-white">
+                                <input type="number" id="soil-ph" placeholder="pH" class="w-full p-2 text-sm rounded-lg border bg-white">
+                            </div>
+                            <div id="soil-result" class="hidden bg-orange-50 border border-orange-100 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="soil-btn" class="w-full mt-6 bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-xl font-bold transition-all"><span data-lang-key="btn_soil">Analyze</span></button>
+                    </div>
+                </div>
+
+                <!-- 4. Profit Calculator -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-2xl text-pink-600 mb-6">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool6_title">Profit Calculator</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool6_desc">Estimate ROI for your next crop.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="roi-crop" placeholder="Crop" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl outline-none" data-lang-key="ph_enter_crop">
+                            <input type="number" id="roi-acres" placeholder="Acres" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl outline-none" data-lang-key="ph_enter_acres">
+                            <div id="roi-result" class="hidden bg-pink-50 border border-pink-100 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="roi-btn" class="w-full mt-6 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-xl font-bold transition-all"><span data-lang-key="btn_calc">Calculate</span></button>
+                    </div>
+                </div>
+
+                <!-- 5. Market Predictor -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-2xl text-amber-600 mb-6">
+                            <i class="fa-solid fa-money-bill-trend-up"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool3_title">Price Predictor</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool3_desc">AI forecast for Mandi rates.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="pred-crop" placeholder="Crop (e.g. Onion)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none" data-lang-key="ph_enter_crop">
+                            <div id="pred-result" class="hidden bg-amber-50 border border-amber-100 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="pred-btn" class="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-bold transition-all"><span data-lang-key="btn_predict">Predict</span></button>
+                    </div>
+                </div>
+
+                <!-- 6. Voice Assistant -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col border-2 border-blue-200/50">
+                    <div class="bg-gradient-to-b from-white to-blue-50/50 rounded-[1.8rem] p-8 h-full flex flex-col">
+                        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl text-blue-600 mb-6">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2" data-lang-key="tool4_title">Kisan Sahayak</h4>
+                        <p class="text-gray-500 text-sm mb-6" data-lang-key="tool4_desc">Voice expert in 3 languages.</p>
+                        <div class="flex-grow flex flex-col">
+                            <div id="chat-history" class="flex-grow bg-white border border-gray-100 rounded-2xl p-4 h-32 overflow-y-auto mb-4 shadow-inner text-sm space-y-3 custom-scrollbar">
+                                <div class="flex gap-3"><div class="w-8 h-8 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center text-blue-600 text-xs"><i class="fa-solid fa-robot"></i></div><div class="bg-gray-50 p-3 rounded-2xl rounded-tl-none text-gray-700 border border-gray-100" data-lang-key="chat_welcome">Namaste! Ask me anything.</div></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button id="voice-btn" class="w-12 h-12 bg-gray-100 rounded-xl flex-shrink-0 flex items-center justify-center text-gray-600 hover:bg-red-50 hover:text-red-500 transition-all shadow-sm border border-gray-200"><i class="fa-solid fa-microphone"></i></button>
+                                <input type="text" id="chat-input" placeholder="Type..." class="w-full px-4 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm" data-lang-key="ph_chat">
+                                <button id="send-chat-btn" class="w-12 h-12 bg-blue-600 rounded-xl flex-shrink-0 flex items-center justify-center text-white hover:bg-blue-700 transition-colors shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Intercropping Genius -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl text-purple-600 mb-6">
+                            <i class="fa-solid fa-shuffle"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2">Intercropping Genius</h4>
+                        <p class="text-gray-500 text-sm mb-6">Maximize income with mixed crops.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="inter-crop" placeholder="Main Crop (e.g. Sugarcane)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none">
+                            <div id="inter-result" class="hidden bg-purple-50 border border-purple-100 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="inter-btn" class="w-full mt-6 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold transition-all">Find Pairs</button>
+                    </div>
+                </div>
+
+                <!-- 8. Pashu Vaidya (Livestock Vet) (NEW) -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-2xl text-red-600 mb-6">
+                            <i class="fa-solid fa-cow"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2">Pashu Vaidya</h4>
+                        <p class="text-gray-500 text-sm mb-6">First aid advice for livestock.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="vet-animal" placeholder="Animal (e.g. Cow)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                            <input type="text" id="vet-symptom" placeholder="Symptoms (e.g. Not eating)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                            <div id="vet-result" class="hidden bg-red-50 border border-red-100 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="vet-btn" class="w-full mt-6 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold transition-all">Check Health</button>
+                    </div>
+                </div>
+
+                <!-- 9. Yantra Doctor (Equipment Fixer) (NEW) -->
+                <div class="glass-panel rounded-[2rem] p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl flex flex-col">
+                    <div class="bg-white/60 rounded-[1.8rem] p-8 h-full flex flex-col backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl text-slate-600 mb-6">
+                            <i class="fa-solid fa-wrench"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-2">Yantra Doctor</h4>
+                        <p class="text-gray-500 text-sm mb-6">Troubleshoot farm machinery.</p>
+                        <div class="flex-grow space-y-4">
+                            <input type="text" id="mech-equip" placeholder="Machine (e.g. Tractor)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 outline-none">
+                            <input type="text" id="mech-issue" placeholder="Problem (e.g. White smoke)" class="w-full p-3 text-sm bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-slate-500 outline-none">
+                            <div id="mech-result" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs prose max-h-32 overflow-y-auto"></div>
+                        </div>
+                        <button id="mech-btn" class="w-full mt-6 bg-slate-700 hover:bg-slate-800 text-white py-3 rounded-xl font-bold transition-all">Fix It</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART MARKET & SCHEMES -->
+    <section id="market" class="py-20 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-6 grid lg:grid-cols-3 gap-8">
+            
+            <!-- Market Tool 1: Contract Drafter -->
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-3 mb-4"><i class="fa-solid fa-file-contract text-purple-600 text-xl"></i> <h4 class="font-bold text-gray-800" data-lang-key="tool_contract_title">Contract Drafter</h4></div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input type="text" id="contract-buyer" placeholder="Buyer" class="bg-white border border-gray-200 rounded-lg p-2 text-sm">
+                    <input type="text" id="contract-crop" placeholder="Crop" class="bg-white border border-gray-200 rounded-lg p-2 text-sm">
+                </div>
+                <input type="text" id="contract-rate" placeholder="Rate (₹)" class="w-full bg-white border border-gray-200 rounded-lg p-2 text-sm mb-3">
+                <div id="contract-result" class="hidden bg-white p-3 rounded-lg text-xs text-gray-600 mb-3 max-h-32 overflow-y-auto prose border border-gray-100"></div>
+                <button id="contract-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-bold text-sm"><span data-lang-key="btn_draft">Draft</span></button>
+            </div>
+
+            <!-- Market Tool 2: Negotiation Coach -->
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-3 mb-4"><i class="fa-solid fa-handshake text-blue-600 text-xl"></i> <h4 class="font-bold text-gray-800" data-lang-key="tool_negot_title">Negotiation Coach</h4></div>
+                <input type="text" id="negot-situation" placeholder="Buyer offers ₹2000, I want ₹2500..." class="w-full bg-white border border-gray-200 rounded-lg p-2 text-sm mb-3">
+                <div id="negot-result" class="hidden bg-white p-3 rounded-lg text-xs text-gray-600 mb-3 max-h-32 overflow-y-auto prose border border-gray-100"></div>
+                <button id="negot-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold text-sm"><span data-lang-key="btn_coach">Get Strategy</span></button>
+            </div>
+
+            <!-- Market Tool 3: Global Export Manager (NEW) -->
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-3 mb-4"><i class="fa-solid fa-globe text-indigo-600 text-xl"></i> <h4 class="font-bold text-gray-800">Export Manager</h4></div>
+                <input type="text" id="export-crop" placeholder="Crop (e.g. Mango)" class="w-full bg-white border border-gray-200 rounded-lg p-2 text-sm mb-3">
+                <div id="export-result" class="hidden bg-white p-3 rounded-lg text-xs text-gray-600 mb-3 max-h-32 overflow-y-auto prose border border-gray-100"></div>
+                <button id="export-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-bold text-sm">Check Global Demand</button>
+            </div>
+
+        </div>
+        
+        <!-- Schemes Section -->
+        <div id="schemes" class="container mx-auto px-6 mt-16">
+            <div class="bg-teal-900 text-white p-8 rounded-3xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-teal-500/20 rounded-full blur-3xl"></div>
+                <h4 class="font-bold mb-4 text-lg relative z-10" data-lang-key="scheme_ai_title">AI Scheme Matcher</h4>
+                <div class="grid md:grid-cols-3 gap-4 mb-4 relative z-10">
+                    <input type="number" id="scheme-land" placeholder="Land (Acres)" class="bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm placeholder-teal-200">
+                    <input type="text" id="scheme-crop" placeholder="Main Crop" class="bg-black/20 border border-white/10 rounded-lg p-3 text-white text-sm placeholder-teal-200">
+                    <button id="find-schemes-btn" class="bg-teal-500 hover:bg-teal-400 text-white py-3 rounded-xl font-bold shadow-lg transition-colors"><span data-lang-key="btn_find_schemes">Find My Schemes</span></button>
+                </div>
+                <div id="scheme-results" class="hidden bg-black/20 p-4 rounded-lg text-xs text-teal-50 max-h-40 overflow-y-auto prose prose-invert relative z-10 custom-scrollbar"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (Redesigned) -->
+    <footer class="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 text-white mb-4">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white"><i class="fa-solid fa-leaf"></i></div>
+                        <span class="font-display font-bold text-xl">JalTantra</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6">Empowering 1.4 Billion Indians with AI-driven agriculture. From soil to market, we cover it all.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider">Platform</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#home" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="#iot" class="hover:text-primary transition-colors">IoT Dashboard</a></li>
+                        <li><a href="#ai-labs" class="hover:text-primary transition-colors">AI Tools</a></li>
+                        <li><a href="#market" class="hover:text-primary transition-colors">Marketplace</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider">Resources</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">Blog & News</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Community Forum</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Government Schemes</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase text-xs tracking-wider">Stay Updated</h4>
+                    <p class="text-sm mb-4">Get the latest farming tips and market alerts directly to your inbox.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Email address" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white w-full focus:outline-none focus:border-primary">
+                        <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-emerald-500 transition-colors"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+                <p>&copy; 2025 JalTantra Solutions Pvt. Ltd. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="test.html" class="hover:text-white">test</a>
+                    <a href="ai.html" class="hover:text-white">ai</a>
+                    <a href="#" class="hover:text-white">Cookie Settings</a>
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 800, once: true });
+
+            // --- CONFIGURATION ---
+            const apiKey = "AIzaSyAfGgxArS5MPHFbrwlBLmsSJ6Pe8WdHAMk"; // Injected by environment
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            let currentLang = 'en';
+            
+
+            // --- ANIMATED BACKGROUND (Original Particles) ---
+            const canvas = document.getElementById('bgCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height, particles = [];
+                function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; createParticles(); }
+                function createParticles() {
+                    particles = []; const count = Math.floor(width / 50);
+                    for(let i=0; i<count; i++) { particles.push({x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2 + 1, alpha: Math.random()*0.5}); }
+                }
+                function animate() {
+                    ctx.clearRect(0, 0, width, height); ctx.fillStyle = '#059669';
+                    particles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > width) p.vx *= -1; if(p.y < 0 || p.y > height) p.vy *= -1; ctx.globalAlpha = p.alpha; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); });
+                    requestAnimationFrame(animate);
+                }
+                window.addEventListener('resize', resize); resize(); animate();
+            }
+
+            // --- TRANSLATIONS (Full) ---
+            const translations = {
+                'en': {
+                    nav_home: 'Home', nav_iot: 'IoT Live', nav_ai: 'AI Labs', nav_market: 'Market', nav_schemes: 'Schemes',
+                    hero_desc: 'The world\'s first operating system for the Indian Farmer. Integrate satellite data, market intelligence, and automated irrigation in one dashboard.',
+                    btn_ai: 'Access AI Tools', btn_radar: 'Live Radar', weather_label: 'Live from Pune Field #4',
+                    iot_subtitle: 'Field Telemetry', iot_title: 'Smart Irrigation Dashboard', btn_ai_advisor: 'AI Advisor',
+                    radar_subtitle: 'Satellite Intelligence', radar_title: 'Live Rain Radar', btn_locate: 'Locate Farm',
+                    ai_title: 'JalTantra AI Suite', ai_desc: 'Diagnostic & Advisory Tools',
+                    tool1_title: 'Crop Doctor', tool1_desc: 'Identify diseases from photos.', lbl_upload: 'Upload', btn_diagnose: 'Diagnose',
+                    tool2_title: 'Smart Farm Planner', tool2_desc: 'Daily tasks based on weather.', ph_enter_crop: 'Enter Crop (e.g. Wheat)', lbl_context: 'Syncs with live weather', btn_plan: 'Generate Plan',
+                    tool5_title: 'Soil Health Decoder', tool5_desc: 'Analyze NPK reports.', btn_soil: 'Analyze',
+                    tool6_title: 'Profit Calculator', tool6_desc: 'Estimate Cost vs Revenue.', ph_enter_crop: 'Crop Name', ph_enter_acres: 'Land Size (Acres)', btn_calc: 'Calculate',
+                    tool3_title: 'Price Predictor', tool3_desc: 'Forecast Mandi rates.', btn_predict: 'Predict',
+                    tool4_title: 'Kisan Sahayak', tool4_desc: 'Speak in Hindi, Marathi, English.', chat_welcome: 'Namaste! Ask me anything.', ph_chat: 'Type...',
+                    market_title: 'Smart Commerce', market_desc: 'Negotiate better and draft contracts instantly.',
+                    tool_contract_title: 'Contract Drafter', btn_draft: 'Draft',
+                    tool_negot_title: 'Negotiation Coach', btn_coach: 'Get Strategy',
+                    scheme_title: 'Govt Schemes', scheme_desc: 'Find financial aid tailored for you.', scheme_ai_title: 'AI Scheme Matcher', btn_find_schemes: 'Find My Schemes',
+                    sch1_title: 'PM-Kisan', sch1_desc: '₹6000/year support.', sch3_title: 'PM-KUSUM', sch3_desc: 'Solar pump subsidy.',
+                    footer_desc: 'Empowering 1.4 Billion Indians.',
+                    ticker_apmc: 'PUNE APMC LIVE:', ticker_alert: 'WEATHER ALERT:', ticker_msg: 'Heavy rainfall alert for Ratnagiri & Sindhudurg. Keep livestock indoors.',
+                    crop_onion: 'Onion', crop_tomato: 'Tomato', crop_soybean: 'Soybean', crop_rice: 'Rice'
+                },
+                'hi': {
+                    nav_home: 'होम', nav_iot: 'IoT लाइव', nav_ai: 'AI लैब्स', nav_market: 'बाज़ार', nav_schemes: 'योजनाएं',
+                    hero_desc: 'भारतीय किसान के लिए दुनिया का पहला ऑपरेटिंग सिस्टम। सैटेलाइट डेटा, मार्केट इंटेलिजेंस और स्वचालित सिंचाई एक ही डैशबोर्ड में।',
+                    btn_ai: 'AI टूल्स', btn_radar: 'लाइव रडार', weather_label: 'पुणे फील्ड #4 से लाइव',
+                    iot_subtitle: 'फील्ड टेलीमेट्री', iot_title: 'स्मार्ट सिंचाई डैशबोर्ड', btn_ai_advisor: 'AI सलाहकार',
+                    radar_subtitle: 'उपग्रह खुफिया', radar_title: 'लाइव वर्षा रडार', btn_locate: 'खेत खोजें',
+                    ai_title: 'जलतंत्र AI सुइट', ai_desc: 'निदान और सलाह उपकरण',
+                    tool1_title: 'फसल डॉक्टर', tool1_desc: 'फोटो से बीमारी पहचानें।', lbl_upload: 'अपलोड', btn_diagnose: 'निदान करें',
+                    tool2_title: 'स्मार्ट फार्म प्लानर', tool2_desc: 'मौसम के अनुसार दैनिक कार्य।', ph_enter_crop: 'फसल (जैसे गेहूं)', lbl_context: 'लाइव मौसम से लिंक', btn_plan: 'योजना बनाएं',
+                    tool5_title: 'मृदा डिकोडर', tool5_desc: 'NPK रिपोर्ट विश्लेषण।', btn_soil: 'विश्लेषण',
+                    tool6_title: 'लाभ कैलकुलेटर', tool6_desc: 'लागत बनाम आय का अनुमान।', ph_enter_crop: 'फसल का नाम', ph_enter_acres: 'जमीन (एकड़)', btn_calc: 'गणना करें',
+                    tool3_title: 'मूल्य पूर्वानुमान', tool3_desc: 'मंडी भाव का अनुमान।', btn_predict: 'अनुमान',
+                    tool4_title: 'किसान सहायक', tool4_desc: 'हिंदी, मराठी, अंग्रेजी में बोलें।', chat_welcome: 'नमस्ते! कुछ भी पूछें।', ph_chat: 'लिखें...',
+                    market_title: 'स्मार्ट कॉमर्स', market_desc: 'बेहतर मोलभाव और तुरंत अनुबंध।',
+                    tool_contract_title: 'अनुबंध निर्माता', btn_draft: 'बनाएं',
+                    tool_negot_title: 'मोलभाव कोच', btn_coach: 'रणनीति पाएं',
+                    scheme_title: 'सरकारी योजनाएं', scheme_desc: 'अपने लिए मदद खोजें।', scheme_ai_title: 'AI योजना खोजक', btn_find_schemes: 'मेरी योजनाएं',
+                    sch1_title: 'पीएम-किसान', sch1_desc: '₹6000/वर्ष सहायता।', sch3_title: 'पीएम-कुसुम', sch3_desc: 'सोलर पंप सब्सिडी।',
+                    footer_desc: '1.4 अरब भारतीयों को सशक्त बनाना।',
+                    ticker_apmc: 'पुणे APMC लाइव:', ticker_alert: 'मौसम चेतावनी:', ticker_msg: 'रत्नागिरी और सिंधुदुर्ग के लिए भारी बारिश का अलर्ट। पशुओं को अंदर रखें।',
+                    crop_onion: 'प्याज़', crop_tomato: 'टमाटर', crop_soybean: 'सोयाबीन', crop_rice: 'चावल'
+                },
+                'mr': {
+                    nav_home: 'होम', nav_iot: 'IoT लाइव', nav_ai: 'AI लॅब्स', nav_market: 'बाजार', nav_schemes: 'योजना',
+                    hero_desc: 'भारतीय शेतकऱ्यासाठी जगातील पहिले ऑपरेटिंग सिस्टम. उपग्रह डेटा, मार्केट इंटेलिजन्स आणि स्वयंचलित सिंचन एकाच डॅशबोर्डवर.',
+                    btn_ai: 'AI टूल्स', btn_radar: 'लाइव रडार', weather_label: 'पुणे फील्ड #4 वरून थेट',
+                    iot_subtitle: 'फील्ड टेलिमेट्री', iot_title: 'स्मार्ट सिंचन डॅशबोर्ड', btn_ai_advisor: 'AI सल्लागार',
+                    radar_subtitle: 'उपग्रह बुद्धिमत्ता', radar_title: 'थेट पाऊस रडार', btn_locate: 'शेत शोधा',
+                    ai_title: 'जलतंत्र AI सुइट', ai_desc: 'निदान आणि सल्ला साधने',
+                    tool1_title: 'पीक डॉक्टर', tool1_desc: 'फोटोवरून रोग ओळखा.', lbl_upload: 'अपलोड', btn_diagnose: 'निदान करा',
+                    tool2_title: 'स्मार्ट फार्म प्लॅनर', tool2_desc: 'हवामानानुसार दैनंदिन कामे.', ph_enter_crop: 'पीक (उदा. गहू)', lbl_context: 'थेट हवामानाशी लिंक', btn_plan: 'योजना बनवा',
+                    tool5_title: 'मृदा डिकोडर', tool5_desc: 'NPK रिपोर्ट विश्लेषण.', btn_soil: 'विश्लेषण',
+                    tool6_title: 'नफा कॅल्क्युलेटर', tool6_desc: 'खर्च विरुद्ध उत्पन्नाचा अंदाज.', ph_enter_crop: 'पिकाचे नाव', ph_enter_acres: 'जमीन (एकर)', btn_calc: 'गणना करा',
+                    tool3_title: 'भाव अंदाज', tool3_desc: 'बाजार भावाचा अंदाज.', btn_predict: 'अंदाज',
+                    tool4_title: 'किसान सहाय्यक', tool4_desc: 'मराठी, हिंदी, इंग्रजीत बोला.', chat_welcome: 'नमस्कार! काहीही विचारा.', ph_chat: 'लिहा...',
+                    market_title: 'स्मार्ट कॉमर्स', market_desc: 'चांगली वाटाघाटी आणि त्वरित करार.',
+                    tool_contract_title: 'करार मसुदा', btn_draft: 'बनवा',
+                    tool_negot_title: 'निगोशिएशन कोच', btn_coach: 'रणनीती मिळवा',
+                    scheme_title: 'सरकारी योजना', scheme_desc: 'तुमच्यासाठी मदत शोधा.', scheme_ai_title: 'AI योजना शोधक', btn_find_schemes: 'माझ्या योजना',
+                    sch1_title: 'पीएम-किसान', sch1_desc: '₹6000/वर्ष मदत.', sch3_title: 'पीएम-कुसुम', sch3_desc: 'सोलर पंप सबसिडी.',
+                    footer_desc: '१.४ अब्ज भारतीयांना सक्षम करणे.',
+                    ticker_apmc: 'पुणे APMC लाइव्ह:', ticker_alert: 'हवामान इशारा:', ticker_msg: 'रत्नागिरी आणि सिंधुदुर्गसाठी मुसळधार पावसाचा इशारा. जनावरांना आत ठेवा.',
+                    crop_onion: 'कांदा', crop_tomato: 'टोमॅटो', crop_soybean: 'सोयाबीन', crop_rice: 'तांदूळ'
+                }
+            };
+
+            window.setLang = function(lang) {
+                currentLang = lang;
+                document.querySelectorAll('[data-lang-key]').forEach(el => {
+                    const key = el.getAttribute('data-lang-key');
+                    if(translations[lang][key]) {
+                        el.innerText = translations[lang][key];
+                        if(el.tagName === 'INPUT') el.placeholder = translations[lang][key];
+                    }
+                });
+                ['en','hi','mr'].forEach(l => {
+                    const btn = document.getElementById('lang-'+l);
+                    if(l === lang) {
+                        btn.classList.remove('text-slate-400', 'hover:text-white');
+                        btn.classList.add('bg-primary', 'text-white', 'shadow-lg');
+                    } else {
+                        btn.classList.remove('bg-primary', 'text-white', 'shadow-lg');
+                        btn.classList.add('text-slate-400', 'hover:text-white');
+                    }
+                });
+            };
+
+            // --- WEATHER & IOT SIMULATION ---
+            async function fetchWeather() {
+                try {
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=18.52&longitude=73.85&current_weather=true`);
+                    const data = await res.json();
+                    document.getElementById('hero-temp').innerText = `${Math.round(data.current_weather.temperature)}°`;
+                    document.getElementById('hero-cond').innerText = "Clear";
+                    document.getElementById('hero-wind').innerText = `${data.current_weather.windspeed} km/h`;
+                } catch(e) {}
+            }
+            fetchWeather();
+
+            function updateIoT() {
+                const m1 = 60 + Math.floor(Math.random() * 5);
+                const m2 = 40 + Math.floor(Math.random() * 5);
+                const t = 30 + Math.floor(Math.random() * 2);
+                const h = 45 + Math.floor(Math.random() * 3);
+                
+                document.getElementById('val-a').innerText = m1 + '%';
+                document.getElementById('val-b').innerText = m2 + '%';
+                document.getElementById('iot-temp').innerText = t + '°C';
+                document.getElementById('iot-hum').innerText = h + '%';
+                
+                const c = 251.2; // Circumference for r=40
+                document.getElementById('gauge-a').style.strokeDashoffset = c - (c * m1 / 100);
+                document.getElementById('gauge-b').style.strokeDashoffset = c - (c * m2 / 100);
+            }
+            setInterval(updateIoT, 3000);
+            document.getElementById('iot-refresh')?.addEventListener('click', updateIoT);
+
+            // --- GENERIC GEMINI HANDLER ---
+            async function callGemini(promptText, resultElementId, btnId, loadingText = "Thinking...", systemInstr = "") {
+                const resBox = document.getElementById(resultElementId);
+                const btn = document.getElementById(btnId);
+                if (!resBox || !btn) return;
+
+                const originalBtnHtml = btn.innerHTML;
+                
+                btn.disabled = true;
+                btn.innerHTML = `<span class="ai-loader"></span> ${loadingText}`;
+                resBox.classList.remove('hidden');
+                resBox.innerHTML = "<i>Connecting to Gemini Satellite...</i>";
+
+                try {
+                    const res = await fetch(geminiUrl, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: promptText }] }],
+                            systemInstruction: systemInstr ? { parts: [{ text: systemInstr }] } : undefined
+                        })
+                    });
+                    const data = await res.json();
+                    const mdText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Signal lost.";
+                    resBox.innerHTML = marked.parse(mdText);
+                } catch (e) {
+                    resBox.innerText = "Connection Failed. Check API Key.";
+                }
+                btn.disabled = false;
+                btn.innerHTML = originalBtnHtml;
+            }
+
+            // --- FEATURE LISTENERS ---
+            document.getElementById('ai-irrigate-btn')?.addEventListener('click', () => {
+                const t = document.getElementById('iot-temp').innerText;
+                const m = document.getElementById('val-a').innerText;
+                callGemini(`Act as irrigation expert. Temp: ${t}, Moisture: ${m}. Crop: Cotton. Advice? Reply in ${currentLang} (1 sentence).`, 'iot-ai-res', 'ai-irrigate-btn', 'Analyzing...');
+            });
+
+            const fileInput = document.getElementById('crop-image-input');
+            let imgBase64 = "";
+            fileInput?.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        imgBase64 = ev.target.result.split(',')[1];
+                        document.getElementById('preview-img').src = ev.target.result;
+                        document.getElementById('preview-img').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 1. Enhanced Crop Doctor Listener (Structured Report)
+            document.getElementById('analyze-btn')?.addEventListener('click', async () => {
+                if(!imgBase64) return alert("Upload image");
+                const btn = document.getElementById('analyze-btn');
+                const resBox = document.getElementById('doctor-result');
+                const origHtml = btn.innerHTML;
+                btn.innerHTML = '<span class="ai-loader"></span> Scanning...';
+                resBox.classList.remove('hidden');
+                
+                const prompt = `Act as an expert Plant Pathologist. Analyze this crop image. Provide a detailed diagnosis report in ${currentLang}.
+                Format: Markdown.
+                Structure:
+                ## 🦠 Diagnosis
+                **Disease/Pest:** [Name]
+                **Confidence:** [High/Medium/Low]
+
+                ### 🔍 Symptoms Identified
+                - [Symptom 1]
+                - [Symptom 2]
+
+                ### 🌿 Organic Solution
+                - [Remedy 1]
+                - [Remedy 2]
+
+                ### 🧪 Chemical Treatment
+                - [Fungicide/Pesticide Name] with dosage
+
+                ### 🛡️ Future Prevention
+                - [Tip 1]`;
+
+                try {
+                    const res = await fetch(geminiUrl, { 
+                        method: 'POST', 
+                        headers: {'Content-Type': 'application/json'}, 
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: imgBase64 } }] }] }) 
+                    });
+                    const data = await res.json();
+                    resBox.innerHTML = marked.parse(data.candidates?.[0]?.content?.parts?.[0]?.text || "Error");
+                } catch(e) { resBox.innerHTML = "Error"; }
+                btn.innerHTML = origHtml;
+            });
+
+            document.getElementById('plan-btn')?.addEventListener('click', () => {
+                const crop = document.getElementById('plan-crop').value;
+                if(!crop) return alert("Enter crop");
+                callGemini(`Farmer in Pune. Weather: Clear. Crop: ${crop}. 3 tasks for today. Reply in ${currentLang} (Markdown).`, 'plan-result', 'plan-btn', 'Planning...');
+            });
+
+            document.getElementById('soil-btn')?.addEventListener('click', () => {
+                const n = document.getElementById('soil-n').value;
+                if(!n) return alert("Enter N");
+                callGemini(`Analyze soil N=${n}. Suggest fertilizer. Reply in ${currentLang} (Markdown).`, 'soil-result', 'soil-btn', 'Decoding...');
+            });
+
+            document.getElementById('roi-btn')?.addEventListener('click', () => {
+                const crop = document.getElementById('roi-crop').value;
+                if(!crop) return alert("Enter crop");
+                callGemini(`Estimate profit for ${crop} in India/acre. Table format. Reply in ${currentLang}.`, 'roi-result', 'roi-btn', 'Calculating...');
+            });
+
+            document.getElementById('pred-btn')?.addEventListener('click', () => {
+                const crop = document.getElementById('pred-crop').value;
+                if(!crop) return alert("Enter crop");
+                callGemini(`Predict ${crop} price trend in Maharashtra. Reply in ${currentLang}.`, 'pred-result', 'pred-btn', 'Forecasting...');
+            });
+
+            document.getElementById('send-chat-btn')?.addEventListener('click', () => {
+                const txt = document.getElementById('chat-input').value;
+                if(!txt) return;
+                const history = document.getElementById('chat-history');
+                history.innerHTML += `<div class="flex justify-end gap-2"><div class="bg-emerald-600 p-2 rounded-lg rounded-tr-none text-white">${txt}</div></div>`;
+                document.getElementById('chat-input').value = '';
+                
+                (async () => {
+                    try {
+                        const res = await fetch(geminiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `You are Kisan Sahayak. User: "${txt}". Reply in ${currentLang} (short).` }] }] }) });
+                        const data = await res.json();
+                        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
+                        history.innerHTML += `<div class="flex gap-2"><div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px]"><i class="fa-solid fa-robot"></i></div><div class="bg-gray-100 p-2 rounded-lg rounded-tl-none text-gray-800">${marked.parse(reply)}</div></div>`;
+                        history.scrollTop = history.scrollHeight;
+                    } catch(e) {}
+                })();
+            });
+
+            document.getElementById('contract-btn')?.addEventListener('click', () => {
+                const buyer = document.getElementById('contract-buyer').value;
+                if(!buyer) return alert("Enter buyer");
+                callGemini(`Draft farming contract for buyer ${buyer}. Reply in ${currentLang} (Markdown).`, 'contract-result', 'contract-btn', 'Drafting...');
+            });
+
+            document.getElementById('negot-btn')?.addEventListener('click', () => {
+                const sit = document.getElementById('negot-situation').value;
+                if(!sit) return alert("Enter situation");
+                callGemini(`Negotiation help: "${sit}". 3 arguments. Reply in ${currentLang}.`, 'negot-result', 'negot-btn', 'Thinking...');
+            });
+
+            // Export Manager Listener
+            document.getElementById('export-btn')?.addEventListener('click', () => {
+                const crop = document.getElementById('export-crop').value;
+                if(!crop) return alert("Enter crop");
+                callGemini(`Act as Export Consultant. Crop: ${crop}. List top 3 export countries from India and 1 key quality standard for each. Reply in ${currentLang}.`, 'export-result', 'export-btn', 'Checking Global Markets...');
+            });
+
+            // Intercropping Genius Listener
+            document.getElementById('inter-btn')?.addEventListener('click', () => {
+                const crop = document.getElementById('inter-crop').value;
+                if(!crop) return alert("Enter crop");
+                callGemini(`Suggest 2 best intercrops for ${crop} to increase income and soil health. Reply in ${currentLang}.`, 'inter-result', 'inter-btn', 'Finding Pairs...');
+            });
+
+            // Pashu Vaidya Listener
+            document.getElementById('vet-btn')?.addEventListener('click', () => {
+                const animal = document.getElementById('vet-animal').value;
+                const sym = document.getElementById('vet-symptom').value;
+                if(!animal || !sym) return alert("Enter details");
+                callGemini(`Act as a Veterinarian. Animal: ${animal}. Symptoms: ${sym}. Diagnosis and immediate home remedies? Reply in ${currentLang} (Markdown).`, 'vet-result', 'vet-btn', 'Diagnosing...');
+            });
+
+            // Yantra Doctor Listener
+            document.getElementById('mech-btn')?.addEventListener('click', () => {
+                const equip = document.getElementById('mech-equip').value;
+                const prob = document.getElementById('mech-issue').value;
+                if(!equip || !prob) return alert("Enter details");
+                callGemini(`Act as a Mechanic. Equipment: ${equip}. Problem: ${prob}. 3 troubleshooting steps? Reply in ${currentLang} (Markdown).`, 'mech-result', 'mech-btn', 'Troubleshooting...');
+            });
+
+            document.getElementById('find-schemes-btn')?.addEventListener('click', () => {
+                const land = document.getElementById('scheme-land').value;
+                if(!land) return alert("Enter details");
+                callGemini(`Suggest 3 Indian govt schemes for farmer with ${land} acres. Reply in ${currentLang} (Markdown list).`, 'scheme-results', 'find-schemes-btn', 'Searching DB...');
+            });
+        });
+    </script>
+</body>
+
+</html>
