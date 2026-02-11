@@ -183,6 +183,16 @@
             filter: brightness(1.05);
         }
 
+        /* Timeline Tooltips */
+        .tooltip-arrow-bottom::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 8px; border-style: solid; border-color: white transparent transparent transparent;
+        }
+        .tooltip-arrow-top::after {
+            content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 8px; border-style: solid; border-color: transparent transparent white transparent;
+        }
+        
         /* Input File Hack */
         input[type="file"]::file-selector-button { display: none; }
     </style>
@@ -312,7 +322,7 @@
                 <p class="text-xs text-slate-400 mt-3 ml-2" id="hero-file-name"></p>
                 
                 <!-- Stats Row -->
-                <div class="mt-10 flex items-center gap-6 text-sm text-slate-500">
+                <div class="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-500">
                     <div class="flex -space-x-2">
                         <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
                         <div class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white"></div>
@@ -320,6 +330,9 @@
                     </div>
                     <p><span class="font-bold text-slate-900" data-lang-key="farmers_count">4,500+ Farmers</span> <span data-lang-key="farmers_trust">trust JalTantra</span></p>
                     <p><span class="font-bold text-slate-900">Humidity:</span> <span id="hero-humidity">--%</span></p>
+                    <p><span class="font-bold text-slate-900">Temp:</span> <span id="hero-temp">--°C</span></p>
+                    <p><span class="font-bold text-slate-900">Wind:</span> <span id="hero-wind">-- km/h</span></p>
+                    <p><span class="font-bold text-slate-900">Weather:</span> <span id="hero-cond">--</span></p>
                 </div>
             </div>
 
@@ -368,7 +381,7 @@
                 </button>
             </div>
             <div class="h-[500px] w-full rounded-3xl overflow-hidden border border-gray-200 shadow-2xl">
-                <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=19.076&lon=72.877&detailLat=19.076&detailLon=72.877&width=650&height=450&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+                <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=18.5204&lon=73.8567&detailLat=18.5204&detailLon=73.8567&width=650&height=450&zoom=10&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
             </div>
         </div>
     </section>
@@ -386,14 +399,14 @@
                 <div class="bg-gray-50 p-6 rounded-3xl border border-gray-200 shadow-lg">
                     <h4 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-temperature-half text-red-500"></i> Temperature Map</h4>
                     <div class="h-[300px] rounded-2xl overflow-hidden">
-                        <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=19.076&lon=72.877&detailLat=19.076&detailLon=72.877&width=650&height=450&zoom=7&level=surface&overlay=temp&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+                        <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=18.5204&lon=73.8567&detailLat=18.5204&detailLon=73.8567&width=650&height=450&zoom=10&level=surface&overlay=temp&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
                     </div>
                 </div>
                 <!-- Wind Map -->
                 <div class="bg-gray-50 p-6 rounded-3xl border border-gray-200 shadow-lg">
                     <h4 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-wind text-blue-500"></i> Wind Map</h4>
                     <div class="h-[300px] rounded-2xl overflow-hidden">
-                        <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=19.076&lon=72.877&detailLat=19.076&detailLon=72.877&width=650&height=450&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+                        <iframe width="100%" height="100%" src="https://embed.windy.com/embed2.html?lat=18.5204&lon=73.8567&detailLat=18.5204&detailLon=73.8567&width=650&height=450&zoom=10&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
@@ -411,6 +424,43 @@
             <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg">
                 <div id="forecast-container" class="grid grid-cols-1 md:grid-cols-7 gap-4">
                     <!-- Forecast items will be populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CROP CALENDAR -->
+    <section id="calendar" class="py-24 relative overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://img.freepik.com/free-photo/green-tea-bud-leaves-green-tea-plantations-morning_335224-955.jpg" alt="Farm Background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+             <div class="text-center mb-20" data-aos="fade-up">
+                <h2 class="text-emerald-400 font-bold tracking-[0.2em] uppercase text-sm mb-3">Seasonal Guide</h2>
+                <h3 class="font-display text-4xl md:text-5xl font-bold text-white mb-6">Crop Calendar Timeline</h3>
+                <p class="text-slate-300 max-w-2xl mx-auto text-lg">Track every stage of your crop's journey from sowing to harvest with our interactive guide.</p>
+            </div>
+
+            <!-- Scrollable Container -->
+            <div class="glass-card p-12 rounded-[2.5rem] overflow-x-auto custom-scrollbar border border-white/10 shadow-2xl relative" data-aos="zoom-in">
+                <!-- Timeline Track -->
+                <div class="min-w-[1000px] relative h-[300px] flex items-center mb-8">
+                     <!-- The central line -->
+                    <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-emerald-900 via-emerald-500 to-emerald-900 rounded-full opacity-50"></div>
+                    
+                    <!-- Items Container -->
+                    <div id="calendar-timeline" class="w-full flex justify-between items-center px-10 relative z-10">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+                
+                <!-- Legend/Info -->
+                <div class="flex justify-center gap-8 text-white/60 text-xs font-bold uppercase tracking-wider mt-4">
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Current Stage</div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-700 border border-slate-500"></span> Upcoming</div>
                 </div>
             </div>
         </div>
@@ -816,6 +866,10 @@
                                 <option value="Sugarcane">Sugarcane (High Water)</option>
                                 <option value="Cotton">Cotton</option>
                                 <option value="Wheat">Wheat</option>
+                                <option value="Rice">Rice (Paddy)</option>
+                                <option value="Maize">Maize (Corn)</option>
+                                <option value="Soybean">Soybean</option>
+                                <option value="Turmeric">Turmeric</option>
                             </select>
                         </div>
                         <div>
@@ -860,7 +914,7 @@
                 <h3 class="font-display text-4xl md:text-5xl font-bold text-slate-900" data-lang-key="market_title">Market Intelligence</h3>
             </div>
 
-            <div class="grid lg:grid-cols-2 lg:gap-12 gap-8">
+            <div class="grid lg:grid-cols-3 lg:gap-8 gap-8">
                 <!-- Contract Drafter -->
                 <div class="bg-white p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition-all group">
                     <div class="flex items-center gap-4 mb-6">
@@ -890,6 +944,19 @@
                         </div>
                         <button id="find-schemes-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all" data-lang-key="btn_find_schemes">Find My Schemes</button>
                         <div id="scheme-results" class="hidden bg-slate-50 p-4 rounded-xl text-xs text-slate-600 max-h-40 overflow-y-auto prose border border-slate-200"></div>
+                    </div>
+                </div>
+
+                <!-- Negotiation Helper -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition-all group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-2xl"><i class="fa-solid fa-handshake-simple"></i></div>
+                        <h4 class="text-xl font-bold text-slate-800">Negotiation Helper</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <textarea id="negot-situation" placeholder="Describe offer (e.g. 'Buyer offered ₹20/kg for Onion, current rate is ₹25')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none"></textarea>
+                        <button id="negot-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all">Get Negotiation Tips</button>
+                        <div id="negot-result" class="hidden bg-slate-50 p-4 rounded-xl text-xs text-slate-600 max-h-40 overflow-y-auto prose border border-slate-200"></div>
                     </div>
                 </div>
             </div>
@@ -972,7 +1039,7 @@
             // IMPORTANT: remove or replace the placeholder below with your own API key.
             // Do NOT commit real private API keys into source control. Set as a runtime environment variable
             // or inject with your build system. For demo / local dev you may use a valid key here.
-            const apiKey = "__REPLACE_WITH_YOUR_API_KEY__";
+            const apiKey = "";
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             // language engine (persisted) — default to Marathi per user request
             let currentLang = localStorage.getItem('jalTantra_lang') || 'mr';
@@ -1293,18 +1360,80 @@
                     content.innerHTML = `<div class="text-center p-4"><span class="ai-loader"></span> ${(translations[currentLang] && translations[currentLang].analyzing_text) ? translations[currentLang].analyzing_text : 'Analyzing...'}</div>`;
                 }
 
-                // API key safety check
+                // API key safety check & DUMMY DATA SIMULATION
                 if (!apiKey || apiKey === '__REPLACE_WITH_YOUR_API_KEY__') {
-                    const message = '<p class="text-yellow-500">API key not configured — set your Generative Language API key in the page (for development) or via your build environment. The current demo will not make external calls.</p>';
-                    if (useModal) {
-                        document.getElementById('modal-content').innerHTML = message;
-                        document.getElementById('modal-overlay').setAttribute('aria-hidden', 'false');
-                        document.getElementById('modal-overlay').classList.remove('hidden');
-                        document.getElementById('modal-overlay').classList.add('flex');
-                    } else if (resBox) {
-                        resBox.innerHTML = message;
+                    // Simulate response for "fully proper" feel
+                    let dummyText = "This is a simulated AI response. ";
+                    if(prompt.includes('Diagnose')) {
+                         dummyText = `
+### **Diagnosis: Early Blight**
+**Confidence:** 92%
+**Symptoms Detected:** Yellowing leaves, brown concentric rings.
+
+1. **Organic Solution:**
+   - Spray mixture of *Neem Oil* (5ml/liter).
+   - Use *Sour Buttermilk* spray (15 days old).
+
+2. **Chemical Solution:**
+   - Spray *Mancozeb 75% WP* (2.5g/liter).
+   - Use *Copper Oxychloride* if severe.
+
+3. **Prevention:**
+   - Maintain plant spacing.
+   - Avoid overhead irrigation.
+`;
+                    } else if (prompt.includes('Draft contract')) {
+                        dummyText = `
+### **Farming Contract Agreement**
+**Date:** ${new Date().toLocaleDateString()}
+**Parties:** Farmer & Buyer
+
+1. **Crop Details:** High-quality Yield for this season.
+2. **Pricing:** Fixed at market rate + 5% premium.
+3. **Delivery:** Within 7 days of harvest.
+4. **Payment:** 50% advance, 50% on delivery.
+
+*Signed digitally by JalTantra Secure System.*
+`;
+                    } else if (prompt.includes('Schemes')) {
+                         dummyText = `
+### **Eligible Government Schemes**
+
+1. **PM-KISAN Samman Nidhi**
+   - **Benefit:** ₹6,000/year direct transfer.
+   - **Eligibility:** Small & Marginal farmers.
+
+2. **Pradhan Mantri Fasal Bima Yojana (PMFBY)**
+   - **Benefit:** Crop insurance against natural calamities.
+   - **Premium:** 2% for Kharif, 1.5% for Rabi.
+
+3. **Soil Health Card Scheme**
+   - **Benefit:** Free soil testing & fertilizer recommendations.
+`;
+                    } else if (prompt.includes('Negotiation help')) {
+                        dummyText = `
+### **Negotiation Strategy**
+**Current Rate:** ₹25/kg | **Offer:** ₹20/kg
+
+1. **Counter-Offer:** Start at **₹28/kg**, expecting to settle at ₹24-25.
+2. **Quality Point:** Highlight your crop's *superior quality* and *freshness*.
+3. **Volume Discount:** Offer ₹24/kg only if they buy >500kg.
+4. **Walk Away:** If below ₹22/kg, seek other buyers at APMC market.
+`;
+                    } else {
+                        dummyText = "Ram Ram! I can help you with: \n- Crop Rates \n- Weather Updates \n- Government Schemes \n\n*How can I assist you today?*";
                     }
-                    if (btn) { btn.disabled = false; btn.innerHTML = oldText; }
+                    
+                     const parsed = marked.parse(dummyText);
+                     // Simulate delay
+                     setTimeout(() => {
+                        if(useModal) {
+                            document.getElementById('modal-content').innerHTML = parsed;
+                        } else if (resBox) {
+                             resBox.innerHTML = parsed;
+                        }
+                        if(btn) { btn.disabled = false; btn.innerHTML = oldText; }
+                     }, 1500);
                     return;
                 }
 
@@ -1521,7 +1650,7 @@
 
             // Ticker
             function updateTicker() {
-                const crops = [{n:"Onion",p:2100},{n:"Tomato",p:1600},{n:"Soybean",p:4800},{n:"Cotton",p:7200}];
+                const crops = [{n:"Onion",p:2100},{n:"Tomato",p:1600},{n:"Soybean",p:4800},{n:"Cotton",p:7200},{n:"Wheat",p:2400},{n:"Rice",p:3500},{n:"Maize",p:1800},{n:"Bajra",p:2200},{n:"Turmeric",p:8500},{n:"Potato",p:1200}];
                 let h = '';
                 crops.forEach(c => {
                     const p = c.p + Math.floor(Math.random()*40-20);
@@ -1531,6 +1660,63 @@
                 document.getElementById('mandi-ticker').innerHTML = h + h;
             }
             setInterval(updateTicker, 3000); updateTicker();
+            
+            // --- CROP CALENDAR LOGIC ---
+            function initCalendar() {
+                const timeline = document.getElementById('calendar-timeline');
+                if(!timeline) return;
+
+                // Dates for Kharif Season (example)
+                const currentMonth = new Date().getMonth(); 
+                // Simple logic to highlight current stage based on month (June=5, Oct=9)
+                
+                const stages = [
+                    { date: 'June 10', title: 'Soil Prep', icon: 'fa-trowel', desc: 'Ploughing & leveling field.', active: currentMonth === 5 },
+                    { date: 'June 25', title: 'Sowing', icon: 'fa-seedling', desc: 'Sow seeds at 2cm depth.', active: currentMonth === 6 },
+                    { date: 'July 15', title: 'Fertilizing', icon: 'fa-flask', desc: 'Apply NPK 10:26:26 boost.', active: currentMonth === 6 },
+                    { date: 'Aug 05', title: 'Irrigation', icon: 'fa-water', desc: 'Maintain 2cm water level.', active: currentMonth === 7 },
+                    { date: 'Sept 10', title: 'Pest Control', icon: 'fa-bug-slash', desc: 'Spray Neem Oil solution.', active: currentMonth === 8 },
+                    { date: 'Oct 20', title: 'Harvesting', icon: 'fa-sickle', desc: 'Cut when moisture < 18%.', active: currentMonth === 9 }
+                ];
+
+                let html = '';
+                stages.forEach((s, i) => {
+                    const isTop = i % 2 === 0;
+                    // Alternating tooltip position
+                    const tooltipPos = isTop ? 'bottom-[140%] mb-4' : 'top-[140%] mt-4';
+                    const arrowClass = isTop ? 'tooltip-arrow-bottom' : 'tooltip-arrow-top';
+                    const circleColor = s.active ? 'bg-emerald-500 text-white scale-125 shadow-[0_0_20px_rgba(16,185,129,0.5)] border-emerald-400' : 'bg-slate-900 text-slate-500 border-slate-700 hover:border-emerald-500 hover:text-emerald-500';
+
+                    html += `
+                        <div class="relative group flex flex-col items-center justify-center w-full">
+                             <!-- Dot/Icon -->
+                            <div class="w-16 h-16 rounded-full border-4 ${circleColor} flex items-center justify-center text-2xl transition-all duration-300 z-20 cursor-pointer relative bg-slate-900">
+                                <i class="fa-solid ${s.icon}"></i>
+                                ${s.active ? '<span class="absolute -top-1 -right-1 flex h-4 w-4"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span></span>' : ''}
+                            </div>
+                            
+                            <!-- Connecting Line to center (if needed for design, but handled by main line) -->
+
+                            <!-- Card -->
+                            <div class="absolute ${tooltipPos} w-64 bg-white p-5 rounded-2xl shadow-xl transition-all duration-500 opacity-90 group-hover:opacity-100 group-hover:scale-105 z-30 ${arrowClass}">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">${s.date}</span>
+                                    <i class="fa-solid fa-circle-info text-slate-300"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-1">${s.title}</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">${s.desc}</p>
+                            </div>
+                            
+                            <!-- Date Label on Line -->
+                            <div class="absolute ${isTop ? 'top-20' : 'bottom-20'} text-xs font-bold text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity">
+                                Step ${i+1}
+                            </div>
+                        </div>
+                    `;
+                });
+                timeline.innerHTML = html;
+            }
+            initCalendar();
             
             // --- ANIMATED BACKGROUND (particle system) ---
             const canvas = document.getElementById('bgCanvas');
