@@ -963,6 +963,25 @@
         </div>
     </section>
 
+    <!-- LIVE APP DEMO CTA -->
+    <section class="py-20 bg-emerald-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <h2 class="text-emerald-400 font-bold tracking-widest uppercase text-sm mb-4">Experience the Future</h2>
+            <h3 class="font-display text-4xl md:text-6xl font-bold text-white mb-8">Control Your Farm From Anywhere</h3>
+            <p class="text-emerald-100 text-lg max-w-2xl mx-auto mb-10">
+                Don't just take our word for it. Try the actual JalTantra mobile interface right now. 
+                Turn on motors, check voltage, and schedule irrigation in our live simulation.
+            </p>
+            <button onclick="openMobileDemo()" class="group relative inline-flex items-center gap-3 bg-white text-emerald-900 px-8 py-4 rounded-full font-bold text-lg shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] hover:scale-105 transition-all duration-300">
+                <i class="fa-brands fa-android text-2xl group-hover:rotate-12 transition-transform"></i>
+                <span>Launch Live App Demo</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+            <p class="mt-4 text-emerald-400/60 text-xs uppercase tracking-widest">Interactive PWA Simulation</p>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="bg-slate-950 text-slate-300 py-16 border-t border-slate-800" role="contentinfo">
         <div class="container mx-auto px-6">
@@ -1648,7 +1667,6 @@
                 }
             });
 
-            // Ticker
             function updateTicker() {
                 const crops = [{n:"Onion",p:2100},{n:"Tomato",p:1600},{n:"Soybean",p:4800},{n:"Cotton",p:7200},{n:"Wheat",p:2400},{n:"Rice",p:3500},{n:"Maize",p:1800},{n:"Bajra",p:2200},{n:"Turmeric",p:8500},{n:"Potato",p:1200}];
                 let h = '';
@@ -1657,9 +1675,17 @@
                     const col = p > c.p ? 'text-green-400' : 'text-red-400';
                     h += `<div class="ticker-item"><span class="text-teal-200 mr-2">${c.n}</span><span class="text-white">₹${p}</span><span class="ml-1 ${col}">${p>c.p?'▲':'▼'}</span></div>`;
                 });
-                document.getElementById('mandi-ticker').innerHTML = h + h;
+                const ticker = document.getElementById('mandi-ticker');
+                if(ticker) ticker.innerHTML = h + h;
             }
-            setInterval(updateTicker, 3000); updateTicker();
+            setInterval(updateTicker, 3000); 
+            // Call immediately if element exists
+            if(document.getElementById('mandi-ticker')) updateTicker();
+
+            // --- MOBILE DEMO LAUNCHER ---
+            function openMobileDemo() {
+                window.open('mobile-app.html', 'JalTantraMobile', 'width=390,height=844,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+            }
             
             // --- CROP CALENDAR LOGIC ---
             function initCalendar() {
@@ -1718,6 +1744,16 @@
             }
             initCalendar();
             
+            // --- MOBILE DEMO LAUNCHER ---
+            window.openMobileDemo = function() {
+                // Open in a popup window sized like a mobile phone
+                const width = 390;
+                const height = 844;
+                const left = (screen.width / 2) - (width / 2);
+                const top = (screen.height / 2) - (height / 2);
+                window.open('mobile-app.html', 'JalTantraDemo', `width=${width},height=${height},top=${top},left=${left},resizable=no,scrollbars=no,status=no,toolbar=no,location=no,menubar=no`);
+            };
+
             // --- ANIMATED BACKGROUND (particle system) ---
             const canvas = document.getElementById('bgCanvas');
             if (canvas) {
@@ -1813,5 +1849,12 @@
             }
         });
     </script>
+    <!-- DEMO LAUNCHER FAB -->
+    <button onclick="openMobileDemo()" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-transform flex items-center gap-3 border border-slate-700 font-bold group animate-bounce-slow">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center group-hover:animate-pulse">
+            <i class="fa-solid fa-mobile-screen"></i>
+        </div>
+        <span>Experience Demo App</span>
+    </button>
 </body>
 </html>
