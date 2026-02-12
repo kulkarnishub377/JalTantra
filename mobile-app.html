@@ -2,938 +2,352 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JalTantra Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>JalTantra Pro</title>
+    
+    <!-- External Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #059669; /* Emerald 600 */
-            --bg-light: #f8fafc; /* Slate 50 */
-            --text-main: #0f172a; /* Slate 900 */
-            --text-muted: #64748b; /* Slate 500 */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            overflow: hidden; /* App-like no scroll on body */
-            user-select: none;
-        }
-        .touch-active:active { transform: scale(0.96); opacity: 0.8; }
-        
-        /* Clean Light Cards (Replaces Glass) */
-        .glass {
-            background: white;
-            border: 1px solid #e2e8f0; /* Slate 200 */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .glass-panel {
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-        }
 
-        /* Power Button Glow */
-        .power-btn-glow { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-        .power-on { 
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); 
-            border-color: #10b981; 
-            background: #ecfdf5; 
-        }
-        .power-off { 
-            box-shadow: none; 
-            border-color: #cbd5e1; 
-            background: #f1f5f9;
-        }
-
-        /* Splash Animation */
-        @keyframes floatLogo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float { animation: floatLogo 3s ease-in-out infinite; }
-        
-        /* Scrollbar Hide */
-        .custom-scrollbar::-webkit-scrollbar { display: none; }
-        .custom-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+    <!-- Custom Pro Assets -->
+    <link rel="stylesheet" href="assets/css/mobile-style.css">
 </head>
-<body class="h-screen w-screen flex flex-col relative bg-slate-50 text-slate-900">
+<body>
 
     <!-- SPLASH SCREEN -->
-    <div id="splash" class="absolute inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-24 h-24 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 animate-float shadow-lg">
+    <div id="splash-screen">
+        <div class="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mb-6 shadow-glow animate-bounce">
             <i class="fa-solid fa-leaf text-5xl text-emerald-600"></i>
         </div>
-        <h1 class="text-3xl font-bold tracking-wider text-slate-800">JalTantra</h1>
-        <p class="text-slate-500 text-sm mt-2">Smart Farming OS v2.0</p>
-        <div class="mt-8 w-32 h-1 bg-slate-100 rounded-full overflow-hidden">
-            <div class="h-full bg-emerald-500 w-1/2 animate-[pulse_1s_infinite]"></div>
-        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">JalTantra</h1>
+        <p class="text-xs font-medium text-slate-400 mt-2 uppercase tracking-widest">Smart Farming OS</p>
     </div>
 
-    <!-- GENERIC TOOL MODAL -->
-    <div id="tool-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeToolModal()"></div>
-        <div class="absolute bottom-0 w-full bg-white rounded-t-3xl p-6 min-h-[50vh] animate-[slideUp_0.3s_ease-out] shadow-2xl">
-            <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
-            <div id="modal-content">
-                <!-- Dynamic Content Injected Here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN APP WRAPPER -->
-    <div id="app" class="flex-1 flex flex-col hidden opacity-0 transition-opacity duration-500 h-full overflow-hidden">
+    <!-- APP SHELL -->
+    <div id="app-shell" style="display: none; opacity: 0; transition: opacity 0.5s ease;">
         
         <!-- STATUS BAR -->
-        <div class="h-12 w-full flex justify-between items-end px-5 pb-2 text-xs font-semibold text-slate-900">
+        <header class="status-bar">
             <span id="status-time">--:--</span>
-            <div class="flex gap-2 items-center">
-                <i class="fa-solid fa-signal"></i>
-                <i class="fa-solid fa-wifi"></i>
+            <div class="flex gap-3 items-center">
+                <i class="fa-solid fa-signal text-xs"></i>
+                <i class="fa-solid fa-wifi text-xs"></i>
                 <div class="flex items-center gap-1">
-                    <span id="battery-level" class="text-[10px]">100%</span>
+                    <span id="battery-level" class="text-[10px] font-mono">100%</span>
                     <i id="battery-icon" class="fa-solid fa-battery-full text-emerald-600"></i>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- HEADER -->
-        <div class="px-5 py-4 flex justify-between items-center bg-white sticky top-0 z-20 shadow-sm border-b border-slate-100">
+        <!-- APP HEADER -->
+        <div class="app-header">
             <div>
-                <p id="greeting-text" class="text-xs text-slate-500 font-medium">Good Morning,</p>
-                <h2 class="text-xl font-bold text-slate-800">Ramesh Patil</h2>
+                <p id="greeting" class="text-xs text-slate-500 font-medium">Good Morning,</p>
+                <h2 class="text-lg font-bold text-slate-900">Ramesh Patil</h2>
             </div>
-            <div class="w-10 h-10 rounded-full bg-emerald-100 overflow-hidden border-2 border-emerald-500/20 active:scale-95 transition-transform">
+            <div class="w-10 h-10 rounded-full bg-emerald-100 ring-2 ring-white shadow-sm overflow-hidden active:scale-95 transition-transform">
                 <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover">
             </div>
         </div>
 
-        <!-- FLOATING CHATBOT BUTTON (Home only) -->
-        <div id="home-fab" class="absolute bottom-24 right-4 z-30 transition-all duration-300">
-             <button onclick="openTool('kisan-sahayak')" class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/40 text-white text-xl hover:scale-105 active:scale-95 transition-transform animate-bounce-slow">
-                <i class="fa-solid fa-microphone"></i>
-            </button>
-        </div>
-
-        <!-- CONTENT SCROLL AREA -->
-        <div id="content-area" class="flex-1 overflow-y-auto px-5 pb-24 custom-scrollbar">
+        <!-- MAIN SCROLLABLE CONTENT -->
+        <main id="main-content">
             
             <!-- SECTION: DASHBOARD -->
-            <div id="tab-home" class="space-y-6">
-                <!-- Weather Widget (Enhanced) -->
-                <div class="glass p-4 rounded-2xl relative overflow-hidden bg-white shadow-sm border border-slate-100">
-                    <div class="flex justify-between items-start z-10 relative">
+            <section id="tab-home" class="grid-dashboard animate-enter">
+                
+                <!-- Weather Card -->
+                <article class="card weather-widget grid-full-width-on-mobile">
+                    <div class="flex justify-between items-start mb-4">
                         <div>
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-location-dot text-emerald-600 text-xs"></i>
                                 <span class="text-xs font-bold text-slate-500">Pune Farm</span>
                             </div>
-                            <h3 class="text-4xl font-bold text-slate-800">28°C</h3>
-                            <p class="text-xs text-slate-500 mb-2">Partly Cloudy • H:32° L:22°</p>
+                            <h3 class="text-4xl font-bold text-slate-800 tracking-tight">28°C</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Partly Cloudy • H:32° L:22°</p>
                         </div>
                         <div class="text-right">
-                             <i class="fa-solid fa-cloud-sun text-4xl text-amber-400 mb-1"></i>
-                             <p class="text-[10px] text-blue-500 font-bold">Rain: 10%</p>
+                             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                <i class="fa-solid fa-cloud-sun text-2xl text-amber-500"></i>
+                             </div>
+                             <p class="text-[10px] text-blue-600 font-bold mt-2 bg-blue-50 px-2 py-1 rounded-full">Rain: 10%</p>
                         </div>
                     </div>
-                    
-                    <!-- Hourly Forecast Scroll -->
-                    <div class="mt-4 pt-4 border-t border-white/10 flex gap-4 overflow-x-auto custom-scrollbar pb-2">
-                        <div class="flex-shrink-0 text-center">
-                            <p class="text-[10px] text-slate-400">Now</p>
-                            <i class="fa-solid fa-cloud-sun text-yellow-400 my-1"></i>
-                            <p class="text-xs font-bold">28°</p>
+                    <!-- Hourly Forecast -->
+                    <div class="flex justify-between border-t border-slate-100 pt-4">
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 mb-1">Now</p>
+                            <i class="fa-solid fa-cloud-sun text-amber-500 text-xs"></i>
+                            <p class="text-xs font-bold mt-1">28°</p>
                         </div>
-                        <div class="flex-shrink-0 text-center">
-                            <p class="text-[10px] text-slate-400">1 PM</p>
-                            <i class="fa-solid fa-sun text-yellow-500 my-1"></i>
-                            <p class="text-xs font-bold">30°</p>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 mb-1">1 PM</p>
+                            <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
+                            <p class="text-xs font-bold mt-1">30°</p>
                         </div>
-                        <div class="flex-shrink-0 text-center">
-                            <p class="text-[10px] text-slate-400">2 PM</p>
-                            <i class="fa-solid fa-sun text-yellow-500 my-1"></i>
-                            <p class="text-xs font-bold">31°</p>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 mb-1">2 PM</p>
+                            <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
+                            <p class="text-xs font-bold mt-1">31°</p>
                         </div>
-                        <div class="flex-shrink-0 text-center">
-                            <p class="text-[10px] text-slate-400">3 PM</p>
-                            <i class="fa-solid fa-cloud text-slate-300 my-1"></i>
-                            <p class="text-xs font-bold">29°</p>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 mb-1">3 PM</p>
+                            <i class="fa-solid fa-cloud text-slate-400 text-xs"></i>
+                            <p class="text-xs font-bold mt-1">29°</p>
                         </div>
-                        <div class="flex-shrink-0 text-center">
-                            <p class="text-[10px] text-slate-400">4 PM</p>
-                            <i class="fa-solid fa-cloud-rain text-blue-400 my-1"></i>
-                            <p class="text-xs font-bold">27°</p>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 mb-1">4 PM</p>
+                            <i class="fa-solid fa-cloud-rain text-blue-500 text-xs"></i>
+                            <p class="text-xs font-bold mt-1">27°</p>
                         </div>
                     </div>
-                </div>
+                </article>
 
-                <!-- Motor Control Card -->
-                <div class="glass p-6 rounded-3xl text-center relative overflow-hidden group bg-white shadow-sm border border-slate-100">
-                    <div class="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    
-                    <div class="flex justify-between items-center mb-6">
+                <!-- Motor Control -->
+                <article class="card motor-widget grid-full-width-on-mobile">
+                    <div class="flex justify-between items-center mb-6 px-2">
                         <div class="text-left">
                             <h3 class="font-bold text-lg text-slate-800">Main Pump</h3>
-                            <p class="text-xs text-slate-500">3-Phase • 5HP • Borewell 1</p>
+                            <p class="text-xs text-slate-500">Borewell 1 • 5HP</p>
                         </div>
-                        <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer hover:bg-slate-200">
-                            <i class="fa-solid fa-gear text-slate-400"></i>
+                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center cursor-pointer hover:bg-slate-100 transition-colors">
+                            <i class="fa-solid fa-gear text-slate-400 text-sm"></i>
                         </div>
                     </div>
 
-                    <!-- Power Button -->
-                    <button id="motor-btn" onclick="toggleMotor()" class="w-32 h-32 rounded-full border-4 border-slate-200 flex items-center justify-center mx-auto mb-6 transition-all duration-300 touch-active power-off relative bg-slate-50">
-                        <div id="btn-icon" class="text-4xl text-slate-300 transition-colors"><i class="fa-solid fa-power-off"></i></div>
-                        <!-- Ripple Effect -->
-                        <span id="ripple" class="absolute inset-0 rounded-full border border-emerald-500 scale-100 opacity-0"></span>
+                    <button type="button" id="motor-btn" onclick="toggleMotor()" class="motor-btn">
+                        <i class="fa-solid fa-power-off"></i>
                     </button>
                     
-                    <p id="motor-status" class="font-mono text-sm uppercase tracking-widest text-slate-400 mb-6">OFFLINE</p>
+                    <p id="motor-status" class="font-bold text-slate-400 mt-4 tracking-widest text-sm">OFFLINE</p>
 
-                    <!-- Stats Grid -->
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
-                            <p class="text-[10px] text-slate-500">Voltage</p>
-                            <p class="font-bold text-emerald-600"><span id="val-v">0</span>V</p>
+                    <div class="grid grid-cols-3 gap-3 mt-8">
+                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Voltage</p>
+                            <p class="font-bold text-emerald-600 text-lg">230<span class="text-xs text-slate-400 font-normal">V</span></p>
                         </div>
-                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
-                            <p class="text-[10px] text-slate-500">Current</p>
-                            <p class="font-bold text-blue-600"><span id="val-a">0</span>A</p>
+                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Current</p>
+                            <p class="font-bold text-blue-600 text-lg">12<span class="text-xs text-slate-400 font-normal">A</span></p>
                         </div>
-                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
-                            <p class="text-[10px] text-slate-500">Power</p>
-                            <p class="font-bold text-amber-500"><span id="val-kw">0</span>kW</p>
+                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Power</p>
+                            <p class="font-bold text-amber-500 text-lg">4.5<span class="text-xs text-slate-400 font-normal">kW</span></p>
                         </div>
+                    </div>
+                </article>
+
+                <!-- Quick Actions (Grid) -->
+                <div class="grid grid-cols-2 gap-3 grid-full-width-on-mobile">
+                    <div onclick="openTool('disease-scan')" class="card !p-4 !mb-0 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-emerald-500 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-700">Scan Crop</span>
+                    </div>
+                    <div onclick="openTool('market-prices')" class="card !p-4 !mb-0 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-blue-500 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl">
+                             <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-700">Check Rates</span>
                     </div>
                 </div>
 
-                <!-- Live Chart -->
-                <div class="glass p-4 rounded-2xl">
-                    <h4 class="text-sm font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-area text-blue-400"></i> Voltage Stability</h4>
-                    <div class="h-32 w-full">
-                        <canvas id="voltageChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
+            </section>
+
             <!-- SECTION: MARKET -->
-            <div id="tab-market" class="hidden space-y-6">
-                <h3 class="font-bold text-xl mb-4 text-slate-800">Market Intelligence</h3>
+            <section id="tab-market" class="grid-dashboard hidden animate-enter">
+                <h3 class="font-bold text-xl mb-2 px-1 text-slate-800">Live Mandi Prices</h3>
                 
-                <!-- Ticker Tape (Static) -->
-                <div class="bg-emerald-50 p-2 rounded-lg mb-4 overflow-hidden whitespace-nowrap border border-emerald-100">
-                    <p class="text-xs text-emerald-700 animate-[marquee_10s_linear_infinite] font-bold">
-                        ONION: ₹2,400 ▲ • COTTON: ₹8,200 ▼ • SOYBEAN: ₹4,800 ▲ • TOMATO: ₹1,200 ▼
-                    </p>
+                <!-- Ticker -->
+                <div class="bg-slate-900 text-white p-3 rounded-xl mb-4 overflow-hidden grid-full-width-on-mobile shadow-lg">
+                     <p class="text-xs font-mono whitespace-nowrap animate-[marquee_10s_linear_infinite]">
+                        ONION: ₹2400 ▲  •  COTTON: ₹8200 ▼  •  WHEAT: ₹2100 ▲  •  SOYBEAN: ₹4600 ▲
+                     </p>
                 </div>
 
-                <!-- Price List -->
-                <div class="space-y-3">
-                    <!-- Item 1 -->
-                    <div class="glass p-4 rounded-2xl flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">ON</div>
-                            <div>
-                                <h4 class="font-bold">Onion (Red)</h4>
-                                <p class="text-[10px] text-slate-400">Lasalgaon Mandi</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-lg">₹2,450</p>
-                            <p class="text-[10px] text-emerald-400 font-bold">▲ + ₹50</p>
+                <!-- Price Cards -->
+                <div class="card flex justify-between items-center !mb-0">
+                    <div class="flex gap-3 items-center">
+                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xs">ON</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">Red Onion</h4>
+                            <p class="text-[10px] text-slate-400">Lasalgaon</p>
                         </div>
                     </div>
-                    <!-- Item 2 -->
-                    <div class="glass p-4 rounded-2xl flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-600 font-bold text-xs">CT</div>
-                            <div>
-                                <h4 class="font-bold">Cotton</h4>
-                                <p class="text-[10px] text-slate-400">Akola Mandi</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-lg">₹8,100</p>
-                            <p class="text-[10px] text-red-400 font-bold">▼ - ₹120</p>
-                        </div>
-                    </div>
-                     <!-- Item 3 -->
-                    <div class="glass p-4 rounded-2xl flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-bold text-xs">SB</div>
-                            <div>
-                                <h4 class="font-bold">Soybean</h4>
-                                <p class="text-[10px] text-slate-400">Latur Mandi</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-lg">₹4,850</p>
-                             <p class="text-[10px] text-emerald-400 font-bold">▲ + ₹15</p>
-                        </div>
+                    <div class="text-right">
+                        <p class="font-bold text-slate-800">₹2,450</p>
+                        <p class="text-[10px] text-emerald-500 font-bold">▲ +50</p>
                     </div>
                 </div>
-
-                <!-- Schemes -->
-                <h3 class="font-bold text-lg mt-6 mb-3">Govt Schemes</h3>
-                <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-4">
-                    <div class="glass p-4 rounded-2xl min-w-[200px] border border-emerald-500/30">
-                        <div class="bg-emerald-500 w-8 h-8 rounded-lg flex items-center justify-center mb-2"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                        <h4 class="font-bold text-sm">PM KISAN</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">₹6,000/year support.</p>
-                        <button class="mt-3 text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded">Apply</button>
+                 <div class="card flex justify-between items-center !mb-0">
+                    <div class="flex gap-3 items-center">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">CT</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">Cotton</h4>
+                            <p class="text-[10px] text-slate-400">Akola</p>
+                        </div>
                     </div>
-                    <div class="glass p-4 rounded-2xl min-w-[200px] border border-blue-500/30">
-                        <div class="bg-blue-500 w-8 h-8 rounded-lg flex items-center justify-center mb-2"><i class="fa-solid fa-umbrella"></i></div>
-                        <h4 class="font-bold text-sm">Fasal Bima</h4>
-                        <p class="text-[10px] text-slate-400 mt-1">Crop insurance.</p>
-                        <button class="mt-3 text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded">Details</button>
+                    <div class="text-right">
+                        <p class="font-bold text-slate-800">₹8,100</p>
+                        <p class="text-[10px] text-red-500 font-bold">▼ -120</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
-                <!-- Smart Commerce Tools -->
-                <h3 class="font-bold text-lg mt-6 mb-3">Smart Commerce</h3>
-                <div class="space-y-3">
-                     <div onclick="openTool('negot-coach')" class="glass p-4 rounded-2xl flex items-center justify-between cursor-pointer active:scale-95 transition-transform">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa-solid fa-handshake"></i></div>
-                            <div>
-                                <h4 class="font-bold text-sm">Negotiation Coach</h4>
-                                <p class="text-[10px] text-slate-400">Get AI strategy for better prices.</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-slate-600"></i>
-                     </div>
-                     <div onclick="openTool('export-mgr')" class="glass p-4 rounded-2xl flex items-center justify-between cursor-pointer active:scale-95 transition-transform">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa-solid fa-earth-americas"></i></div>
-                            <div>
-                                <h4 class="font-bold text-sm">Export Manager</h4>
-                                <p class="text-[10px] text-slate-400">Find global buyers for your crop.</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-slate-600"></i>
-                     </div>
-                     <div onclick="openTool('loan-assist')" class="glass p-4 rounded-2xl flex items-center justify-between cursor-pointer active:scale-95 transition-transform">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400"><i class="fa-solid fa-building-columns"></i></div>
-                            <div>
-                                <h4 class="font-bold text-sm">Loan Assistant</h4>
-                                <p class="text-[10px] text-slate-400">Auto-write application letters.</p>
-                            </div>
-                        </div>
-                         <i class="fa-solid fa-chevron-right text-slate-600"></i>
-                     </div>
-                </div>
-            </div>
-
-            <!-- SECTION: DEVICES (Add New Flow) -->
-            <div id="tab-devices" class="hidden space-y-4">
-                <h3 class="font-bold text-xl mb-4 text-slate-800">My Devices</h3>
-                
-                <!-- Existing Device -->
-                <div class="glass p-4 rounded-2xl flex items-center gap-4 bg-white shadow-sm border border-slate-100">
+            <!-- SECTION: DEVICES -->
+             <section id="tab-devices" class="hidden animate-enter">
+                <h3 class="font-bold text-xl mb-4 px-1 text-slate-800">My Devices</h3>
+                 <div class="card flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl"><i class="fa-solid fa-water"></i></div>
                     <div class="flex-1">
                         <h4 class="font-bold text-slate-800">Main Pump</h4>
-                        <p class="text-xs text-slate-500">Active • 5HP</p>
+                        <p class="text-xs text-slate-500">Active • 5HP • Auto-Mode</p>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
                 </div>
-
-                <!-- Add New Button -->
-                <button onclick="openScanner()" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 hover:border-emerald-500 hover:text-emerald-600 transition-colors flex flex-col items-center gap-2 bg-slate-50 active:scale-95 transform">
-                    <i class="fa-solid fa-plus text-xl"></i>
-                    <span class="text-sm font-bold">Add New Controller</span>
+                <button type="button" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 hover:border-emerald-500 hover:text-emerald-500 transition-colors flex items-center justify-center gap-2 bg-slate-50 active:scale-95">
+                    <i class="fa-solid fa-plus"></i> <span class="font-bold text-sm">Add Device</span>
                 </button>
-            </div>
-            
-                </button>
-            </div>
-            
-            <!-- SECTION: CALENDAR (Timeline) -->
-            <div id="tab-calendar" class="hidden space-y-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-xl text-slate-800">My Schedule</h3>
-                    <span id="cal-month-header" class="bg-emerald-50 text-xs px-3 py-1 rounded-full text-emerald-700 font-bold border border-emerald-100">October 2025</span>
-                </div>
-                
-                <div class="relative pl-6 border-l-2 border-slate-200 space-y-8">
-                    <!-- Today -->
-                    <div class="relative">
-                        <div class="absolute -left-[29px] w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white shadow-md"></div>
-                        <p class="text-xs text-emerald-600 font-bold uppercase mb-1">Today, <span id="cal-time-now">9:00 AM</span></p>
-                        <div class="glass p-4 rounded-xl border-l-4 border-emerald-500 bg-white shadow-sm active:scale-95 transition-transform">
-                             <h4 class="font-bold text-sm text-slate-800">Irrigate Cotton Field</h4>
-                             <p class="text-xs text-slate-500 mt-1">Pump running for 2 hours (Scheduled).</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Tomorrow -->
-                    <div class="relative opacity-70">
-                        <div class="absolute -left-[29px] w-4 h-4 rounded-full bg-slate-300 ring-4 ring-white"></div>
-                        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Tomorrow</p>
-                        <div class="glass p-4 rounded-xl bg-white border border-slate-100 active:scale-95 transition-transform">
-                             <h4 class="font-bold text-sm text-slate-700">Apply Fertilizer NPK</h4>
-                             <p class="text-xs text-slate-400 mt-1">Dose: 50kg for Acre 2.</p>
-                        </div>
-                    </div>
-
-                     <!-- Upcoming -->
-                    <div class="relative opacity-50">
-                         <div class="absolute -left-[29px] w-4 h-4 rounded-full bg-slate-200 ring-4 ring-white"></div>
-                        <p id="cal-future-date" class="text-xs text-slate-400 font-bold uppercase mb-1">Oct 25</p>
-                        <div class="glass p-4 rounded-xl bg-white border border-slate-100 active:scale-95 transition-transform">
-                             <h4 class="font-bold text-sm text-slate-700">Pest Inspection</h4>
-                             <p class="text-xs text-slate-400 mt-1">Check for Pink Bollworm.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+             </section>
 
             <!-- SECTION: MENU (Tools) -->
-            <div id="tab-menu" class="hidden pb-24">
-                 <div class="flex items-center gap-2 mb-6">
-                    <i class="fa-solid fa-wand-magic-sparkles text-emerald-600"></i>
-                    <h3 class="font-bold text-xl text-slate-800">AI Agri-Suite</h3>
-                 </div>
-                 
-                 <div class="grid grid-cols-3 gap-3">
-                     <!-- 1. Crop Doctor -->
-                     <div onclick="openScanner('disease')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-leaf text-2xl text-emerald-600 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Crop Doctor</p>
-                     </div>
-                     <!-- 2. Farm Planner -->
-                     <div onclick="openTool('farm-plan')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-calendar-check text-2xl text-indigo-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Daily Plan</p>
-                     </div>
-                     <!-- 3. Soil Decoder -->
-                     <div onclick="openTool('soil-decode')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-flask text-2xl text-orange-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Soil Test</p>
-                     </div>
-                     <!-- 4. Profit Calc -->
-                     <div onclick="openTool('profit-calc')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-calculator text-2xl text-pink-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Profit Calc</p>
-                     </div>
-                     <!-- 5. Price Predict -->
-                     <div onclick="openTool('price-pred')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-chart-line text-2xl text-amber-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Price Cast</p>
-                     </div>
-                     <!-- 6. Intercrop -->
-                     <div onclick="openTool('inter-crop')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-shuffle text-2xl text-purple-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Mix Crops</p>
-                     </div>
-                     <!-- 7. Pashu Vaidya -->
-                     <div onclick="openTool('pashu-vaidya')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-cow text-2xl text-red-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Vet Help</p>
-                     </div>
-                     <!-- 8. Yantra Doc -->
-                     <div onclick="openTool('yantra-doc')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-wrench text-2xl text-slate-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Fix Machine</p>
-                     </div>
-                     <!-- 9. Weed Assassin -->
-                     <div onclick="openTool('weed-kill')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-skull-crossbones text-2xl text-yellow-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Weed ID</p>
-                     </div>
-                     <!-- 10. Water Lab -->
-                     <div onclick="openTool('water-lab')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-glass-water-droplet text-2xl text-cyan-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Water Test</p>
-                     </div>
-                     <!-- 11. Fertilizer Mix -->
-                     <div onclick="openTool('fert-mix')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-flask-vial text-2xl text-teal-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Fert Mix</p>
-                     </div>
-                     <!-- 12. Contract -->
-                     <div onclick="openTool('contract-draft')" class="glass p-3 rounded-2xl flex flex-col items-center justify-center aspect-square active:scale-95 transition-transform bg-white shadow-sm border border-slate-100">
-                         <i class="fa-solid fa-file-contract text-2xl text-blue-500 mb-2"></i>
-                         <p class="text-[10px] font-bold text-center text-slate-700">Contracts</p>
-                     </div>
-                 </div>
-            </div>
+            <section id="tab-menu" class="hidden animate-enter pb-20">
+                <h3 class="font-bold text-xl mb-4 px-1 text-slate-800">AI Farming Suite</h3>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <!-- Tool 1: Crop Doctor -->
+                    <button type="button" onclick="openTool('crop-doctor')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Crop<br>Doctor</span>
+                    </button>
 
+                    <!-- Tool 2: Soil Health -->
+                    <button type="button" onclick="openTool('soil-test')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Soil<br>Health</span>
+                    </button>
+
+                    <!-- Tool 3: Weather+ -->
+                    <button type="button" onclick="openTool('weather-plus')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-cloud-bolt"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Weather<br>Plus</span>
+                    </button>
+
+                    <!-- Tool 4: Gov Schemes -->
+                    <button type="button" onclick="openTool('schemes')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Gov<br>Schemes</span>
+                    </button>
+
+                    <!-- Tool 5: Market View -->
+                    <button type="button" onclick="openTool('market-view')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Market<br>View</span>
+                    </button>
+
+                    <!-- Tool 6: Farm Calc -->
+                    <button type="button" onclick="openTool('calculator')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Profit<br>Calc</span>
+                    </button>
+                    
+                    <!-- Tool 7: Community -->
+                    <button type="button" onclick="openTool('community')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Kisan<br>Sangh</span>
+                    </button>
+
+                    <!-- Tool 8: Shop -->
+                    <button type="button" onclick="openTool('shop')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Agri<br>Shop</span>
+                    </button>
+
+                    <!-- Tool 9: Call Expert -->
+                    <button type="button" onclick="openTool('expert-call')" class="card !p-3 !mb-0 flex flex-col items-center justify-center gap-2 aspect-square active:scale-95 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Expert<br>Call</span>
+                    </button>
+                </div>
+
+                <!-- Settings Link -->
+                <div class="mt-6 pt-6 border-t border-slate-200">
+                    <button type="button" onclick="toggleLang()" class="w-full flex justify-between items-center p-4 bg-white rounded-xl border border-slate-200 active:bg-slate-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                <i class="fa-solid fa-language"></i>
+                            </div>
+                            <span class="font-bold text-slate-700 text-sm">App Language</span>
+                        </div>
+                        <span id="lang-display" class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">English</span>
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FLOATING SCAN BUTTON (CENTER) -->
+        <div class="scan-btn-wrapper z-50">
+            <button type="button" onclick="openScanner()" class="scan-btn">
+                <i class="fa-solid fa-qrcode"></i>
+            </button>
         </div>
 
-        <!-- BOTTOM NAVIGATION (UPDATED) -->
-        <!-- BOTTOM NAVIGATION (UPDATED) -->
-        <div class="glass-panel h-20 w-full absolute bottom-0 left-0 flex justify-between items-center pb-2 px-6 z-40 bg-white border-t border-slate-200">
-             <button onclick="switchTab('home')" class="nav-btn text-emerald-600 flex flex-col items-center gap-1 active:scale-95 transition-transform" data-target="home">
-                 <i class="fa-solid fa-house text-xl"></i>
-             </button>
-             <button onclick="switchTab('market')" class="nav-btn text-slate-400 flex flex-col items-center gap-1 hover:text-emerald-600 active:scale-95 transition-transform" data-target="market">
-                <i class="fa-solid fa-shop text-xl"></i>
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button type="button" onclick="switchTab('home')" class="nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
             </button>
-             <button onclick="switchTab('devices')" class="nav-btn text-slate-400 flex flex-col items-center gap-1 hover:text-emerald-600 active:scale-95 transition-transform" data-target="devices">
-                 <i class="fa-solid fa-wrench text-xl"></i>
-             </button>
+            <button type="button" onclick="switchTab('market')" class="nav-item">
+                <i class="fa-solid fa-shop"></i>
+                <span>Market</span>
+            </button>
             
-            <!-- CENTRAL SCAN BUTTON -->
-            <div onclick="openScanner('disease')" class="w-14 h-14 -mt-10 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-600/30 border-4 border-slate-50 cursor-pointer hover:scale-105 active:scale-95 transition-transform z-50">
-                <i class="fa-solid fa-camera text-white text-lg"></i>
+            <div style="width: 60px;"></div> <!-- Spacer -->
+
+            <button type="button" onclick="switchTab('devices')" class="nav-item">
+                <i class="fa-solid fa-wrench"></i>
+                <span>Devices</span>
+            </button>
+            <button type="button" onclick="switchTab('menu')" class="nav-item">
+                <i class="fa-solid fa-bars"></i>
+                <span>Menu</span>
+            </button>
+        </nav>
+        
+        <!-- GENERIC BOTTOM SHEET MODAL -->
+        <div id="tool-modal" class="modal-backdrop">
+            <!-- Dynamic Content Container -->
+            <div id="modal-container" class="modal-sheet shadow-2xl relative">
+                <!-- Content injected by JS -->
             </div>
-            
-             <button onclick="switchTab('calendar')" class="nav-btn text-slate-400 flex flex-col items-center gap-1 hover:text-emerald-600 active:scale-95 transition-transform" data-target="calendar">
-                <i class="fa-solid fa-calendar-days text-xl"></i>
-            </button>
-             <button onclick="switchTab('menu')" class="nav-btn text-slate-400 flex flex-col items-center gap-1 hover:text-emerald-600 active:scale-95 transition-transform" data-target="menu">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
         </div>
+
     </div>
 
-    <!-- QR/CAMERA SCANNER MODAL -->
-    <div id="qr-modal" class="fixed inset-0 z-[60] bg-black hidden flex-col">
-        <div class="absolute top-0 w-full p-4 flex justify-between items-center z-10">
-            <button onclick="closeScanner()" class="w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-            <span id="scan-title" class="text-white font-bold">Scan QR Code</span>
-            <div class="w-10"></div>
-        </div>
-        <!-- Camera Feed Simulation -->
-        <div class="flex-1 bg-slate-800 relative overflow-hidden">
-            <img id="scan-bg" src="https://img.freepik.com/free-vector/qr-code-scanning-concept-illustration_114360-5906.jpg" class="w-full h-full object-cover opacity-50">
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-64 h-64 border-2 border-emerald-500 rounded-2xl relative">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500 shadow-[0_0_10px_#10b981] scan-line"></div>
-                    <!-- Detection Box -->
-                    <div id="detection-box" class="hidden absolute top-10 left-10 right-10 bottom-10 border-2 border-yellow-400 rounded-lg">
-                        <span class="absolute -top-6 left-0 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">Leaf Spot Detected</span>
-                    </div>
-                </div>
-            </div>
-            <p id="scan-instr" class="absolute bottom-20 w-full text-center text-white/80 text-sm">Align QR code within frame</p>
-        </div>
-        
-        <!-- Controls -->
-        <div class="bg-black p-6 pb-10">
-            <button onclick="completeScan()" class="w-full bg-emerald-600 py-3 rounded-xl font-bold text-white hover:bg-emerald-500 active:scale-95 transition-transform">Capture & Analyze</button>
-        </div>
-    </div>
-
-    <!-- RESULT MODAL -->
-    <div id="result-modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-end justify-center">
-        <div class="bg-white w-full rounded-t-3xl p-6 border-t border-slate-200 animate-slide-up max-h-[85vh] overflow-y-auto shadow-2xl">
-            <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
-            
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-3 text-red-500 text-3xl border border-red-500/20">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-slate-800">Early Blight Detected</h3>
-                <p class="text-red-500 font-bold">Confidence: 94%</p>
-            </div>
-            
-            <div class="space-y-4">
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <h4 class="font-bold text-emerald-600 mb-2"><i class="fa-solid fa-leaf"></i> Organic Remedy</h4>
-                    <p class="text-sm text-slate-600">Spray a mixture of <strong>Neem Oil (5ml/L)</strong> and soap water immediately. Repeat every 3 days.</p>
-                </div>
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <h4 class="font-bold text-blue-600 mb-2"><i class="fa-solid fa-flask"></i> Chemical Solution</h4>
-                    <p class="text-sm text-slate-600">Apply <strong>Mancozeb 75% WP</strong> (2.5g/L). Ensure complete leaf coverage.</p>
-                </div>
-            </div>
-            
-            <button onclick="closeResult()" class="w-full bg-slate-100 mt-6 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-200 border border-slate-200">Close Report</button>
-        </div>
-    </div>
-
-    <script>
-        // --- SPLASH SCREEN ---
-        setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
-                // trigger redraw for chart size
-                requestAnimationFrame(() => {
-                    document.getElementById('app').style.opacity = '1';
-                });
-            }, 500);
-        }, 2000);
-
-        // --- MOTOR LOGIC ---
-        let motorOn = false;
-        let updateInterval;
-        
-        function toggleMotor() {
-            motorOn = !motorOn;
-            const btn = document.getElementById('motor-btn');
-            const icon = document.getElementById('btn-icon');
-            const status = document.getElementById('motor-status');
-            const ripple = document.getElementById('ripple');
-
-            if (motorOn) {
-                btn.classList.remove('power-off');
-                btn.classList.add('power-on');
-                icon.innerHTML = '<i class="fa-solid fa-power-off text-emerald-500"></i>';
-                icon.classList.remove('text-slate-500');
-                status.innerText = 'RUNNING';
-                status.classList.add('text-emerald-400');
-                status.classList.remove('text-slate-500');
-                
-                // Ripple animation
-                ripple.classList.add('animate-ping');
-                
-                // Start Simulating Data
-                startDataSimulation();
-            } else {
-                btn.classList.add('power-off');
-                btn.classList.remove('power-on');
-                icon.innerHTML = '<i class="fa-solid fa-power-off"></i>';
-                icon.classList.add('text-slate-500');
-                status.innerText = 'OFFLINE';
-                status.classList.remove('text-emerald-400');
-                status.classList.add('text-slate-500');
-                
-                ripple.classList.remove('animate-ping');
-                stopDataSimulation();
-            }
-        }
-
-        // --- DATA SIMULATION ---
-        function startDataSimulation() {
-            updateInterval = setInterval(() => {
-                // Randomize values around nominal
-                const v = Math.floor(220 + Math.random() * 10 - 5);
-                const a = (12 + Math.random() * 2 - 1).toFixed(1);
-                const kw = (v * a / 1000).toFixed(2);
-
-                document.getElementById('val-v').innerText = v;
-                document.getElementById('val-a').innerText = a;
-                document.getElementById('val-kw').innerText = kw;
-                
-                updateChart(v);
-            }, 1000);
-        }
-
-        function stopDataSimulation() {
-            clearInterval(updateInterval);
-            document.getElementById('val-v').innerText = '0';
-            document.getElementById('val-a').innerText = '0';
-            document.getElementById('val-kw').innerText = '0';
-        }
-
-        // --- CHART.JS ---
-        const ctx = document.getElementById('voltageChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: Array(10).fill(''),
-                datasets: [{
-                    label: 'Voltage',
-                    data: Array(10).fill(220), // baseline
-                    borderColor: '#60a5fa',
-                    backgroundColor: 'rgba(96, 165, 250, 0.1)',
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { display: false },
-                    y: { display: false, min: 200, max: 250 }
-                },
-                animation: { duration: 0 } 
-            }
-        });
-
-        function updateChart(val) {
-            chart.data.datasets[0].data.shift();
-            chart.data.datasets[0].data.push(val);
-            chart.update();
-        }
-
-        // --- NAVIGATION ---
-        function switchTab(tabId) {
-            // Hide all tabs
-            ['home', 'market', 'devices', 'calendar', 'menu'].forEach(id => {
-                const el = document.getElementById('tab-' + id);
-                if(el) el.classList.add('hidden');
-            });
-            // Show selected
-            const targetEl = document.getElementById('tab-' + tabId);
-            if(targetEl) targetEl.classList.remove('hidden');
-            
-            // Update buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.target === tabId) {
-                    btn.classList.remove('text-slate-400');
-                    btn.classList.add('text-emerald-600');
-                } else {
-                    btn.classList.add('text-slate-400');
-                    btn.classList.remove('text-emerald-600');
-                }
-            });
-        }
-
-        // --- SCANNER FLOW ---
-        let scanType = 'qr'; // 'qr' or 'disease'
-
-        function openScanner(type = 'qr') {
-            scanType = type;
-            const modal = document.getElementById('qr-modal');
-            const title = document.getElementById('scan-title');
-            const bg = document.getElementById('scan-bg');
-            const instr = document.getElementById('scan-instr');
-            const box = document.getElementById('detection-box');
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            if (type === 'disease') {
-                title.innerText = 'AI Disease Scanner';
-                bg.src = 'https://img.freepik.com/free-photo/green-leaf-texture_1160-752.jpg'; // Leaf image
-                instr.innerText = 'Hold steady for AI Analysis...';
-                // Simulate AI finding something after 1.5s
-                setTimeout(() => box.classList.remove('hidden'), 1500);
-            } else {
-                title.innerText = 'Scan QR Code';
-                bg.src = 'https://img.freepik.com/free-vector/qr-code-scanning-concept-illustration_114360-5906.jpg';
-                instr.innerText = 'Align QR code within frame';
-                box.classList.add('hidden');
-            }
-        }
-        
-        function closeScanner() {
-            document.getElementById('qr-modal').classList.add('hidden');
-            document.getElementById('qr-modal').classList.remove('flex');
-            document.getElementById('detection-box').classList.add('hidden');
-        }
-        
-        function completeScan() {
-            if (scanType === 'disease') {
-                closeScanner();
-                // Show Result Modal
-                document.getElementById('result-modal').classList.remove('hidden');
-                document.getElementById('result-modal').classList.add('flex');
-            } else {
-                closeScanner();
-                alert("New Device 'Pump Controller #2' Connected!");
-                switchTab('home');
-            }
-        }
-
-        // --- SYSTEM STATUS (Time, Battery, Greeting) ---
-        function updateSystemStatus() {
-            const now = new Date();
-            
-            // 1. Time
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            // hours = hours % 12;
-            // hours = hours ? hours : 12; // the hour '0' should be '12'
-            // const timeStr = `${hours}:${minutes}`; // 24hr format is more standard for status bars often, but let's stick to simple
-            document.getElementById('status-time').innerText = `${hours}:${minutes}`;
-
-            // 2. Greeting
-            const greetingEl = document.getElementById('greeting-text');
-            if(greetingEl) {
-                if(hours < 12) greetingEl.innerText = 'Good Morning,';
-                else if(hours < 18) greetingEl.innerText = 'Good Afternoon,';
-                else greetingEl.innerText = 'Good Evening,';
-            }
-
-            // 3. Date in Calendar
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-            const monthHeader = document.getElementById('cal-month-header');
-            if(monthHeader) monthHeader.innerText = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
-            
-            const timeNowHeader = document.getElementById('cal-time-now');
-            if(timeNowHeader) timeNowHeader.innerText = `Today, ${hours}:${minutes} ${ampm}`;
-
-            const futureDateEl = document.getElementById('cal-future-date');
-            if(futureDateEl) {
-                const future = new Date(now);
-                future.setDate(now.getDate() + 5);
-                futureDateEl.innerText = `${monthNames[future.getMonth()].substring(0,3)} ${future.getDate()}`;
-            }
-        }
-
-        // Battery API
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(function(battery) {
-                updateBatteryUI(battery);
-                battery.addEventListener('levelchange', function() { updateBatteryUI(battery); });
-                battery.addEventListener('chargingchange', function() { updateBatteryUI(battery); });
-            });
-        }
-        
-        function updateBatteryUI(battery) {
-            const level = Math.round(battery.level * 100);
-            document.getElementById('battery-level').innerText = level + '%';
-            const icon = document.getElementById('battery-icon');
-            
-            if(battery.charging) {
-                icon.className = 'fa-solid fa-bolt text-yellow-500';
-            } else if(level > 20) {
-                 icon.className = 'fa-solid fa-battery-full text-emerald-600';
-            } else {
-                 icon.className = 'fa-solid fa-battery-quarter text-red-500';
-            }
-        }
-
-        // Initial Call & Interval
-        updateSystemStatus();
-        setInterval(updateSystemStatus, 60000); // Every minute
-
-
-        // --- TOOL CONFIGURATIONS ---
-        const tools = {
-            'farm-plan': {
-                title: 'Smart Farm Planner',
-                icon: 'fa-calendar-check text-indigo-400',
-                html: `<input type="text" id="t-input" placeholder="Enter Crop (e.g. Wheat)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white focus:border-indigo-500 outline-none mb-4">
-                       <button onclick="runTool('farm-plan')" class="w-full bg-indigo-600 rounded-xl py-3 font-bold">Generate Plan</button>
-                       <div id="t-result" class="hidden mt-4 bg-indigo-500/20 p-3 rounded-xl text-xs text-indigo-200"></div>`
-            },
-            'soil-decode': {
-                title: 'Soil Health Decoder',
-                icon: 'fa-flask text-orange-400',
-                html: `<div class="grid grid-cols-3 gap-2 mb-4">
-                        <input type="number" id="t-n" placeholder="N" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                        <input type="number" id="t-p" placeholder="P" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                        <input type="number" id="t-k" placeholder="K" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                       </div>
-                       <button onclick="runTool('soil-decode')" class="w-full bg-orange-600 rounded-xl py-3 font-bold">Analyze Report</button>
-                       <div id="t-result" class="hidden mt-4 bg-orange-500/20 p-3 rounded-xl text-xs text-orange-200"></div>`
-            },
-            'price-pred': {
-                title: 'Price Predictor',
-                icon: 'fa-chart-line text-amber-400',
-                html: `<input type="text" id="t-input" placeholder="Crop (e.g. Onion)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white focus:border-amber-500 outline-none mb-4">
-                       <button onclick="runTool('price-pred')" class="w-full bg-amber-600 rounded-xl py-3 font-bold">Forecast Rates</button>
-                       <div id="t-result" class="hidden mt-4 bg-amber-500/20 p-3 rounded-xl text-xs text-amber-200"></div>`
-            },
-            'pashu-vaidya': {
-                title: 'Pashu Vaidya (Vet)',
-                icon: 'fa-cow text-red-400',
-                html: `<input type="text" id="t-animal" placeholder="Animal (e.g. Cow)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white mb-2">
-                       <input type="text" id="t-symptom" placeholder="Symptoms (e.g. Fever)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white mb-4">
-                       <button onclick="runTool('pashu-vaidya')" class="w-full bg-red-600 rounded-xl py-3 font-bold">Check Health</button>
-                       <div id="t-result" class="hidden mt-4 bg-red-500/20 p-3 rounded-xl text-xs text-red-200"></div>`
-            },
-            'profit-calc': {
-                 title: 'Profit Calculator',
-                 icon: 'fa-calculator text-pink-400',
-                 html: `<input type="text" id="t-crop" placeholder="Crop" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white mb-2">
-                        <input type="number" id="t-area" placeholder="Acres" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white mb-4">
-                        <button onclick="runTool('profit-calc')" class="w-full bg-pink-600 rounded-xl py-3 font-bold">Calculate ROI</button>
-                        <div id="t-result" class="hidden mt-4 bg-pink-500/20 p-3 rounded-xl text-xs text-pink-200"></div>`
-            },
-            'negot-coach': {
-                title: 'Negotiation Coach',
-                icon: 'fa-handshake text-blue-400',
-                html: `<textarea id="t-input" placeholder="Situation (e.g. Trader offering ₹2000...)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white h-24 mb-4"></textarea>
-                       <button onclick="runTool('negot-coach')" class="w-full bg-blue-600 rounded-xl py-3 font-bold">Get Strategy</button>
-                       <div id="t-result" class="hidden mt-4 bg-blue-500/20 p-3 rounded-xl text-xs text-blue-200"></div>`
-            },
-            'kisan-sahayak': {
-                title: 'Kisan Sahayak',
-                icon: 'fa-microphone text-blue-400',
-                html: `<div id="chat-history" class="h-48 overflow-y-auto mb-4 space-y-2 p-2 bg-slate-800/50 rounded-xl custom-scrollbar">
-                            <div class="bg-slate-700 p-2 rounded-lg rounded-tl-none self-start mr-8 text-xs text-slate-300">Namaste! I am your AI assistant. Speak or type to ask anything.</div>
-                       </div>
-                       <div class="flex gap-2">
-                            <input type="text" id="c-input" placeholder="Ask in Hindi/English..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-3 text-white text-sm">
-                            <button onclick="runChat()" class="w-12 bg-blue-600 rounded-xl flex items-center justify-center"><i class="fa-solid fa-paper-plane"></i></button>
-                       </div>`
-            },
-            'inter-crop': { title: 'Intercropping', icon: 'fa-shuffle text-purple-400', html: '<p class="text-slate-400 text-center">AI Intercropping logic ready.</p><button onclick="alert(\'Simulated Result: Cotton + Marigold\')" class="w-full bg-purple-600 mt-4 py-3 rounded-xl font-bold">Find Pairs</button>' },
-            'yantra-doc': { title: 'Yantra Doctor', icon: 'fa-wrench text-slate-400', html: '<p class="text-slate-400 text-center">Upload machine photo or describe sound.</p><button onclick="alert(\'Simulated Result: Filter replacement needed.\')" class="w-full bg-slate-600 mt-4 py-3 rounded-xl font-bold">Diagnose</button>' },
-            'weed-kill': { title: 'Weed Assassin', icon: 'fa-skull-crossbones text-yellow-400', html: '<div class="h-32 border-2 border-dashed border-slate-600 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-camera text-2xl text-slate-500"></i></div><button onclick="alert(\'Simulated Result: Parthenium detected.\')" class="w-full bg-yellow-600 py-3 rounded-xl font-bold text-slate-900">Identify Weed</button>' },
-            'water-lab': { title: 'Water Lab', icon: 'fa-glass-water-droplet text-cyan-400', html: '<input type="number" placeholder="pH Level" class="w-full bg-slate-800 p-3 rounded-xl mb-4 text-white"><button onclick="alert(\'Simulated Result: Water is safe for Drip Irrigation.\')" class="w-full bg-cyan-600 py-3 rounded-xl font-bold">Analyze</button>' },
-            'export-mgr': { title: 'Export Manager', icon: 'fa-earth-americas text-indigo-400', html: '<input type="text" placeholder="Crop Name" class="w-full bg-slate-800 p-3 rounded-xl mb-4 text-white"><button onclick="alert(\'Simulated Result: High demand in UAE and EU.\')" class="w-full bg-indigo-600 py-3 rounded-xl font-bold">Check Demand</button>' },
-             'loan-assist': { title: 'Loan Assistant', icon: 'fa-building-columns text-emerald-400', html: '<input type="text" placeholder="Bank Name" class="w-full bg-slate-800 p-3 rounded-xl mb-4 text-white"><button onclick="alert(\'Simulated Result: Loan Application Draft Generated.\')" class="w-full bg-emerald-600 py-3 rounded-xl font-bold">Draft Letter</button>' },
-             'fert-mix': { title: 'Fertilizer Mixer', icon: 'fa-flask-vial text-teal-400', html: '<input type="text" placeholder="Target NPK" class="w-full bg-slate-800 p-3 rounded-xl mb-4 text-white"><button onclick="alert(\'Simulated Result: Mix 2 bags Urea, 1 bag DAP.\')" class="w-full bg-teal-600 py-3 rounded-xl font-bold">Calculate</button>' },
-             'contract-draft': { title: 'Contract Drafter', icon: 'fa-file-contract text-blue-400', html: '<input type="text" placeholder="Buyer Name" class="w-full bg-slate-800 p-3 rounded-xl mb-4 text-white"><button onclick="alert(\'Simulated: Contract PDF Created.\')" class="w-full bg-blue-600 py-3 rounded-xl font-bold">Create Contract</button>' },
-        };
-
-        // --- MODAL FUNCTIONS ---
-        function openTool(toolId) {
-            const modal = document.getElementById('tool-modal');
-            const content = document.getElementById('modal-content');
-            const config = tools[toolId];
-            
-            if(!config) return;
-            
-            content.innerHTML = `
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center">
-                        <i class="fa-solid ${config.icon} text-lg"></i>
-                    </div>
-                     <h3 class="text-xl font-bold">${config.title}</h3>
-                </div>
-                ${config.html}
-            `;
-            
-            modal.classList.remove('hidden');
-        }
-
-        function closeToolModal() {
-            document.getElementById('tool-modal').classList.add('hidden');
-        }
-
-        // --- SIMULATED AI RUNNER ---
-        function runTool(type) {
-            const btn = document.querySelector('#modal-content button');
-            if(btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-            
-            setTimeout(() => {
-                if(btn) btn.innerHTML = 'Done';
-                const el = document.getElementById('t-result');
-                if(!el) return;
-                
-                let res = "";
-                if(type === 'farm-plan') res = "<b>Plan Generated:</b><br>• 09:00 AM: Water field (2 hrs)<br>• 04:00 PM: Apply Urea (Split dose)";
-                if(type === 'soil-decode') res = "<b>Analysis:</b><br>• Nitrogen is Low.<br>• Recommendation: Add 50kg Urea/acre.";
-                if(type === 'price-pred') res = "<b>Forecast:</b><br>• Next week: ₹2,600/Q (▲ 5%)<br>• Sentiment: Bullish due to rain.";
-                if(type === 'pashu-vaidya') res = "<b>Advice:</b><br>• Isolate animal immediately.<br>• Provide plenty of fluids.<br>• Consult vet if fever > 102°F.";
-                if(type === 'profit-calc') res = "<b>Est. ROI:</b><br>• Cost: ₹25,000<br>• Revenue: ₹45,000<br>• Net Profit: ₹20,000/acre";
-                if(type === 'negot-coach') res = "<b>Strategy:</b><br>• Market rate is ₹2,400.<br>• Don't accept below ₹2,350.<br>• Mention 'High Quality Grade A'.";
-
-                el.innerHTML = res;
-                el.classList.remove('hidden');
-            }, 1500);
-        }
-
-        function runChat() {
-            const inp = document.getElementById('c-input');
-            const hist = document.getElementById('chat-history');
-            const txt = inp.value.trim();
-            if(!txt) return;
-
-            hist.innerHTML += `<div class="bg-emerald-600 p-2 rounded-lg rounded-tr-none self-end ml-8 text-xs text-white mb-2 text-right">${txt}</div>`;
-            inp.value = '';
-            hist.scrollTop = hist.scrollHeight;
-
-            setTimeout(() => {
-                hist.innerHTML += `<div class="bg-slate-700 p-2 rounded-lg rounded-tl-none self-start mr-8 text-xs text-slate-300 mb-2">I am simulating the answer for "${txt}". In the real app, I would use Gemini AI to answer this.</div>`;
-                hist.scrollTop = hist.scrollHeight;
-            }, 1000);
-        }
-
-    </script>
+    <!-- Logic Script -->
+    <script src="assets/js/mobile-script.js"></script>
 </body>
 </html>
