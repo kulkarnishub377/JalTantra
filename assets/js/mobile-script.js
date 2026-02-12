@@ -223,6 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.openTool = (toolId) => {
         if(toolId === 'camera-scan') { openScanner(); return; }
+        if(toolId === 'soil-test') { openSoilTest(); return; }
+        if(toolId === 'calculator') { openCalculator(); return; }
         
         const modal = document.getElementById('tool-modal');
         const container = document.getElementById('modal-container');
@@ -238,13 +240,173 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="font-bold text-2xl text-slate-800 mb-2">${data.title}</h3>
                     <p class="text-slate-500 leading-relaxed px-4 mb-8">${data.text}</p>
                     
-                    <button type="button" onclick="closeModal()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold active:scale-95 transition-transform">Got it</button>
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <button type="button" onclick="closeModal()" class="py-3 bg-slate-100 text-slate-700 rounded-xl font-bold active:scale-95 transition-transform">Close</button>
+                        <button type="button" onclick="showNotification('Feature simulation started', 'fa-play', 'text-emerald-500'); closeModal()" class="py-3 bg-slate-900 text-white rounded-xl font-bold active:scale-95 transition-transform">Use Tool</button>
+                    </div>
                 </div>
             </div>
         `;
         
         modal.classList.add('open');
         setTimeout(() => container.style.transform = 'translateY(0)', 10);
+    };
+
+    // --- CUSTOM TOOL LOGIC ---
+
+    // 1. Soil Health Logic
+    window.openSoilTest = () => {
+        const modal = document.getElementById('tool-modal');
+        const container = document.getElementById('modal-container');
+        
+        container.innerHTML = `
+            <div class="bg-white rounded-t-3xl p-6 pb-12 h-[85vh] flex flex-col">
+                <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                <h3 class="font-bold text-2xl text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-flask text-amber-500"></i> Soil Health</h3>
+                
+                <div class="flex-1 overflow-y-auto">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 mb-6">
+                        <p class="text-xs text-amber-700 leading-relaxed"><i class="fa-solid fa-circle-info mr-1"></i> Enter the values from your soil test kit or connect an IoT sensor.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 mb-1 block">Nitrogen (N)</label>
+                            <input type="number" id="soil-n" value="240" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                         <div>
+                            <label class="text-xs font-bold text-slate-500 mb-1 block">Phosphorus (P)</label>
+                            <input type="number" id="soil-p" value="18" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 mb-1 block">Potassium (K)</label>
+                            <input type="number" id="soil-k" value="180" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                         <div>
+                            <label class="text-xs font-bold text-slate-500 mb-1 block">pH Level</label>
+                            <input type="number" id="soil-ph" value="6.5" step="0.1" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-emerald-500 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="w-full py-3 border border-dashed border-emerald-300 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-sm mb-6 flex items-center justify-center gap-2 active:scale-95">
+                        <i class="fa-brands fa-bluetooth-b"></i> Connect IoT Sensor
+                    </button>
+                    
+                    <button type="button" onclick="analyzeSoil()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg shadow-slate-200 active:scale-95 transition-transform">Analyze Report</button>
+                </div>
+            </div>
+        `;
+        modal.classList.add('open');
+        setTimeout(() => container.style.transform = 'translateY(0)', 10);
+    };
+
+    window.analyzeSoil = () => {
+         const container = document.getElementById('modal-container');
+         // Loading State
+         container.innerHTML = `
+            <div class="h-[50vh] bg-white rounded-t-3xl p-8 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 border-4 border-amber-100 border-t-amber-500 rounded-full animate-spin mb-4"></div>
+                <h3 class="text-xl font-bold text-slate-800">Analyzing Soil Profile...</h3>
+                <p class="text-slate-500 text-sm mt-2">Checking nutrient balance</p>
+            </div>
+        `;
+        
+        setTimeout(() => {
+             container.innerHTML = `
+                 <div class="bg-white rounded-t-3xl p-6 pb-10 max-h-[85vh] overflow-y-auto">
+                    <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-3">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800">Excellent Quality</h3>
+                        <p class="text-sm text-emerald-600 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full mt-1">Ready for Sowing</p>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                            <span class="text-sm font-bold text-slate-600">Nitrogen</span>
+                            <span class="text-sm font-bold text-emerald-600">Optimal <i class="fa-solid fa-check-circle ml-1"></i></span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                            <span class="text-sm font-bold text-slate-600">Phosphorus</span>
+                            <span class="text-sm font-bold text-amber-500">Low - Add DAP <i class="fa-solid fa-triangle-exclamation ml-1"></i></span>
+                        </div>
+                         <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                            <span class="text-sm font-bold text-slate-600">pH Level</span>
+                            <span class="text-sm font-bold text-emerald-600">Neutral (6.5) <i class="fa-solid fa-check-circle ml-1"></i></span>
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="closeModal()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold active:scale-95 transition-transform">Done</button>
+                 </div>
+             `;
+        }, 1500);
+    };
+
+    // 2. Calculator Logic
+    window.openCalculator = () => {
+        const modal = document.getElementById('tool-modal');
+        const container = document.getElementById('modal-container');
+        
+        container.innerHTML = `
+            <div class="bg-white rounded-t-3xl p-6 pb-12 h-[80vh] flex flex-col">
+                <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                <h3 class="font-bold text-2xl text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-calculator text-violet-500"></i> Profit Calculator</h3>
+                
+                <div class="space-y-4 mb-8">
+                     <div>
+                        <label class="text-xs font-bold text-slate-500 mb-1 block">Select Crop</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-violet-500 transition-colors">
+                            <option>Soybean</option>
+                            <option>Cotton</option>
+                            <option>Sugarcane</option>
+                            <option>Wheat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 mb-1 block">Farm Area (Acres)</label>
+                        <input type="number" value="2.5" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-violet-500 transition-colors">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 mb-1 block">Expected Rate (₹/Quintal)</label>
+                        <input type="number" value="4600" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 focus:outline-none focus:border-violet-500 transition-colors">
+                    </div>
+                </div>
+                
+                <button type="button" onclick="calculateProfit()" class="w-full bg-violet-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-violet-200 active:scale-95 transition-transform mt-auto">Calculate ROI</button>
+            </div>
+        `;
+        modal.classList.add('open');
+        setTimeout(() => container.style.transform = 'translateY(0)', 10);
+    };
+
+    window.calculateProfit = () => {
+         const container = document.getElementById('modal-container');
+         container.innerHTML = `
+            <div class="bg-white rounded-t-3xl p-8 pb-12 text-center">
+                 <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Estimated Net Profit</p>
+                 <h2 class="text-5xl font-black text-slate-800 mb-2">₹42,500</h2>
+                 <p class="text-sm text-emerald-600 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full mb-8">ROI: 140%</p>
+                 
+                 <div class="grid grid-cols-2 gap-4 mb-8 text-left">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400">Total Yield</p>
+                        <p class="font-bold text-slate-800 text-lg">15 Qtl</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400">Total Cost</p>
+                        <p class="font-bold text-red-500 text-lg">₹26,500</p>
+                    </div>
+                 </div>
+                 
+                 <button type="button" onclick="closeModal()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold active:scale-95 transition-transform">Save Projection</button>
+            </div>
+         `;
     };
 
     window.openMarketDetail = (name, location, price, change, color) => {

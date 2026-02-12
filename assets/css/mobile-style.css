@@ -75,12 +75,20 @@ p { margin: 0; }
 
 /* Marquee Animation */
 @keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 .animate-marquee {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+}
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 /* Status Bar */

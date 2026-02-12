@@ -162,10 +162,21 @@
                 <h3 class="font-bold text-xl mb-2 px-1 text-slate-800">Live Mandi Prices</h3>
                 
                 <!-- Ticker -->
-                <div class="bg-slate-900 text-white p-3 rounded-xl mb-4 overflow-hidden grid-full-width-on-mobile shadow-lg">
-                     <p class="text-xs font-mono whitespace-nowrap animate-marquee">
-                        ONION: ₹2400 ▲  •  COTTON: ₹8200 ▼  •  WHEAT: ₹2100 ▲  •  SOYBEAN: ₹4600 ▲
-                     </p>
+                <!-- Ticker -->
+                <div class="bg-slate-900 text-white p-3 rounded-xl mb-4 overflow-hidden grid-full-width-on-mobile shadow-lg marquee-container">
+                     <div class="animate-marquee flex gap-8 items-center">
+                        <span class="text-xs font-mono">ONION: ₹2400 ▲</span>
+                        <span class="text-xs font-mono">COTTON: ₹8200 ▼</span>
+                        <span class="text-xs font-mono">WHEAT: ₹2100 ▲</span>
+                        <span class="text-xs font-mono">SOYBEAN: ₹4600 ▲</span>
+                        <span class="text-xs font-mono">MAIZE: ₹2100 ▼</span>
+                        <!-- Duplicate for Loop -->
+                        <span class="text-xs font-mono">ONION: ₹2400 ▲</span>
+                        <span class="text-xs font-mono">COTTON: ₹8200 ▼</span>
+                        <span class="text-xs font-mono">WHEAT: ₹2100 ▲</span>
+                        <span class="text-xs font-mono">SOYBEAN: ₹4600 ▲</span>
+                        <span class="text-xs font-mono">MAIZE: ₹2100 ▼</span>
+                     </div>
                 </div>
 
                 <!-- Price Cards -->
@@ -347,7 +358,8 @@
         </main>
 
         <!-- FLOATING SCAN BUTTON (CENTER) -->
-        <div class="scan-btn-wrapper z-50">
+        <!-- FLOATING SCAN BUTTON (CENTER) -->
+        <div class="scan-btn-wrapper z-[60]">
             <button type="button" onclick="openScanner()" class="scan-btn">
                 <i class="fa-solid fa-qrcode"></i>
             </button>
