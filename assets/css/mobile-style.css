@@ -57,6 +57,7 @@ p { margin: 0; }
 /* --- LAYOUT UTILITIES --- */
 .safe-pt { padding-top: var(--safe-top); }
 .safe-pb { padding-bottom: var(--safe-bottom); }
+.hidden { display: none !important; }
 
 /* --- APP SHELL --- */
 #app-shell {
@@ -65,9 +66,20 @@ p { margin: 0; }
     height: 100%;
     position: relative;
     max-width: 480px; /* Constrain width on tablets/desktop */
+    width: 100%; /* Ensure full width on mobile */
     margin: 0 auto;
     background: var(--bg-body);
     box-shadow: 0 0 40px rgba(0,0,0,0.1); /* Shadow for desktop view */
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
 }
 
 /* Status Bar */
