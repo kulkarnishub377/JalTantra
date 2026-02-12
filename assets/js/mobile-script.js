@@ -211,7 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'crop-doctor': { title: 'Crop Doctor', icon: 'fa-user-doctor', text: 'Upload a photo of your crop to diagnose diseases instantly using AI.' },
         'soil-test': { title: 'Soil Health', icon: 'fa-flask', text: 'Connect your IoT Soil Sensor to analyze NPK, pH, and Moisture levels.' },
         'market-view': { title: 'Market View', icon: 'fa-sack-dollar', text: 'Real-time prices from 2000+ Mandis across India.' },
-        'calculator': { title: 'Profit Calculator', icon: 'fa-calculator', text: 'Estimate your ROI based on crop type, acreage, and market rates.' }
+        'calculator': { title: 'Profit Calculator', icon: 'fa-calculator', text: 'Estimate your ROI based on crop type, acreage, and market rates.' },
+        'profile': { title: 'Farmer Profile', icon: 'fa-id-card', text: 'Manage your personal details, farm records, and app settings here.' },
+        'weather-plus': { title: 'Weather Plus', icon: 'fa-cloud-bolt', text: 'Hyper-local forecasts with rain alerts and humidity tracking.' },
+        'schemes': { title: 'Gov Schemes', icon: 'fa-landmark', text: 'Browse and apply for latest government subsidies and grants.' },
+        'community': { title: 'Kisan Sangh', icon: 'fa-users', text: 'Connect with 10k+ farmers. Share tips, ask questions, and grow together.' },
+        'shop': { title: 'Agri Shop', icon: 'fa-cart-shopping', text: 'Buy seeds, fertilizers, and equipment at best prices.' },
+        'expert-call': { title: 'Expert Call', icon: 'fa-headset', text: 'Get on a video call with an agriculture expert for personalized advice.' },
+        'add-device': { title: 'Add New Device', icon: 'fa-plus', text: 'Search for nearby Bluetooth/Wi-Fi devices to connect. Ensure your device is in pairing mode.' }
     };
 
     window.openTool = (toolId) => {
@@ -237,6 +244,42 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         modal.classList.add('open');
+        setTimeout(() => container.style.transform = 'translateY(0)', 10);
+    };
+
+    window.openMarketDetail = (name, location, price, change, color) => {
+        const modal = document.getElementById('tool-modal');
+        const container = document.getElementById('modal-container');
+        
+        container.innerHTML = `
+            <div class="bg-white rounded-t-3xl p-8 pb-12">
+                <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="font-bold text-2xl text-slate-900">${name}</h3>
+                        <p class="text-slate-500 ml-1"><i class="fa-solid fa-location-dot mr-1"></i> ${location} Mandi</p>
+                    </div>
+                    <div class="text-right">
+                         <h2 class="font-bold text-3xl text-emerald-700">₹${price}</h2>
+                         <p class="font-bold ${color} bg-slate-50 px-2 py-1 rounded inline-block mt-1">${change} today</p>
+                    </div>
+                </div>
+                
+                <div class="h-32 bg-slate-50 rounded-xl mb-6 flex items-end justify-between p-4 px-6 border border-slate-100">
+                    <div class="w-4 bg-emerald-200 rounded-t h-1/2"></div>
+                    <div class="w-4 bg-emerald-300 rounded-t h-2/3"></div>
+                    <div class="w-4 bg-emerald-400 rounded-t h-3/4"></div>
+                    <div class="w-4 bg-emerald-500 rounded-t h-full"></div>
+                    <div class="w-4 bg-emerald-600 rounded-t h-4/5"></div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button class="py-3 bg-emerald-600 text-white rounded-xl font-bold active:scale-95 transition-transform"><i class="fa-solid fa-bell mr-2"></i>Set Alert</button>
+                    <button onclick="closeModal()" class="py-3 bg-slate-100 text-slate-700 rounded-xl font-bold active:scale-95 transition-transform">Close</button>
+                </div>
+            </div>
+        `;
+         modal.classList.add('open');
         setTimeout(() => container.style.transform = 'translateY(0)', 10);
     };
     

@@ -70,6 +70,7 @@ p { margin: 0; }
     margin: 0 auto;
     background: var(--bg-body);
     box-shadow: 0 0 40px rgba(0,0,0,0.1); /* Shadow for desktop view */
+    overflow: hidden; /* Prevent double scrollbars */
 }
 
 /* Marquee Animation */

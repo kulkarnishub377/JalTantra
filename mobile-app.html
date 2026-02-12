@@ -46,9 +46,9 @@
                 <p id="greeting" class="text-xs text-slate-500 font-medium">Good Morning,</p>
                 <h2 class="text-lg font-bold text-slate-900">Ramesh Patil</h2>
             </div>
-            <div class="w-10 h-10 rounded-full bg-emerald-100 ring-2 ring-white shadow-sm overflow-hidden active:scale-95 transition-transform">
+            <button type="button" onclick="openTool('profile')" class="w-10 h-10 rounded-full bg-emerald-100 ring-2 ring-white shadow-sm overflow-hidden active:scale-95 transition-transform">
                 <img src="https://img.freepik.com/free-photo/3d-farmer-mascot-character_69443-577.jpg" class="w-full h-full object-cover">
-            </div>
+            </button>
         </div>
 
         <!-- MAIN SCROLLABLE CONTENT -->
@@ -169,7 +169,7 @@
                 </div>
 
                 <!-- Price Cards -->
-                <div class="card flex justify-between items-center !mb-0">
+                <div onclick="openMarketDetail('Red Onion', 'Lasalgaon', '2450', '+50', 'text-emerald-500')" class="card flex justify-between items-center !mb-0 active:scale-95 transition-transform cursor-pointer">
                     <div class="flex gap-3 items-center">
                         <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xs">ON</div>
                         <div>
@@ -182,7 +182,7 @@
                         <p class="text-[10px] text-emerald-500 font-bold">▲ +50</p>
                     </div>
                 </div>
-                 <div class="card flex justify-between items-center !mb-0">
+                 <div onclick="openMarketDetail('Cotton', 'Akola', '8100', '-120', 'text-red-500')" class="card flex justify-between items-center !mb-0 active:scale-95 transition-transform cursor-pointer">
                     <div class="flex gap-3 items-center">
                         <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">CT</div>
                         <div>
@@ -195,7 +195,7 @@
                         <p class="text-[10px] text-red-500 font-bold">▼ -120</p>
                     </div>
                 </div>
-                 <div class="card flex justify-between items-center !mb-0">
+                 <div onclick="openMarketDetail('Vanilla', 'Cochin', '42000', '+500', 'text-emerald-500')" class="card flex justify-between items-center !mb-0 active:scale-95 transition-transform cursor-pointer">
                     <div class="flex gap-3 items-center">
                         <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs">VN</div>
                         <div>
@@ -208,7 +208,7 @@
                         <p class="text-[10px] text-emerald-500 font-bold">▲ +500</p>
                     </div>
                 </div>
-                 <div class="card flex justify-between items-center !mb-0">
+                 <div onclick="openMarketDetail('Soybean', 'Latur', '4600', '+15', 'text-emerald-500')" class="card flex justify-between items-center !mb-0 active:scale-95 transition-transform cursor-pointer">
                     <div class="flex gap-3 items-center">
                         <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">SB</div>
                         <div>
@@ -221,7 +221,7 @@
                         <p class="text-[10px] text-emerald-500 font-bold">▲ +15</p>
                     </div>
                 </div>
-                 <div class="card flex justify-between items-center !mb-0">
+                 <div onclick="openMarketDetail('Maize', 'Sangli', '2100', '-10', 'text-red-500')" class="card flex justify-between items-center !mb-0 active:scale-95 transition-transform cursor-pointer">
                     <div class="flex gap-3 items-center">
                         <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center font-bold text-xs">MZ</div>
                         <div>
@@ -247,7 +247,7 @@
                     </div>
                     <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
                 </div>
-                <button type="button" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 hover:border-emerald-500 hover:text-emerald-500 transition-colors flex items-center justify-center gap-2 bg-slate-50 active:scale-95">
+                <button type="button" onclick="openTool('add-device')" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 hover:border-emerald-500 hover:text-emerald-500 transition-colors flex items-center justify-center gap-2 bg-slate-50 active:scale-95">
                     <i class="fa-solid fa-plus"></i> <span class="font-bold text-sm">Add Device</span>
                 </button>
              </section>
